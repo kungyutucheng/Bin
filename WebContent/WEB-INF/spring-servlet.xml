@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache" 
+	xsi:schemaLocation="
+	  	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd   
+      	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd   
+       	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd   
+       	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+       	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+       	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+       
+	<!-- 采用InternalResourceViewResolver作为视图解析器，该视图解析器能解析html文件，jsp文件 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- Jackson 处理 JSON 数据 -->
+	<bean name="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<value>text/json;charset=UTF-8</value>
+		</property>
+	</bean>
+	<!-- 静态资源不拦截 -->
+	<mvc:default-servlet-handler/>
+	<mvc:resources location="/images/" mapping="/images/**"/> 
+	<mvc:resources location="/css/" mapping="/css/**"/> 
+	<mvc:resources location="/js/" mapping="/js/**"/>
+
+	<!-- 自动实现类型转换，扫描全部web组件注解 -->
+	<mvc:annotation-driven>
+	</mvc:annotation-driven>
+	
+	<!-- 设置采用aspextj自动代理 -->
+	<aop:aspectj-autoproxy />
+	
+	<!-- 扫描controller,dao.impls,service.impls这三个包的非web组件注解 -->
+	<context:component-scan base-package="com.*.*" >
+		<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>
+	</context:component-scan>
+	<mvc:interceptors>
+		<!-- 开启openSessionInView -->
+		<bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor">
+			<property name="sessionFactory" ref="sessionFactory" />
+		</bean>
+	</mvc:interceptors>
+	
+	<!-- 
+	<bean id="multipartResolver" class="com.gpl.web.listener.CustomMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+		5M
+		<property name="maxUploadSize" value="5242880"></property>
+		resolveLazily属性启用是为了推迟文件解析，以便在controller 中捕获文件大小异常  
+		<property name="resolveLazily" value="true"/>  
+	</bean> -->
+
+	<!-- 用于缓存 -->
+	<bean id="ehcacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml" />
+	</bean>
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehcacheManager" />
+		<property name="transactionAware" value="true" />
+	</bean>
+	
+	<cache:annotation-driven cache-manager="cacheManager"
+		proxy-target-class="true" />
+		
+	<!-- 配置kaptcha验证码 -->  
+	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
+	    <property name="config">  
+	        <bean class="com.google.code.kaptcha.util.Config">  
+	            <constructor-arg type="java.util.Properties">  
+	                <props>  
+	                    <prop key="kaptcha.image.width">100</prop>  
+	                    <prop key="kaptcha.image.height">35</prop>  
+	                    <prop key="kaptcha.noise.impl">com.google.code.kaptcha.impl.NoNoise</prop>  
+	                    <prop key="kaptcha.textproducer.char.string">3456789abcdefghijkmnpqrstuvwxy</prop>  
+	                    <prop key="kaptcha.textproducer.char.length">4</prop>  
+	                    <prop key="kaptcha.textproducer.char.space">6</prop>  
+	                    <prop key="kaptcha.textproducer.font.size">25</prop>  
+	                </props>  
+	            </constructor-arg>  
+	        </bean>  
+	    </property>  
+	</bean>  
+</beans>
