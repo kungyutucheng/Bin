@@ -35,6 +35,14 @@ public abstract class BaseService<T , PK extends Serializable> {
 		baseDao.saveAll(entityList, clazz);
 	}
 	
+	public void updateAll(List<T> entityList , Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		baseDao.updateAll(entityList, clazz);
+	}
+	
+	public void updateAll(List<T> entityList , Class<T> clazz , List<String> columnNames) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		baseDao.updateAll(entityList, clazz , columnNames);
+	}
+	
 	public void batchDelete(Class<T> clazz , String ids){
 		baseDao.batchDelete(clazz, ids);
 	}

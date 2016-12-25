@@ -14,3 +14,4 @@
 <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${basePath }/asserts/layer/layer.js"></script>
 <script type="text/javascript" src="${basePath }/asserts/layui/layui.js"></script>
+<script type="text/javascript" src="${basePath }/asserts/layui/lay/dest/layui.all.js"></script>

@@ -29,7 +29,7 @@ public class LoginController extends BaseController{
 	
 	@RequestMapping(value = "/loginPage",method = RequestMethod.GET)
 	public ModelAndView loginPage(){
-		return new ModelAndView(ViewName.LOGIN_PAGE);
+		return new ModelAndView(ViewName.HOME_LOGIN_PAGE);
 	}
 	
 	@RequestMapping(value = "/login",method = RequestMethod.POST,produces = "text/html;charset=utf-8")

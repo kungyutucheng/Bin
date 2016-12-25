@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "good")
 public class Good {
@@ -32,11 +34,6 @@ public class Good {
 	@Column(name = "_no")
 	private String no;
 	
-	/**
-	 * 商品价格
-	 */
-	@Column(name = "price")
-	private BigDecimal price;
 	
 	/**
 	 * 商家id
@@ -46,6 +43,9 @@ public class Good {
 	
 	/**
 	 * 状态
+	 * 1-上架中
+	 * 2-已上架
+	 * 3-已下架
 	 */
 	@Column(name = "_status")
 	private Integer status;
@@ -114,13 +114,28 @@ public class Good {
 	 * 上架时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	/**
 	 * 下架时间
 	 */
 	@Column(name = "removeTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date removeTime;
+	
+	
+	/**
+	 * 毛重
+	 */
+	@Column(name = "grossWeight")
+	private Double grossWeight;
+	
+	/**
+	 * 净重
+	 */
+	@Column(name = "netWeight")
+	private Double netWeight;
 	
 	public Good() {
 	}
@@ -147,14 +162,6 @@ public class Good {
 
 	public void setNo(String no) {
 		this.no = no;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigDecimal price) {
-		this.price = price;
 	}
 
 	public Integer getOid() {
@@ -269,13 +276,30 @@ public class Good {
 		this.removeTime = removeTime;
 	}
 
+	public Double getGrossWeight() {
+		return grossWeight;
+	}
+
+	public void setGrossWeight(Double grossWeight) {
+		this.grossWeight = grossWeight;
+	}
+
+	public Double getNetWeight() {
+		return netWeight;
+	}
+
+	public void setNetWeight(Double netWeight) {
+		this.netWeight = netWeight;
+	}
+
 	@Override
 	public String toString() {
-		return "Good [id=" + id + ", name=" + name + ", no=" + no + ", price=" + price + ", oid=" + oid + ", status="
-				+ status + ", msg=" + msg + ", soldNum=" + soldNum + ", brand=" + brand + ", attr=" + attr + ", scope="
-				+ scope + ", type=" + type + ", picMid=" + picMid + ", seriesSm=" + seriesSm + ", seriesLg=" + seriesLg
-				+ ", picSm=" + picSm + ", createTime=" + createTime + ", removeTime=" + removeTime + "]";
+		return "Good [id=" + id + ", name=" + name + ", no=" + no + ", oid=" + oid + ", status=" + status + ", msg="
+				+ msg + ", soldNum=" + soldNum + ", brand=" + brand + ", attr=" + attr + ", scope=" + scope + ", type="
+				+ type + ", picMid=" + picMid + ", seriesSm=" + seriesSm + ", seriesLg=" + seriesLg + ", picSm=" + picSm
+				+ ", createTime=" + createTime + ", removeTime=" + removeTime + ", grossWeight=" + grossWeight
+				+ ", netWeight=" + netWeight + "]";
 	}
-	
+
 }
 

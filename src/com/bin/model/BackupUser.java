@@ -52,8 +52,27 @@ public class BackupUser {
 	@Column(name = "creator")
 	private String creator;
 	
+	/**
+	 * 商家id
+	 */
+	@Column(name = "oid")
+	private Integer oid;
+	
 	public BackupUser() {
 	}
+	
+	public BackupUser(Integer id, String username, Integer role, Date createTime, String creator,
+			Integer oid) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.role = role;
+		this.createTime = createTime;
+		this.creator = creator;
+		this.oid = oid;
+	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -103,10 +122,19 @@ public class BackupUser {
 		this.creator = creator;
 	}
 
+	public Integer getOid() {
+		return oid;
+	}
+
+	public void setOid(Integer oid) {
+		this.oid = oid;
+	}
+
 	@Override
 	public String toString() {
 		return "BackupUser [id=" + id + ", username=" + username + ", pwd=" + pwd + ", role=" + role + ", createTime="
-				+ createTime + ", creator=" + creator + "]";
+				+ createTime + ", creator=" + creator + ", oid=" + oid + "]";
 	}
+
 	
 }

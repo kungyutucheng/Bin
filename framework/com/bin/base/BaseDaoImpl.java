@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.Query;
@@ -89,7 +90,7 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 		
 		//获取实体类全部字段
 		Field[] fields = clazz.getDeclaredFields();
-		List<Field> columnFields = new ArrayList<Field>();
+		List<Field> columnFields = new ArrayList<Field>(0);
 		for(Field field : fields){
 			if(field.getAnnotation(Column.class) != null){
 				columnFields.add(field);
@@ -111,7 +112,7 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 		//拼接sql
 		builder.append("insert into ").append("`").append(tableName).append("`").append(" (");
 		for(Field columnField : columnFields){
-			builder.append("`").append(columnField.getAnnotation(Column.class).name()).append("`");
+			builder.append("`").append(columnField.getAnnotation(Column.class).name()).append("`").append(",");
 		}
 		builder.deleteCharAt(builder.length() - 1);
 		builder.append(") values ");
@@ -130,7 +131,7 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 		int index = 0;
 		for(T entity : entityList){
 			for(Method getter : dbFieldMethodList){
-				query.setParameter(index, getter.invoke(entity));
+				query.setParameter(index++, getter.invoke(entity));
 			}
 		}
 		
@@ -289,21 +290,18 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 	 */
 	@Override
 	public List<T> getPageResult(String hql, Integer pageNo, Integer pageSize, Object... params) {
-		if(params != null && params.length > 0){
-			Query query = getSession().createQuery(hql);
-			for(int i = 0 ;i < params.length ;i++){
-				query.setParameter(i, params[i]);
-			}
-			if(pageNo < 0){
-				pageNo = 1;
-			}
-			if(pageSize < 0){
-				pageSize = 100;
-			}
-			query.setMaxResults(pageSize).setFirstResult((pageNo - 1) * pageSize);
-			return query.list();
+		Query query = getSession().createQuery(hql);
+		for(int i = 0 ;params != null && i < params.length ;i++){
+			query.setParameter(i, params[i]);			
 		}
-		return null;
+		if(pageNo < 0){
+			pageNo = 1;
+		}
+		if(pageSize < 0){
+			pageSize = 10;
+		}
+		query.setMaxResults(pageSize).setFirstResult((pageNo - 1) * pageSize);
+		return query.list();
 	}
 
 	/**
@@ -365,5 +363,93 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 		return (T) query.uniqueResult();
 		
 		
+	}
+
+	@Override
+	public void updateAll(List<T> entityList, Class<T> clazz)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		updateAll(entityList, clazz,null);
+	}
+
+	@Override
+	public void updateAll(List<T> entityList, Class<T> clazz, List<String> columnNames)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		StringBuilder builder = new StringBuilder();
+		String tableName = clazz.getAnnotation(Table.class).name();
+		builder.append("update ").append("`").append(tableName).append("`").append(" set ");
+		Field[] fields = clazz.getDeclaredFields();
+		Method[] methods = clazz.getDeclaredMethods();
+		List<Object> params = new ArrayList<Object>();
+		String getterName = null;
+		String idName = null;
+		
+		for(Field field : fields){
+			if(field.getAnnotation(Id.class) != null){
+				idName = field.getName();
+				break;
+			}
+		}
+		
+		if(columnNames == null){
+			for(int j = 0 ;j < entityList.size() ; j++){
+				for(int i = 0 ;i < fields.length ; i++){
+					Field field = fields[i];
+					if(field.getAnnotation(Column.class) != null){
+						builder.append(" ").append(field.getAnnotation(Column.class).name()).append(" = ?,");
+						getterName = "get" + field.getName();
+						for(Method method : methods){
+							if(method.getName().equalsIgnoreCase(getterName)){
+								//获取参数值
+								params.add(method.invoke(entityList.get(j)));
+							}
+						}
+					}
+				}
+				builder.deleteCharAt(builder.length() - 1);
+				builder.append(" where ").append(idName).append(" = ?;");
+				getterName = "get" + idName;
+				for(Method method : methods){
+					if(method.getName().equalsIgnoreCase(getterName)){
+						//获取参数值
+						params.add(method.invoke(entityList.get(j)));
+					}
+				}
+			}
+		}else{
+			for(int j = 0 ;j < entityList.size() ; j++){
+				for(String columnName : columnNames){
+					for(Field field2 : fields){
+						System.out.println(field2.getName());
+						if(field2.getName().equalsIgnoreCase(columnName)){
+							builder.append(" ").append(field2.getAnnotation(Column.class).name()).append(" = ?,");
+							getterName = "get" + field2.getName();
+							for(Method method : methods){
+								if(method.getName().equalsIgnoreCase(getterName)){
+									//获取参数值
+									params.add(method.invoke(entityList.get(j)));
+								}
+							}
+							break;
+						}
+					}
+				}
+				
+				builder.deleteCharAt(builder.length() - 1);
+				builder.append(" where ").append(idName).append(" = ?;");
+				getterName = "get" + idName;
+				for(Method method : methods){
+					if(method.getName().equalsIgnoreCase(getterName)){
+						//获取主键参数值
+						params.add(method.invoke(entityList.get(j)));
+					}
+				}
+			}
+		}
+		
+		SQLQuery query = getSession().createSQLQuery(builder.toString());
+		for(int i = 0 ;i < params.size() ; i++){
+			query.setParameter(i, params.get(i));
+		}
+		query.executeUpdate();
 	}
 }

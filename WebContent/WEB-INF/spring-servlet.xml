@@ -38,6 +38,11 @@
 
 	<!-- 自动实现类型转换，扫描全部web组件注解 -->
 	<mvc:annotation-driven>
+		<mvc:message-converters>
+	        <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+	        <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
+	        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+	    </mvc:message-converters>
 	</mvc:annotation-driven>
 	
 	<!-- 设置采用aspextj自动代理 -->
@@ -54,14 +59,14 @@
 		</bean>
 	</mvc:interceptors>
 	
-	<!-- 
-	<bean id="multipartResolver" class="com.gpl.web.listener.CustomMultipartResolver">
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="utf-8"></property>
-		5M
+		<!-- 5M -->
 		<property name="maxUploadSize" value="5242880"></property>
-		resolveLazily属性启用是为了推迟文件解析，以便在controller 中捕获文件大小异常  
+		<!-- resolveLazily属性启用是为了推迟文件解析，以便在controller 中捕获文件大小异常   -->
 		<property name="resolveLazily" value="true"/>  
-	</bean> -->
+	</bean> 
 
 	<!-- 用于缓存 -->
 	<bean id="ehcacheManager"

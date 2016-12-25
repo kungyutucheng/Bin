@@ -24,6 +24,10 @@ public interface BaseDao<T , PK extends Serializable> {
 	
 	public void saveAll(List<T> entityList , Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException;
 	
+	public void updateAll(List<T> entityList , Class<T> clazz) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+	
+	public void updateAll(List<T> entityList , Class<T> clazz,List<String> columnNames) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+	
 	public void batchDelete(Class<T> clazz,String ids);
 	
 	public List<T> getAll(Class<T> clazz);
