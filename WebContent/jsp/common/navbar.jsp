@@ -4,25 +4,24 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="css/common.css" />
 		<title></title>
 		<style>
-			li{
+			#navbar > li{
 				cursor: pointer;
 				display: inline;
 				font-weight: bold;
 				margin:0 20px;
 			}
-			li:hover{
+			#navbar > li:hover{
 				color: red;
 			}
 		</style>
 	</head>
-	<body>
-		<ul style="list-style: none;color:#333333;padding:0;margin:0;">
-			<li>书籍</li>
+	<body style="text-align:center;">
+		<ul id="navbar" style="list-style: none;color:#333333;padding:0;margin:0;">
+			<li><a href="${basePath }/home/good/search?keyword=book">书籍</a></li>
 			<li>电器</li>
-			<li>手机</li>
+			<li><a onclick="forwardListPage('手机')">手机</a></li>
 			<li>电脑</li>
 			<li>服装</li>
 			<li>家居</li>
@@ -35,5 +34,15 @@
 			<li>彩票</li>
 		</ul>
 		<hr style="height: 3px;background: #D9534F;border:0;width:100%;"/>
+		<form id="searchForm" style="display:none;" method="post" action="${basePath }/home/good/search">
+			<input id="navbarKeyword" name="keyword" type="text"/>
+		</form>
+		<script>
+		function forwardListPage(keyword){
+			console.log(keyword);
+			$("#navbarKeyword").val(keyword);
+			$('#searchForm').submit();
+		}
+		</script>
 	</body>
 </html>

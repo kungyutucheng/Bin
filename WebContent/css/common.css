@@ -121,3 +121,94 @@ body {
 	display: inline-block;
 	text-align: left;
 }
+
+.search-div {
+	width: 99%;
+	border: 1px #ddd solid;
+	background: #fff;
+}
+
+.text-bar {
+	background: #f1f1f1;
+	padding: 5px 10px;
+}
+
+.text-bar .text {
+	text-align: left;
+}
+
+.text-bar .icon {
+	text-align: right;
+	float: right;
+	cursor: pointer;
+}
+
+.text-bar .icon:hover {
+	color: #1AA094;
+}
+
+.search-div .filter {
+	margin: 10px auto;
+	text-align: center;
+}
+
+.tool-bar {
+	width: 99%;
+	border: 1px #ddd solid;
+	padding: 10px 10px;
+	margin: 10px 0;
+}
+
+.result-div {
+	width: 99%;
+	border: 1px #ddd solid;
+	background: #fff;
+	margin: 10px 0;
+}
+
+.table {
+	font-size: 14px;
+	width: 100%;
+	border: 1px #f1f1f1 solid;
+	text-align: center;
+	border-width: 1px 0px 0px 1px;
+}
+
+.table>thead>tr>th {
+	background: #f1f1f1;
+	text-align: center;
+	padding: 5px 0;
+}
+
+.table>tbody>tr>td {
+	border: solid #ddd;
+	border-width: 0px 1px 1px 0px;
+	padding: 10px 0px;
+}
+
+.table>tbody>tr:hover {
+	background: #E3D070;
+}
+
+.inner-table {
+	width: 100%;
+	border: 1px #f1f1f1 dashed;
+	border-width: 1px 0px 0px 1px;
+	text-align: center;
+}
+
+.inner-table tbody tr td {
+	border: 1px dashed #ddd;
+	padding: 10px 0px;
+	border-width: 0px 1px 1px 0px;
+}
+
+.noData{
+	width:100%;
+	border:1px solid #eee;
+	text-align:center;
+	padding:20px 0;
+	margin:10px 0;	
+	font-size:14px;
+	color:#D9534F;
+}

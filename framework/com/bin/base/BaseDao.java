@@ -3,9 +3,7 @@ package com.bin.base;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.tools.ant.taskdefs.Execute;
 import org.hibernate.Session;
 
 public interface BaseDao<T , PK extends Serializable> {

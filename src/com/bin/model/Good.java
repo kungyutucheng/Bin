@@ -1,6 +1,5 @@
 package com.bin.model;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -136,6 +135,19 @@ public class Good {
 	 */
 	@Column(name = "netWeight")
 	private Double netWeight;
+	
+	
+	/**
+	 * 评论数
+	 */
+	@Column(name = "commentNum")
+	private Integer commentNum;
+	
+	/**
+	 * 价格
+	 */
+	@Column(name = "price")
+	private Double price;
 	
 	public Good() {
 	}
@@ -292,13 +304,29 @@ public class Good {
 		this.netWeight = netWeight;
 	}
 
+	public Integer getCommentNum() {
+		return commentNum;
+	}
+
+	public void setCommentNum(Integer commentNum) {
+		this.commentNum = commentNum;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
 		return "Good [id=" + id + ", name=" + name + ", no=" + no + ", oid=" + oid + ", status=" + status + ", msg="
 				+ msg + ", soldNum=" + soldNum + ", brand=" + brand + ", attr=" + attr + ", scope=" + scope + ", type="
 				+ type + ", picMid=" + picMid + ", seriesSm=" + seriesSm + ", seriesLg=" + seriesLg + ", picSm=" + picSm
 				+ ", createTime=" + createTime + ", removeTime=" + removeTime + ", grossWeight=" + grossWeight
-				+ ", netWeight=" + netWeight + "]";
+				+ ", netWeight=" + netWeight + ", commentNum=" + commentNum + ", price=" + price + "]";
 	}
 
 }

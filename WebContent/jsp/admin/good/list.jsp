@@ -8,86 +8,7 @@
 		<title>商品管理</title>
 		<link rel="stylesheet" href="${basePath }/asserts/uploadify/uploadify.css">
 		<style type="text/css">
-			.search-div {
-				width: 99%;
-				border: 1px #ddd solid;
-				background: #fff;
-			}
 			
-			.text-bar {
-				background: #f1f1f1;
-				padding: 5px 10px;
-			}
-			
-			.text-bar .text {
-				text-align: left;
-			}
-			
-			.text-bar .icon {
-				text-align: right;
-				float: right;
-				cursor: pointer;
-			}
-			
-			.text-bar .icon:hover {
-				color: #1AA094;
-			}
-			
-			.search-div .filter {
-				margin: 10px auto;
-				text-align: center;
-			}
-			
-			.tool-bar {
-				width: 99%;
-				border: 1px #ddd solid;
-				padding: 10px 10px;
-				margin: 10px 0;
-			}
-			
-			.result-div {
-				width: 99%;
-				border: 1px #ddd solid;
-				background: #fff;
-				margin: 10px 0;
-			}
-			
-			.table {
-				font-size:14px;
-				width: 100%;
-				border: 1px #f1f1f1 solid;
-				text-align: center;
-				border-width: 1px 0px 0px 1px;
-			}
-			
-			.table > thead > tr > th {
-				background: #f1f1f1;
-				text-align: center;
-				padding: 5px 0;
-			}
-			
-			.table > tbody > tr > td {
-				border: solid #ddd;
-				border-width: 0px 1px 1px 0px;
-				padding: 10px 0px;
-			}
-			
-			.table > tbody > tr:nth-child(odd):hover {
-				background: #E3D070;
-			}
-			
-			.inner-table {
-				width: 100%;
-				border: 1px #f1f1f1 dashed;
-				border-width: 1px 0px 0px 1px;
-				text-align:center;
-			}
-			
-			.inner-table tbody tr td {
-				border: 1px dashed #ddd;
-				padding: 10px 0px;
-				border-width: 0px 1px 1px 0px;
-			}
 		</style>
 	</head>
 
@@ -111,13 +32,18 @@
 						<div class="layui-inline">
 							<div class="layui-form-label width100">编号</div>
 							<div class="layui-input-block">
-								<input type="text" name="name" class="layui-input" />
+								<input type="text" name="no" class="layui-input" />
 							</div>
 						</div>
 						<div class="layui-inline">
-							<div class="layui-form-label width100">价格</div>
-							<div class="layui-input-block">
-								<input type="text" name="name" class="layui-input" />
+							<div class="layui-form-label">状态</div>
+							<div class="layui-input-block" style="width:180px;">
+								<select name="status">
+									<option value="0">全部</option>
+									<option value="1">上架中</option>
+									<option value="2">已上架</option>
+									<option value="3">已下架</option>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -136,7 +62,7 @@
 									上架时间
 								</div>
 								<div class="layui-input-block">
-									<input class="layui-input" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+									<input class="layui-input" name="startCreateTime" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 								</div>
 							</div>
 							<div class="layui-inline">
@@ -144,7 +70,7 @@
 									-
 								</div>
 								<div class="layui-input-block">
-									<input class="layui-input" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+									<input class="layui-input" name="endCreateTime" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 								</div>
 							</div>
 						</div>
@@ -153,7 +79,7 @@
 						<div class="layui-input-block">
 							<input type="hidden" name="pageSize" value="10">
 							<input type="hidden" name="page" value="1">
-							<button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
+							<button class="layui-btn" type="button" onclick="loadGoodDataWithPageInfo()">查询</button>
 							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 							<button type="reset" class="layui-btn layui-btn-primary" onclick="showMoreFilter(this);">更多条件</button>
 						</div>
@@ -164,8 +90,8 @@
 		<div class="tool-bar">
 			<button class="layui-btn" id="addGoodBtn">上架新商品</button>
 			<button class="layui-btn" id="uploadImageBtn">上传图片</button>
-			<button class="layui-btn" onclick="launchGoods();">上架商品</button>
-			<button class="layui-btn" onclick="removeGoods();">下架商品</button>
+			<button class="layui-btn" id="pushGoodBtn">上架商品</button>
+			<button class="layui-btn" id="removeGoodBtn">下架商品</button>
 		</div>
 		<div class="result-div">
 			<table class="table">
@@ -242,6 +168,14 @@
 								</div>
 							</div>
 							<div class="layui-form-item">
+								<div class="layui-inline">
+									<div class="layui-form-label">价格</div>
+									<div class="layui-input-block">
+										<input type="text" name="price" id="gPrice" class="layui-input"  lay-verify="required"/>
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
 								<div class="layui-input-block">
 									<button type="button" class="layui-btn" id="addPropertiesBtn">添加属性</button>
 								</div>
@@ -267,17 +201,68 @@
 						<h4 class="modal-title" id="myModalLabel">上传图片</h4>
 					</div>
 					<div class="modal-body" style="text-align: left;">
-						<input type="hidden" name="no" id="gNo"> 
-						<input type="file" name="file_upload" id="file_upload" />
-						<button type="button" class="btn btn-primary start" onclick="javascript:$('#file_upload').uploadify('upload', '*');">
+						<input type="hidden" name="gid" id="imageGid"> 
+						<input type="file" name="image_upload_sm" id="image_upload_sm" />
+						<button type="button" class="btn btn-primary start" onclick="javascript:$('#image_upload_sm').uploadify('upload', '*');">
 							<i class="glyphicon glyphicon-upload"></i>
 							<span>开始上传</span>
 						</button>
-						<button type="button" class="btn btn-warning cancel" onclick="javascript:$('#file_upload').uploadify('cancel', '*');">
+						<button type="button" class="btn btn-warning cancel" onclick="javascript:$('#image_upload_sm').uploadify('cancel', '*');">
 							<i class="glyphicon glyphicon-ban-circle"></i>
 							<span>取消上传</span>
 						</button>
-						<button type="button" class="btn btn-danger delete" onclick="javascript:$('#file_upload').uploadify('stop');">
+						<button type="button" class="btn btn-danger delete" onclick="javascript:$('#image_upload_sm').uploadify('stop');">
+							<i class="glyphicon glyphicon-stop"></i>
+							<span>停止</span>
+						</button>
+						<br/>
+						<br/>
+						<br/>
+						<input type="hidden" name="gid" id="imageGid"> 
+						<input type="file" name="image_upload_mid" id="image_upload_mid" />
+						<button type="button" class="btn btn-primary start" onclick="javascript:$('#image_upload_mid').uploadify('upload', '*');">
+							<i class="glyphicon glyphicon-upload"></i>
+							<span>开始上传</span>
+						</button>
+						<button type="button" class="btn btn-warning cancel" onclick="javascript:$('#image_upload_mid').uploadify('cancel', '*');">
+							<i class="glyphicon glyphicon-ban-circle"></i>
+							<span>取消上传</span>
+						</button>
+						<button type="button" class="btn btn-danger delete" onclick="javascript:$('#image_upload_mid').uploadify('stop');">
+							<i class="glyphicon glyphicon-stop"></i>
+							<span>停止</span>
+						</button>
+						<br/>
+						<br/>
+						<br/>
+						<input type="hidden" name="gid" id="imageGid"> 
+						<input type="file" name="image_upload_sm_series" id="image_upload_sm_series" />
+						<button type="button" class="btn btn-primary start" onclick="javascript:$('#image_upload_sm_series').uploadify('upload', '*');">
+							<i class="glyphicon glyphicon-upload"></i>
+							<span>开始上传</span>
+						</button>
+						<button type="button" class="btn btn-warning cancel" onclick="javascript:$('#image_upload_sm_series').uploadify('cancel', '*');">
+							<i class="glyphicon glyphicon-ban-circle"></i>
+							<span>取消上传</span>
+						</button>
+						<button type="button" class="btn btn-danger delete" onclick="javascript:$('#image_upload_sm_series').uploadify('stop');">
+							<i class="glyphicon glyphicon-stop"></i>
+							<span>停止</span>
+						</button>
+						<br/>
+						<br/>
+						<br/>
+						<input type="hidden" name="gid" id="imageGid"> 
+						<input type="file" name="image_upload_lg_series" id="image_upload_lg_series" />
+						<button type="button" class="btn btn-primary start" onclick="javascript:$('#image_upload_lg_series').uploadify('upload', '*');">
+							<i class="glyphicon glyphicon-upload"></i>
+							<span>开始上传</span>
+						</button>
+						<button type="button" class="btn btn-warning cancel" onclick="javascript:$('#image_upload_lg_series').uploadify('cancel', '*');">
+							<i class="glyphicon glyphicon-ban-circle"></i>
+							<span>取消上传</span>
+						</button>
+						<button type="button" class="btn btn-danger delete" onclick="javascript:$('#image_upload_lg_series').uploadify('stop');">
 							<i class="glyphicon glyphicon-stop"></i>
 							<span>停止</span>
 						</button>
@@ -390,6 +375,14 @@
 								</div>
 							</div>
 							<div class="layui-form-item">
+								<div class="layui-inline">
+									<div class="layui-form-label">价格</div>
+									<div class="layui-input-block">
+										<input type="text" name="price" class="layui-input"  lay-verify="required"/>
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
 								<div class="layui-input-block">
 									<button type="button" class="layui-btn" id="addUpdatePropertiesBtn">添加属性</button>
 								</div>
@@ -427,41 +420,27 @@
 		<!-- 图片上传js start -->
 		<script type="text/javascript" src="${basePath }/asserts/uploadify/jquery.uploadify.min.js"></script>
 		<script type="text/javascript">
+			var gid = 0;
 		    $(function() {
-		        $('#file_upload').uploadify({
-		        	'auto'     : false,
-		        	'removeCompleted' : false,
-		        	'buttonText' : '选择文件',
-		            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
-		            'uploader' : '${basePath }/image/upload'
-		        });
+		        
 		    });
 		    
 		</script>
 		<!-- 图片上传js end -->
 		<script type="text/javascript">
 		$(function() {
-			layui.use(['laypage', 'jquery','form'], function() {
-				var laypage = layui.laypage;
-				laypage({
-					cont: 'page', //id
-					pages: 100, //总页数
-					curr: 1, //当前页
-					groups: 5, //连续显示分页数
-					jump: function(obj, first) {}
-				});
+			layui.use(['jquery','form'], function() {
 				var $ = layui.jquery;
 				var form = layui.form();
 				
 				//加载初始数据
-				loadGoodData();
+				loadGoodDataWithPageInfo();
 				
 				//初始化大类别数据源
 				$.post("${basePath}/goodScope/getAll",null,function(result){
 					result = $.parseJSON(result);
 					var selectors = $("select[name='scope']");
 					$("select[name='scope']").each(function(){
-						console.log(1);
 						var html = "";
 						for(var i = 0 ;i < result.length;i++){
 							html += "<option value='" + result[i].value + "'>" + result[i].name + "</option>";
@@ -480,6 +459,73 @@
 				});
 				
 				$("#uploadImageBtn").on("click",function(){
+					var id;
+					var hasChoose = false;
+					var num = 0;
+					$("input[name='selectItem']").each(function() {
+						if($(this).is(":checked")) {
+							id = $(this).parent().next().text();
+							hasChoose = true;
+							num++;
+						}
+					});
+					if(!hasChoose){
+						layer.msg("请至少选择一条数据");
+						return;
+					}
+					if(num > 1){
+						layer.msg("请只选择一条数据");
+					}
+					$('#image_upload_sm').uploadify({
+			        	'formData' : {'gid':id},
+			        	'multi' : false,
+			        	'auto'     : false,
+			        	'removeCompleted' : false,
+			        	'buttonText' : '选择小图',
+			            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
+			            'uploader' : '${basePath }/good/uploadPicSm',
+			            'onUploadStart' : function(file) {
+			                $("#file_upload").uploadify("settings", "gid", id);
+			            }
+			            
+			        });
+					$('#image_upload_mid').uploadify({
+			        	'formData' : {'gid':id},
+			        	'multi' : false,
+			        	'auto'     : false,
+			        	'removeCompleted' : false,
+			        	'buttonText' : '选择中图',
+			            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
+			            'uploader' : '${basePath }/good/uploadPicMid',
+			            'onUploadStart' : function(file) {
+			                $("#file_upload").uploadify("settings", "gid", id);
+			            }
+			            
+			        });
+					$('#image_upload_sm_series').uploadify({
+			        	'formData' : {'gid':id},
+			        	'auto'     : false,
+			        	'removeCompleted' : false,
+			        	'buttonText' : '选择系列小图',
+			            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
+			            'uploader' : '${basePath }/good/uploadPicSeriesSm',
+			            'onUploadStart' : function(file) {
+			                $("#file_upload").uploadify("settings", "gid", id);
+			            }
+			            
+			        });
+					$('#image_upload_lg_series').uploadify({
+			        	'formData' : {'gid':id},
+			        	'auto'     : false,
+			        	'removeCompleted' : false,
+			        	'buttonText' : '选择系列中图',
+			            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
+			            'uploader' : '${basePath }/good/uploadPicSeriesLg',
+			            'onUploadStart' : function(file) {
+			                $("#file_upload").uploadify("settings", "gid", id);
+			            }
+			            
+			        });
 					$("#uploadImageModal").modal("show");
 				});
 				
@@ -552,14 +598,64 @@
 					form.render();
 				});
 				
+				$("#pushGoodBtn").on("click",function(){
+					var ids = "";
+					var hasChoose = false;
+					$("input[name='selectItem']").each(function() {
+						if($(this).is(":checked")) {
+							ids += $(this).parent().next().text() + ",";
+							hasChoose = true;
+						}
+					});
+					if(!hasChoose){
+						layer.msg("请至少选择一条数据");
+						return;
+					}
+					ids = ids.substr(0, ids.length - 1);
+					layer.confirm("确定上架？",{icon: 3, title:'提示'},function(index){
+						$.post("${basePath}/admin/good/push",{ids:ids},function(result){
+							result = $.parseJSON(result);
+							layer.msg(result.msg);
+							if(result.success){
+								loadGoodData();
+							}
+						});
+					});
+				});
+				
+				$("#removeGoodBtn").on("click",function(){
+					var ids = "";
+					var hasChoose = false;
+					$("input[name='selectItem']").each(function() {
+						if($(this).is(":checked")) {
+							ids += $(this).parent().next().text() + ",";
+							hasChoose = true;
+						}
+					});
+					if(!hasChoose){
+						layer.msg("请至少选择一条数据");
+						return;
+					}
+					ids = ids.substr(0, ids.length - 1);
+					layer.confirm("确定下架？",{icon: 3, title:'提示'},function(index){
+						$.post("${basePath}/admin/good/remove",{ids:ids},function(result){
+							result = $.parseJSON(result);
+							layer.msg(result.msg);
+							if(result.success){
+								loadGoodData();
+							}
+						});
+					});
+				});
+				
 				//提交商品信息
 				form.on("submit(saveGood)",function(data){
-					$.post("${basePath}/good/save",data.field,function(result){
+					$.post("${basePath}/admin/good/save",data.field,function(result){
 						result = $.parseJSON(result);
 						layer.msg(result.msg);
 						if(result.success){
 							$("#addGoodModal").modal("hide");
-							loadGoodData();
+							loadGoodDataWithPageInfo();
 						}
 					});
 					return false;
@@ -567,7 +663,7 @@
 				
 				//更新商品信息
 				form.on("submit(updateGood)",function(data){
-					$.post("${basePath}/good/update",data.field,function(result){
+					$.post("${basePath}/admin/good/update",data.field,function(result){
 						result = $.parseJSON(result);
 						layer.msg(result.msg);
 						if(result.success){
@@ -582,7 +678,7 @@
 			layui.use('laydate', function() {
 				var laydate = layui.laydate;
 			});
-		})
+		});
 			var flag = true;
 			$(".icon").on("click", function() {
 				if(flag) {
@@ -622,33 +718,6 @@
 				}
 			}
 
-			function removeGood() {
-				$("#removeGoodModal").modal("show");
-			}
-
-
-			//上架商品
-			function launchGoods() {
-				var ids = "";
-				$("input[name='selectItem']").each(function() {
-					if($(this).is(":checked")) {
-						ids += $(this).next().text() + ",";
-					}
-				});
-				ids = ids.substr(AnimationEvent, ids.length - 1);
-			}
-
-			//下架商品
-			function removeGoods() {
-				var ids = "";
-				$("input[name='selectItem']").each(function() {
-					if($(this).is(":checked")) {
-						ids += $(this).next().text() + ",";
-					}
-				});
-				ids = ids.substr(AnimationEvent, ids.length - 1);
-			}
-			
 			//显示更多筛选条件
 			function showMoreFilter(obj){
 				$(obj).text($(obj).text() == "更多条件"?"收起":"更多条件");
@@ -660,9 +729,56 @@
 				$(obj).parent().parent().remove();
 			}
 			
+			
+			function loadGoodDataWithPageInfo(){
+				$.post("${basePath}/admin/good/searchgrid",$("#searchForm").serializeObject(),function(result){
+					result = $.parseJSON(result);
+					var rows = result.rows;
+					var data = "";
+					if(rows && rows.length > 0){
+						for(var i = 0 ;i < rows.length ; i++){
+							var row = rows[i];
+							data += 
+								'<tr>'+
+									'<td>'+
+										'<input type="checkbox" name="selectItem" onchange="hasSelectAll()" />'+
+									'</td>'+
+									'<td>' + row.id + '</td>'+
+									'<td>' + row.name + '</td>'+
+									'<td>' + row.no + '</td>'+
+									'<td>' + row.soldNum + '</td>'+
+									'<td>' + bin.getGoodStatus(row.status) + '</td>'+
+									'<td>' + new Date(row.createTime).format("yyyy-MM-dd hh:mm:ss") + '</td>'+
+									'<td>'+
+										'<span>'+
+											'<a class="extra" onclick="showGoodDetail(' + row.id +')">详情</a>'+
+										'</span>'+
+									'</td>'+
+								'</tr>';
+						}
+					}
+					$("#dg").html(data);
+					var pageSize = Number($("input[name='pageSize']").val());
+					var pageCount = result.total % pageSize == 0 ? result.total/pageSize : Math.floor(result.total/pageSize) + 1;
+					layui.use(['laypage'], function() {
+						var laypage = layui.laypage;
+						laypage({
+							cont: 'page', //id
+							pages: pageCount, //总页数
+							curr: 1, //当前页
+							groups: 5, //连续显示分页数
+							jump: function(obj, first) {
+								$("input[name='page']").val(obj.curr);
+								loadGoodData();
+							}
+						});
+					});
+				});
+			}
+			
 			//加载商品数据
 			function loadGoodData(){
-				$.post("${basePath}/good/searchgrid",$("#searchForm").serializeObject(),function(result){
+				$.post("${basePath}/admin/good/searchgrid",$("#searchForm").serializeObject(),function(result){
 					result = $.parseJSON(result);
 					var rows = result.rows;
 					if(rows && rows.length > 0){
@@ -688,6 +804,7 @@
 								'</tr>';
 						}
 						$("#dg").html(data);
+						$("#selectAll").prop("checked",false);
 					}
 				});
 			}
@@ -696,7 +813,7 @@
 			function showGoodDetail(id){
 				$("#goodDetailModal").modal("show");
 				var index = layer.load();
-				$.post("${basePath}/good/searchgrid",{
+				$.post("${basePath}/admin/good/searchgrid",{
 					id:id
 				},function(result){
 					result = $.parseJSON(result);

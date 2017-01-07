@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ include file = "/common/tagslib.jsp" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,12 +12,14 @@
 				<img src="${basePath}/img/logo.png"/>
 			</div>
 			<div class="line">
-				<div class="input-group" style="width:500px;">
-					<input type="text" class="form-control">
-					<span class="input-group-btn">
-						<button class="btn btn-danger" type="button">搜索</button>
-			     </span>
-				</div>
+				<form method="post" action="${basePath }/home/good/search">
+					<div class="input-group" style="width:500px;">
+						<input type="text" name="keyword" class="form-control">
+						<span class="input-group-btn">
+							<button class="btn btn-danger" type="submit">搜索</button>
+				     	</span>
+					</div>
+				</form>
 			</div>
 			<div class="line" style="padding-left: 150px;">
 				<button class="btn btn-danger">我的购物车</button>

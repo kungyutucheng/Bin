@@ -33,6 +33,7 @@ public class GoodPropertiesService extends BaseService<GoodProperties, Integer>{
 		}else{
 			page2.setRows(goodPropertiesDao.getPageResult(hql, page.getPage(), page.getPageSize(), params.toArray()));
 		}
+		page2.setTotal(goodPropertiesDao.getCount(hql, params.toArray()));
 		page2.setPageSize(page.getPageSize());
 		page2.setPage(page.getPage());
 		return page2;

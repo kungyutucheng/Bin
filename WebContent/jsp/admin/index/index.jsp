@@ -31,7 +31,7 @@
 				</li>
 			</ul>
 		</div>
-		<div style="top:60px;position: fixed;overflow-x: hidden;">
+		<div style="top:60px;position: absolute;overflow-x: hidden;">
 			<ul class="layui-nav layui-nav-tree layui-nav-side" style="margin-top: 60px;border-radius: 0;">
 				<li class="layui-nav-item layui-nav-itemed">
 					<a>日常</a>
@@ -56,6 +56,9 @@
 				<li class="layui-nav-item layui-nav-itemed">
 					<a>基础</a>
 					<dl class="layui-nav-child">
+						<dd>
+							<a name='a' title="good/brand.jsp">基础信息管理</a>
+						</dd>
 						<dd>
 							<a name='a' title="../../address.html">仓库管理</a>
 						</dd>

@@ -1,6 +1,7 @@
 package com.bin.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class GoodService extends BaseService<Good, Integer>{
 			hql += " and oid = ?";
 			params.add(Integer.valueOf(page.getParams().get("oid").toString()));
 		}
-		if(page.getParams().get("status") != null){
+		if(page.getParams().get("status") != null && (Integer.valueOf(page.getParams().get("status").toString()) != 0)){
 			hql += " and status = ?";
 			params.add(Integer.valueOf(page.getParams().get("status").toString()));
 		}
@@ -95,8 +96,85 @@ public class GoodService extends BaseService<Good, Integer>{
 		}
 		hql += " order by createTime desc";
 		page2.setRows(goodDao.getPageResult(hql, page.getPage(), page.getPageSize(), params.toArray()));
+		page2.setTotal(goodDao.getCount(hql, params.toArray()));
 		page2.setPage(page.getPage());
 		page2.setPageSize(page.getPageSize());
+		return page2;
+	}
+	
+	
+	public void pushGoods(String ids){
+		String [] idStrings = ids.split(",");
+		for(int i = 0 ;i < idStrings.length ; i++){
+			Integer id = Integer.valueOf(idStrings[i]);
+			Good good = goodDao.get(Good.class, id);
+			good.setStatus(2);
+			goodDao.update(good);
+		}
+	}
+	
+	
+	public void removeGoods(String ids){
+		String [] idStrings = ids.split(",");
+		for(int i = 0 ;i < idStrings.length ; i++){
+			Integer id = Integer.valueOf(idStrings[i]);
+			Good good = goodDao.get(Good.class, id);
+			if(good.getStatus() == 2){
+				good.setStatus(3);
+				good.setRemoveTime(new Date());
+				goodDao.update(good);
+			}
+		}
+	}
+	
+	public Page search(Page page){
+		StringBuilder hql = new StringBuilder("from Good where 1=1");
+		Page page2 = new Page();
+		List<Object> params = new ArrayList<Object>();
+		if(page.getParams().get("keyword") != null){
+			hql.append(" and name like ?");
+			params.add("%" + page.getParams().get("keyword") + "%");
+		}
+		if(page.getParams().get("startPrice") != null 
+				&& Integer.valueOf(page.getParams().get("startPrice").toString()) != 0){
+			hql.append(" and price >= ?");
+			params.add(Double.valueOf(page.getParams().get("startPrice").toString()));
+		}
+		if(page.getParams().get("endPrice") != null
+				&& Integer.valueOf(page.getParams().get("endPrice").toString()) != 0){
+			hql.append(" and price <= ?");
+			params.add(Double.valueOf(page.getParams().get("endPrice").toString()));
+		}
+		if(page.getParams().get("brands") != null
+				&& !page.getParams().get("brands").toString().trim().equals("")){
+			String brands[] = page.getParams().get("brands").toString().split(",");
+			if(brands.length > 0){
+				hql.append(" and brand in (");
+				for(int i = 0 ;i < brands.length ; i++){
+					hql.append("?,");
+					params.add(brands[i]);
+				}
+				hql.deleteCharAt(hql.length() - 1);
+				hql.append(")");
+			}
+		}
+		if(page.getParams().get("orderby") != null){
+			Integer orderby = Integer.valueOf(page.getParams().get("orderby").toString());
+			hql.append(" order by");
+			if(orderby == 1){
+				hql.append(" soldNum desc");
+			}else if(orderby == 2){
+				hql.append(" price desc");
+			}else if(orderby == 3){
+				hql.append(" commentNum desc");
+			}else if(orderby == 4){
+				hql.append(" createTime desc");
+			}
+		}
+		page2.setRows(goodDao.getPageResult(hql.toString(), page.getPage(), 30, params.toArray()));
+		page2.setTotal(goodDao.getCount(hql.toString(), params.toArray()));
+		page2.setPage(page.getPage());
+		page2.setPageSize(30);
 		return page2;
 	}
 

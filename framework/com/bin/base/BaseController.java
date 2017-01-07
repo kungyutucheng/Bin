@@ -19,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.bin.model.User;
 import com.bin.util.Page;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class BaseController {
 
@@ -28,6 +29,11 @@ public class BaseController {
 	protected HttpSession session;
 	protected ApplicationContext applicationContext;
 	
+	/**
+	 * ModelAttribute属性会在此controller的每个方法执行前被执行
+	 * @param request
+	 * @param response
+	 */
 	@ModelAttribute
 	public void setRequestAndResponse(HttpServletRequest request,HttpServletResponse response){
 		try{
@@ -158,7 +164,10 @@ public class BaseController {
 	}
 	
 	public String toJson(Object value){
-		return new Gson().toJson(value);
+		GsonBuilder builder = new GsonBuilder();
+		builder.serializeNulls();
+		Gson gson = builder.create();
+		return gson.toJson(value);
 	}
 	
 }

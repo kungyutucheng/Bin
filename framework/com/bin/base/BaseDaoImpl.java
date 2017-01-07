@@ -221,14 +221,14 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 	 */
 	@Override
 	public Long getCount(String hql, Object... params) {
+		hql = "select count(*) " + hql.substring(hql.indexOf("from"));
 		Query query = getSession().createQuery(hql);
 		if(params != null && params.length > 0){
 			for(int i = 0 ;i < params.length ;i++){
 				query.setParameter(i, params[i]);
 			}
-			return (Long) query.uniqueResult();
 		}
-		return null;
+		return (Long) query.uniqueResult();
 	}
 
 	/**
