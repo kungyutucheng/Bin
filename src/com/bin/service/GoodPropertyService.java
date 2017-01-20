@@ -8,20 +8,20 @@ import org.springframework.stereotype.Repository;
 
 import com.bin.base.BaseService;
 import com.bin.dao.GoodDao;
-import com.bin.dao.GoodPropertiesDao;
+import com.bin.dao.GoodPropertyDao;
 import com.bin.model.Good;
-import com.bin.model.GoodProperties;
+import com.bin.model.GoodProperty;
 import com.bin.util.Page;
 
 @Repository
-public class GoodPropertiesService extends BaseService<GoodProperties, Integer>{
+public class GoodPropertyService extends BaseService<GoodProperty, Integer>{
 
 	@Autowired
-	private GoodPropertiesDao goodPropertiesDao;
+	private GoodPropertyDao goodPropertyDao;
 	
 	public Page queryPage(Page page){
 		Page page2 = new Page();
-		String hql = "from GoodProperties where 1=1";
+		String hql = "from GoodProperty where 1=1";
 		List<Object> params = new ArrayList<Object>();
 		if(page.getParams().get("gid") != null){
 			hql += " and gid = ?";
@@ -29,11 +29,11 @@ public class GoodPropertiesService extends BaseService<GoodProperties, Integer>{
 		}
 		hql += " order by createTime desc";
 		if(page.getParams().get("isShowAll") != null){
-			page2.setRows(goodPropertiesDao.queryList(hql, params.toArray()));
+			page2.setRows(goodPropertyDao.queryList(hql, params.toArray()));
 		}else{
-			page2.setRows(goodPropertiesDao.getPageResult(hql, page.getPage(), page.getPageSize(), params.toArray()));
+			page2.setRows(goodPropertyDao.getPageResult(hql, page.getPage(), page.getPageSize(), params.toArray()));
 		}
-		page2.setTotal(goodPropertiesDao.getCount(hql, params.toArray()));
+		page2.setTotal(goodPropertyDao.getCount(hql, params.toArray()));
 		page2.setPageSize(page.getPageSize());
 		page2.setPage(page.getPage());
 		return page2;

@@ -297,9 +297,8 @@
 						if(row.picMid == null){
 							imageUrl = "${basePath}/img/logo.png";
 						}
-						var detailUrl = "${basePath}/jsp/home/good/detail.jsp?id=" + row.id;
 						html += '<li class="item">'+
-							'<a target="_blank" href="${basePath}/jsp/home/good/detail.jsp?id="' + row.id + '><img src="' + imageUrl + '" /></a>' +
+							'<a target="_blank" href="${basePath}/home/good/detail/' + row.id + '"><img src="' + imageUrl + '" /></a>' +
 							'<div class="price">' + row.price + '</div>' +
 							'<div class="title">'+
 								'<a>' + row.name +　'</a>'+
@@ -307,7 +306,7 @@
 							'<div class="commnetNum">'+
 								'已有<font class="num">' + row.commentNum + '</font>评价'+
 							'</div>'+
-							'<div class="owner">' + row.oid + '</div>'+
+							'<div class="owner">' + row.owner + '</div>'+
 							'<div class="addIntoCartBtn ">'+
 								'<a>加入购物车</a>'+
 							'</div>'+

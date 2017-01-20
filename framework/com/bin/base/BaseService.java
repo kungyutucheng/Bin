@@ -82,4 +82,8 @@ public abstract class BaseService<T , PK extends Serializable> {
 	public T fingUniqueByExample(Class<T> clazz , T entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		return baseDao.fingUniqueByExample(clazz, entity);
 	}
+	
+	public void rollback(){
+		baseDao.getSession().getTransaction().rollback();
+	}
 }

@@ -4,7 +4,6 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
 	</head>
 	<body>
 		<div class="container" style="height: 100px;text-align: center;padding: 10px;margin-top:50px;">

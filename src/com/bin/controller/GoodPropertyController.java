@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.TipMsg;
-import com.bin.model.GoodProperties;
-import com.bin.service.GoodPropertiesService;
+import com.bin.model.GoodProperty;
+import com.bin.service.GoodPropertyService;
 import com.bin.util.AjaxModel;
 import com.bin.util.Page;
 
 @Controller
-@RequestMapping(value = "/goodProperties")
-public class GoodPropertiesController extends BaseController{
+@RequestMapping(value = "/goodProperty")
+public class GoodPropertyController extends BaseController{
 
 	@Autowired
-	private GoodPropertiesService goodPropertiesService;
+	private GoodPropertyService goodPropertyService;
 	
 	/**
 	 * 分页查询
@@ -31,7 +31,7 @@ public class GoodPropertiesController extends BaseController{
 	@MyException
 	public String searchgrid(){
 		Page page = getPage();
-		return toJson(goodPropertiesService.queryPage(page));
+		return toJson(goodPropertyService.queryPage(page));
 	}
 	
 	@RequestMapping(value = "/delete/{id}", method=RequestMethod.POST,produces = "text/html;charset=utf-8")
@@ -40,7 +40,7 @@ public class GoodPropertiesController extends BaseController{
 	public String delete(@PathVariable("id") Integer id){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.DELETE_SUCCESS);
-		goodPropertiesService.delete(GoodProperties.class, id);
+		goodPropertyService.delete(GoodProperty.class, id);
 		return toJson(model);
 	}
 }

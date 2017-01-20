@@ -11,7 +11,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bin.context.BackupUserContext;
+import com.bin.context.UserContext;
 import com.bin.model.BackupUser;
+import com.bin.model.User;
 
 public class LoginFilter implements Filter{
 
@@ -25,7 +27,12 @@ public class LoginFilter implements Filter{
 	public void doFilter(ServletRequest req, ServletResponse rep, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
-		BackupUserContext.setContext((BackupUser) request.getSession().getAttribute("backup_user"));
+		if(request.getSession().getAttribute("user") != null){
+			UserContext.setContext((User)request.getSession().getAttribute("user"));
+		}
+		if(request.getSession().getAttribute("backup_user") != null){
+			BackupUserContext.setContext((BackupUser) request.getSession().getAttribute("backup_user"));
+		}
 		chain.doFilter(req, rep);
 	}
 

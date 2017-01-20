@@ -1,27 +1,19 @@
 package com.bin.admin.controller;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
-import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,17 +22,14 @@ import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.TipMsg;
 import com.bin.context.BackupUserContext;
-import com.bin.context.UserContext;
 import com.bin.databinder.helper.GoodPropertiesListForm;
 import com.bin.model.Good;
-import com.bin.model.GoodProperties;
-import com.bin.model.Image;
-import com.bin.service.GoodPropertiesService;
+import com.bin.model.GoodProperty;
+import com.bin.service.GoodPropertyService;
 import com.bin.service.GoodService;
 import com.bin.util.AjaxModel;
 import com.bin.util.Creator;
 import com.bin.util.Page;
-import com.mysql.fabric.xmlrpc.base.Data;
 
 @Controller
 @RequestMapping(value = "/admin/good")
@@ -50,7 +39,7 @@ public class AdminGoodController extends BaseController{
 	private GoodService goodService;
 	
 	@Autowired
-	private GoodPropertiesService goodPropertiesService;
+	private GoodPropertyService goodPropertyService;
 
 	@Value("${file.upload.directory}")
 	private String fileUploadDirectory;
@@ -87,12 +76,12 @@ public class AdminGoodController extends BaseController{
 		good.setSoldNum(0);
 		Integer gid = goodService.save(good);
 		model.setData(gid);
-		for(GoodProperties goodProperties : properties.getGoodProperties()){
+		for(GoodProperty goodProperties : properties.getGoodProperties()){
 			goodProperties.setCreateTime(date);
 			goodProperties.setGid(gid);
 			goodProperties.setIsDefault(1);
 		}
-		goodPropertiesService.saveAll(properties.getGoodProperties(), GoodProperties.class);
+		goodPropertyService.saveAll(properties.getGoodProperties(), GoodProperty.class);
 		return toJson(model);
 	}
 	
@@ -111,8 +100,8 @@ public class AdminGoodController extends BaseController{
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.UPDATE_SUCCESS);
 		goodService.update(good);
-		List<GoodProperties> updateProperties = new ArrayList<GoodProperties>();
-		List<GoodProperties> newProperties = new ArrayList<GoodProperties>();
+		List<GoodProperty> updateProperties = new ArrayList<GoodProperty>();
+		List<GoodProperty> newProperties = new ArrayList<GoodProperty>();
 		
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("name");
@@ -120,7 +109,7 @@ public class AdminGoodController extends BaseController{
 		columnNames.add("num");
 		
 		Date date = new Date();
-		for(GoodProperties goodProperties : goodPropertiesListForm.getGoodProperties()){
+		for(GoodProperty goodProperties : goodPropertiesListForm.getGoodProperties()){
 			if(goodProperties.getId() != null){
 				updateProperties.add(goodProperties);
 			}else{
@@ -131,10 +120,10 @@ public class AdminGoodController extends BaseController{
 			}
 		}
 		if(newProperties.size() > 0){
-			goodPropertiesService.saveAll(newProperties, GoodProperties.class);
+			goodPropertyService.saveAll(newProperties, GoodProperty.class);
 		}
 		if(updateProperties.size() > 0){
-			goodPropertiesService.updateAll(updateProperties, GoodProperties.class,columnNames);
+			goodPropertyService.updateAll(updateProperties, GoodProperty.class,columnNames);
 		}
 		return toJson(model);
 	}

@@ -43,6 +43,8 @@ public class LoginController extends BaseController{
 			model.setMsg(TipMsg.LOGIN_FAILURE);
 		}else{
 			model.setData("/index/index");
+			user = userService.queryUnique("from User where account=? and pwd = ?", account,pwd);
+			session.setAttribute("user", user);
 		}
 		return toJson(model);
 	}

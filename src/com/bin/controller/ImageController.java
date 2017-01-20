@@ -24,9 +24,48 @@ public class ImageController extends BaseController{
 	@Value("${file.upload.directory}")
 	private String fileUploadDirectory;
 	
+	@Value("${owner.logo.directory}")
+	private String ownerLogoDirectory;
+	
 	@RequestMapping(value = "/getImage/{name:.+}",method = RequestMethod.GET)
 	public void getImage(@PathVariable("name") String name){
 		File image = new File(fileUploadDirectory + File.separator + name);
+		
+		if(!image.exists()){
+			image = new File(request.getSession().getServletContext().getRealPath("/")
+					+ "img" + File.separator + "logo.png");
+		}
+		
+		FileInputStream fileInputStream = null;
+		OutputStream outputStream = null;
+		try{
+			fileInputStream = new FileInputStream(image);
+			response.setContentType("image/jpeg");
+			outputStream = response.getOutputStream();
+			
+			int count = 0;
+			byte[] buffer = new byte[1024 * 8];
+			while((count = fileInputStream.read(buffer)) != -1){
+				outputStream.write(buffer, 0, count);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(fileInputStream != null)
+					fileInputStream.close();
+				if(outputStream != null)
+					outputStream.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	@RequestMapping(value = "/getOwnerLogo/{name:.+}",method = RequestMethod.GET)
+	public void getOwnerLogo(@PathVariable("name") String name){
+		File image = new File(ownerLogoDirectory + File.separator + name);
 		
 		if(!image.exists()){
 			image = new File(request.getSession().getServletContext().getRealPath("/")

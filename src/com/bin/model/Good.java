@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -39,6 +40,9 @@ public class Good {
 	 */
 	@Column(name = "oid")
 	private Integer oid;
+	
+	@Transient
+	private String owner;
 	
 	/**
 	 * 状态
@@ -151,6 +155,38 @@ public class Good {
 	
 	public Good() {
 	}
+	
+	public Good(Integer id, String name, String no, Integer oid, String owner, Integer status, String msg,
+			Integer soldNum, String brand, String attr, Integer scope, String type, String picMid, String seriesSm,
+			String seriesLg, String picSm, Date createTime, Date removeTime, Double grossWeight, Double netWeight,
+			Integer commentNum, Double price) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.no = no;
+		this.oid = oid;
+		this.owner = owner;
+		this.status = status;
+		this.msg = msg;
+		this.soldNum = soldNum;
+		this.brand = brand;
+		this.attr = attr;
+		this.scope = scope;
+		this.type = type;
+		this.picMid = picMid;
+		this.seriesSm = seriesSm;
+		this.seriesLg = seriesLg;
+		this.picSm = picSm;
+		this.createTime = createTime;
+		this.removeTime = removeTime;
+		this.grossWeight = grossWeight;
+		this.netWeight = netWeight;
+		this.commentNum = commentNum;
+		this.price = price;
+	}
+
+
+
 
 	public Integer getId() {
 		return id;

@@ -2,17 +2,17 @@ package com.bin.databinder.helper;
 
 import java.util.List;
 
-import com.bin.model.GoodProperties;
+import com.bin.model.GoodProperty;
 
 public class GoodPropertiesListForm {
 
-	private List<GoodProperties> goodProperties;
+	private List<GoodProperty> goodProperties;
 
-	public List<GoodProperties> getGoodProperties() {
+	public List<GoodProperty> getGoodProperties() {
 		return goodProperties;
 	}
 
-	public void setGoodProperties(List<GoodProperties> goodProperties) {
+	public void setGoodProperties(List<GoodProperty> goodProperties) {
 		this.goodProperties = goodProperties;
 	}
 

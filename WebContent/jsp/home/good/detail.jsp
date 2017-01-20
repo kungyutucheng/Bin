@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String gid = request.getParameter("id");
+%>
 <%@ include file="/common/tagslib.jsp" %>
 <%@ include file="/jsp/common/top.jsp" %>
 <%@ include file="/jsp/common/search.jsp" %>
@@ -29,19 +32,10 @@
 				height: 100px;
 			}
 			
-			#detailMsg #msgBlock #price {
+			#detailMsg #msgBlock{
 				color: #D9534F;
 				font-weight: bold;
 				font-size: large;
-			}
-			
-			#price:before {
-				content: "￥";
-			}
-			
-			#commentNum {
-				color: #005EA7;
-				text-align: center;
 			}
 			
 			#detailMsg .block {
@@ -235,6 +229,17 @@
 			.row .brand {
 				color: #005EA7;
 			}
+			.msg-title,.msg-value{
+				padding:10px 0;
+				font-size:14px;
+				width:33%;
+			}
+			.msg-title{
+				color:#999;
+			}
+			.msg-value{
+				color:#005AA0;
+			}
 		</style>
 	</head>
 
@@ -273,91 +278,96 @@
 				</ul>
 			</div>
 			<div id="detailMsg" style="width: 580px;text-align: left;display: inline-block;float: left;">
-				<div id="title">闪迪（SanDisk）至尊高速移动MicroSDXC UHS-I存储卡 TF卡 64GB Class10 读速80MB/s</div><br />
+				<div id="title">${good.name }</div><br />
 				<div id="msgBlock">
-					<div style="display: inline-block;float: left;">
-						价格：<span id="price">100</span><br /> 信息：
-						<span id="msg">fdsaf</span><br /> 已售数量：
-						<span id="msg">3242</span>
-					</div>
-					<div style="display: inline-block;float: right;">
-						<span style="color: #999999;">累计评价</span><br/>
-						<span id="commentNum">47239</span>
+					<div style="display: inline-block;float: left;width:100%;">
+						<table style="text-align:center;width:100%;">
+							<tr>
+								<td class="msg-title">
+								价格
+								</td>
+								<td class="msg-title">
+								已售数量
+								</td>
+								<td class="msg-title">
+								评论数
+								</td>
+							</tr>
+							<tr>
+								<td class="msg-value" id="msg-price">
+								￥${good.price }
+								</td>
+								<td class="msg-value" id="msg-soldNum">
+								${good.soldNum }
+								</td>
+								<td class="msg-value" id="msg-commentNum">
+								${good.commentNum }
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 				<div class="row">
-					选择颜色：
+					请选择：
 					<span>
-						<span class="block active">80MB/s</span>
-					<span class="block">85MB/s</span>
-					<span class="block disable">90MB/s</span>
-					</span>
-				</div>
-				<div class="row">
-					选择版本：
-					<span>
-						<span class="block active">32GB</span>
-					<span class="block">64GB</span>
-					<span class="block disable">128GB</span>
+						<c:forEach items="${goodProperties }" var="goodProperties" varStatus="gp">
+							<c:choose>
+								<c:when test="${goodProperties.num == 0}">
+								<span class="block disable" title="${goodProperties.id }">${goodProperties.name } | ${goodProperties.num }</span>
+								</c:when>
+								<c:otherwise>
+								<span class="block" title="${goodProperties.id }" onclick="chooseGoodProperties(this);">${goodProperties.name } | ${goodProperties.num }</span>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
 					</span>
 				</div>
 				<div class="row" style="position: relative;">
 					<div class="input-group" style="width: 140px;float: left;position: absolute;">
 						<span class="input-group-addon" style="cursor: pointer;" onclick="subNum('num');">-</span>
 						<input id="num" type="text" class="form-control" value="1" style="height: 40px;" onblur="getNumFromInput(this);">
-						<span class="input-group-addon" style="cursor: pointer;" onclick="addNum('num');">+</span>
+						<span class="input-group-addon" style="cursor: pointer;" onclick="addNum();">+</span>
 					</div>
-					<a id="shoppingCartBtn" style="position: absolute;margin-left: 150px;" class="myBtn">加入购物车</a>
+					<input type="hidden" id="goodNum">
+					<input type="hidden" id="gpId">
+					<input type="hidden" id="gid" value="${good.id }">
+					<a id="shoppingCartBtn" style="position: absolute;margin-left: 150px;" class="myBtn" onclick="addIntoCart();">加入购物车</a>
 				</div>
 			</div>
 			<div id="owner" style="display: inline-block;float: right;padding-right: 20px;text-align: center;margin-bottom: 40px;">
 				<div style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
-					<img src="${basePath }/img/sandi.png" />
+					<img src="${basePath }/image/getOwnerLogo/${owner.logo}" style="width:180px;height:60px;"/>
 				</div>
 				<div id="" style="cursor: pointer;text-decoration: none;margin-top: 20px;">
-					<a>闪迪官方旗舰店</a>
+					<a>${owner.name }</a>
 				</div>
 			</div>
 			<div style="clear: both;padding-top: 40px;padding-bottom:40px;width: 100%;">
 				<div class="layui-tab layui-tab-card" lay-filter="demo">
 					<ul class="layui-tab-title">
 						<li class="layui-this">商品详情</li>
-						<li>用户评价<span style="color: #005EA7;">(37w+)</li>
+						<li>用户评价<span style="color: #005EA7;">(${good.commentNum })</li>
 					</ul>
 					<div class="layui-tab-content">
 					    <div class="layui-tab-item layui-show">
 					    	<div style="width: 100%;">
 					    		<div class="row">
 					    			<div class="head">
-					    				品牌：<span class="brand">闪迪</span>
+					    				品牌：<span class="brand">${good.brand }</span>
 				</div>
 			</div>
 			<div class="row">
 				<div class="detail-item">
-					商品名称：闪迪TF卡
+					商品名称：${good.name }
 				</div>
 				<div class="detail-item">
-					商品编号：1887526
+					商品编号：${good.no }
 				</div>
 				<div class="detail-item">
-					商品毛重：10.00g
+					商品毛重：${good.grossWeight }g
 				</div>
 				<div class="detail-item">
-					商品产地：中国大陆
-				</div>
-			</div>
-			<div class="row">
-				<div class="detail-item">
-					商品名称：闪迪TF卡
-				</div>
-				<div class="detail-item">
-					商品编号：1887526
-				</div>
-				<div class="detail-item">
-					商品毛重：10.00g
-				</div>
-				<div class="detail-item">
-					商品产地：中国大陆
+					商品净重：${good.netWeight }g
 				</div>
 			</div>
 		</div>
@@ -373,7 +383,7 @@
 				</div>
 				<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 					<ul class="layui-tab-title">
-						<li class="layui-this">全部评价（37W）</li>
+						<li class="layui-this">全部评价（${good.commentNum }）</li>
 						<li>好评（2189）</li>
 						<li>中评（219）</li>
 						<li>差评（320）</li>
@@ -480,6 +490,63 @@
 			function changePic(obj) {
 				//todo到服务器上获取对应的大图，小图太模糊
 				$("#bigPic").attr("src", $(obj).attr("src"));
+			}
+			
+			function chooseGoodProperties(obj){
+				$(".block").each(function(){
+					if($(this).attr("class") != "block disable"){
+						$(this).attr("class","block");
+					}
+				});
+				$(".block .active").attr("class","block");
+				$(obj).attr("class","block active");
+				$("#goodNum").val(Number($(obj).text().split("|")[1]));
+				$("#gpId").val($(obj).attr("title"));
+				$("#num").val(1);
+			}
+			
+			function addNum(){
+				//判断是否选择了其中一种商品
+				var flag = false;
+				$(".block").each(function(){
+					if($(this).attr("class") == "block active"){
+						flag = true;
+					}
+				});
+				if(!flag){
+					layer.msg("请选择一种商品");
+					return;
+				}
+				//判断数量是否达到库存上限
+				var selectedItemNum = $("#goodNum").val();
+				var currNum = Number($("#num").val());
+				if(currNum >= selectedItemNum){
+					layer.msg("商品数量达到库存量，无法继续增加");
+					return;
+				}
+				$("#num").val(Number($("#num").val()) + 1);
+			}
+			
+			function addIntoCart(){
+				$.ajax({
+					url : "${basePath}/home/cart/save",
+					type : "POST",
+					beforeSend : function(xhr){
+						if($("#gpId").val() == ""){
+							layer.msg("请选择一项商品");
+							return false;
+						}
+						return true;
+					},
+					data:{
+						gid : $("#gid").val(),
+						gpId : $("#gpId").val(),
+						num : $("#num").val()
+					}
+				}).done(function(data){
+					data = $.parseJSON(data);
+					layer.msg(data.msg);
+				});
 			}
 		</script>
 	</body>

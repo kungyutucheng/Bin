@@ -9,49 +9,36 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "order_goods")
-public class OrderGoods {
+import org.springframework.format.annotation.DateTimeFormat;
 
-	/**
-	 * 主键
-	 */
+@Entity
+@Table(name = "good_property")
+public class GoodProperty {
+
 	@Id
 	@GeneratedValue
 	private Integer id;
 	
-	/**
-	 * 订单id
-	 */
-	@Column(name = "oid")
-	private Integer oid;
-	
-	/**
-	 * 商品id
-	 */
 	@Column(name = "gid")
 	private Integer gid;
 	
-	/**
-	 * 商品价格
-	 */
+	@Column(name = "_name")
+	private String name;
+	
 	@Column(name = "price")
 	private BigDecimal price;
 	
-	/**
-	 * 数量
-	 */
 	@Column(name = "num")
 	private Integer num;
 	
-	/**
-	 * 创建时间
-	 */
+	@Column(name = "isDefault")
+	private Integer isDefault;
+	
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
-	
-	public OrderGoods() {
+	public GoodProperty() {
 	}
 	
 	public Integer getId() {
@@ -62,20 +49,20 @@ public class OrderGoods {
 		this.id = id;
 	}
 
-	public Integer getOid() {
-		return oid;
-	}
-
-	public void setOid(Integer oid) {
-		this.oid = oid;
-	}
-
 	public Integer getGid() {
 		return gid;
 	}
 
 	public void setGid(Integer gid) {
 		this.gid = gid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public BigDecimal getPrice() {
@@ -94,6 +81,14 @@ public class OrderGoods {
 		this.num = num;
 	}
 
+	public Integer getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Integer isDefault) {
+		this.isDefault = isDefault;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -101,12 +96,6 @@ public class OrderGoods {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
-	@Override
-	public String toString() {
-		return "OrderGoods [id=" + id + ", oid=" + oid + ", gid=" + gid + ", price=" + price + ", num=" + num
-				+ ", createTime=" + createTime + "]";
-	}
+	
 	
 }
-

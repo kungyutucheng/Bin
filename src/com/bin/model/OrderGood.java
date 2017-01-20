@@ -1,5 +1,6 @@
 package com.bin.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -8,36 +9,49 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Entity
-@Table(name = "good_properties")
-public class GoodProperties {
+@Table(name = "order_good")
+public class OrderGood {
 
+	/**
+	 * 主键
+	 */
 	@Id
 	@GeneratedValue
 	private Integer id;
 	
+	/**
+	 * 订单id
+	 */
+	@Column(name = "oid")
+	private Integer oid;
+	
+	/**
+	 * 商品id
+	 */
 	@Column(name = "gid")
 	private Integer gid;
 	
-	@Column(name = "_name")
-	private String name;
-	
+	/**
+	 * 商品价格
+	 */
 	@Column(name = "price")
-	private Double price;
+	private BigDecimal price;
 	
+	/**
+	 * 数量
+	 */
 	@Column(name = "num")
 	private Integer num;
 	
-	@Column(name = "isDefault")
-	private Integer isDefault;
-	
+	/**
+	 * 创建时间
+	 */
 	@Column(name = "createTime")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
-	public GoodProperties() {
+	
+	public OrderGood() {
 	}
 	
 	public Integer getId() {
@@ -48,6 +62,14 @@ public class GoodProperties {
 		this.id = id;
 	}
 
+	public Integer getOid() {
+		return oid;
+	}
+
+	public void setOid(Integer oid) {
+		this.oid = oid;
+	}
+
 	public Integer getGid() {
 		return gid;
 	}
@@ -56,19 +78,11 @@ public class GoodProperties {
 		this.gid = gid;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
@@ -80,14 +94,6 @@ public class GoodProperties {
 		this.num = num;
 	}
 
-	public Integer getIsDefault() {
-		return isDefault;
-	}
-
-	public void setIsDefault(Integer isDefault) {
-		this.isDefault = isDefault;
-	}
-
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -95,6 +101,12 @@ public class GoodProperties {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "OrderGoods [id=" + id + ", oid=" + oid + ", gid=" + gid + ", price=" + price + ", num=" + num
+				+ ", createTime=" + createTime + "]";
+	}
 	
 }
+

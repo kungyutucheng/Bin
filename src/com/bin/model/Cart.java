@@ -1,5 +1,6 @@
 package com.bin.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "cart")
@@ -40,8 +42,8 @@ public class Cart {
 	/**
 	 * 商品特性
 	 */
-	@Column(name = "properties")
-	private String properties;
+	@Column(name = "gpId")
+	private Integer gpId;
 	
 	/**
 	 * 创建时间
@@ -49,7 +51,30 @@ public class Cart {
 	@Column(name = "createTime")
 	private Date createTime;
 	
+	@Transient
+	private String goodName;
+	
+	@Transient
+	private String goodPropertyName;
+	
+	@Transient
+	private BigDecimal price;
+	
 	public Cart() {
+	}
+	
+	public Cart(Integer id, Integer uid, Integer gid, Integer num, Integer gpId, Date createTime, String goodName,
+			String goodPropertyName, BigDecimal price) {
+		super();
+		this.id = id;
+		this.uid = uid;
+		this.gid = gid;
+		this.num = num;
+		this.gpId = gpId;
+		this.createTime = createTime;
+		this.goodName = goodName;
+		this.goodPropertyName = goodPropertyName;
+		this.price = price;
 	}
 
 	public Integer getId() {
@@ -83,13 +108,13 @@ public class Cart {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
-
-	public String getProperties() {
-		return properties;
+	
+	public Integer getGpId() {
+		return gpId;
 	}
 
-	public void setProperties(String properties) {
-		this.properties = properties;
+	public void setGpId(Integer gpId) {
+		this.gpId = gpId;
 	}
 
 	public Date getCreateTime() {
@@ -99,11 +124,36 @@ public class Cart {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	
+	public String getGoodName() {
+		return goodName;
+	}
+
+	public void setGoodName(String goodName) {
+		this.goodName = goodName;
+	}
+
+	public String getGoodPropertyName() {
+		return goodPropertyName;
+	}
+
+	public void setGoodPropertyName(String goodPropertyName) {
+		this.goodPropertyName = goodPropertyName;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 
 	@Override
 	public String toString() {
-		return "Cart [id=" + id + ", uid=" + uid + ", gid=" + gid + ", num=" + num + ", properties=" + properties
-				+ ", createTime=" + createTime + "]";
+		return "Cart [id=" + id + ", uid=" + uid + ", gid=" + gid + ", num=" + num + ", gpId=" + gpId + ", createTime="
+				+ createTime + ", goodName=" + goodName + ", goodPropertyName=" + goodPropertyName + ", price=" + price
+				+ "]";
 	}
-	
+
 }

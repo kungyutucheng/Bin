@@ -21,7 +21,29 @@ public class GoodService extends BaseService<Good, Integer>{
 	public Page queryPage(Page page) {
 		Page page2 = new Page();
 		List<Object> params = new ArrayList<Object>();
-		String hql = "from Good where 1= 1";
+		String hql = "select new Good("
+				+ "id,"
+				+ "(select o.name from Owner o where o.id = id) ,"
+				+ "no,"
+				+ "oid,"
+				+ "owner,"
+				+ "status,"
+				+ "msg,"
+				+"soldNum,"
+				+ "brand,"
+				+ "attr,"
+				+ "scope,"
+				+ "type,"
+				+ "picMid,"
+				+ "seriesSm,"
+				+"seriesLg,"
+				+ "picSm,"
+				+ "createTime,"
+				+ "removeTime,"
+				+ "grossWeight,"
+				+ "netWeight,"
+				+"commentNum,"
+				+ "price) from Good where 1= 1";
 		if(page.getParams().get("id") != null){
 			hql += " and id = ?";
 			params.add(Integer.valueOf(page.getParams().get("id").toString()));
