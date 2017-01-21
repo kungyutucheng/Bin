@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "exception_log")
 public class ExceptionLog {
@@ -59,6 +61,7 @@ public class ExceptionLog {
 	 * 创建时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	public ExceptionLog() {

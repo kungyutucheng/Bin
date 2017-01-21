@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 @Table(name = "good_property")
@@ -26,6 +28,7 @@ public class GoodProperty {
 	private String name;
 	
 	@Column(name = "price")
+	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal price;
 	
 	@Column(name = "num")

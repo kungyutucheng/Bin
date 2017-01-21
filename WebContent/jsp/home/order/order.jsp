@@ -259,13 +259,13 @@
 									<div class="layui-form-label width100" style="width:100px;">发票类别 </div>
 									<div class="layui-input-block" style="width: 370px;">
 										<select name="receiptContent" >
-											<option value="0">电脑配件</option>
-        									<option value="1">食品</option>
+											<option value="1">电脑配件</option>
+        									<option value="2">食品</option>
 										</select>
 									</div>
 								</div>
 								<input id="aid" name="aid" type="hidden" value="0">
-								<input id="payWay" name="payWay" type="hidden" value="0">
+								<input id="payWay" name="payWay" type="hidden" value="1">
 								<input name="totalValue" type="hidden" value="${totalValue }">
 								<input name="cids" type="hidden" value="${cids }">
 							</form>
@@ -354,8 +354,7 @@
 									'</span>'+
 								'</div>'+
 							'</li>';
-							console.log(result.id);
-							$("#aid").val(result.id);
+							$("#aid").val(address.id);
 							}
 						}
 						for(var i = 0 ;i < result.length ; i++){
@@ -445,7 +444,7 @@
 					layer.msg("请选择支付方式");
 					return;
 				}
-				$.post("${basePath}/home/order/save",$("#submitOrderForm").serializeObject(),function(result){
+				$.post("${basePath}/home/order/save",$("#saveOrderForm").serializeObject(),function(result){
 					result = $.parseJSON(result);
 					layer.msg(result.msg);
 					if(result.success){

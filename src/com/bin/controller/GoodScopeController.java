@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.model.GoodScope;
 import com.bin.service.GoodScopeService;
@@ -23,6 +24,7 @@ public class GoodScopeController extends BaseController{
 	 */
 	@RequestMapping(value = "/getAll",method = RequestMethod.POST,produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String getAll(){
 		return toJson(goodScopeService.getAll(GoodScope.class));
 	}

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.TipMsg;
 import com.bin.contant.ViewName;
@@ -28,12 +29,14 @@ public class LoginController extends BaseController{
 	private UserService userService;
 	
 	@RequestMapping(value = "/loginPage",method = RequestMethod.GET)
+	@MyException
 	public ModelAndView loginPage(){
 		return new ModelAndView(ViewName.HOME_LOGIN_PAGE);
 	}
 	
 	@RequestMapping(value = "/login",method = RequestMethod.POST,produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String login(String account,String pwd) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.LOGIN_SUCCESS);
@@ -52,6 +55,7 @@ public class LoginController extends BaseController{
 	
 	@RequestMapping(value = "/register" , method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String register(User user , String verifyCode) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		AjaxModel model = new AjaxModel(true);
 		

@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "login_log")
 public class LoginLog {
@@ -35,12 +37,14 @@ public class LoginLog {
 	 * 退出登录的时间
 	 */
 	@Column(name = "logoutTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date logoutTime;
 	
 	/**
 	 * 登录时间
 	 */
 	@Column(name = "loginTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date loginTime;
 	
 	public LoginLog() {

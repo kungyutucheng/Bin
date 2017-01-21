@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "cart")
 public class Cart {
@@ -49,6 +51,7 @@ public class Cart {
 	 * 创建时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	@Transient

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.config.PropertyPlaceholderConfig;
 
@@ -28,6 +29,7 @@ public class ImageController extends BaseController{
 	private String ownerLogoDirectory;
 	
 	@RequestMapping(value = "/getImage/{name:.+}",method = RequestMethod.GET)
+	@MyException
 	public void getImage(@PathVariable("name") String name){
 		File image = new File(fileUploadDirectory + File.separator + name);
 		
@@ -64,6 +66,7 @@ public class ImageController extends BaseController{
 	
 	
 	@RequestMapping(value = "/getOwnerLogo/{name:.+}",method = RequestMethod.GET)
+	@MyException
 	public void getOwnerLogo(@PathVariable("name") String name){
 		File image = new File(ownerLogoDirectory + File.separator + name);
 		

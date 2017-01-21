@@ -8,9 +8,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "backup_user")
 public class BackupUser {
+	
+	public static final Integer ROLE_DEVELOPER = 1;
+	public static final Integer ROLE_ADMIN = 2;
+	public static final Integer ROLE_USER = 3;
 
 	/**
 	 * 主键
@@ -44,6 +50,7 @@ public class BackupUser {
 	 * 创建时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	/**

@@ -15,6 +15,8 @@ public class ViewName {
 	
 	public static final String HOME_ORDER_ORDER = HOME_PATH + "/order/order";
 	public static final String HOME_ORDER_PAY = HOME_PATH + "/order/pay";
+	public static final String HOME_ORDER_PAY_SUCCESS = HOME_PATH + "/order/paySuccess";
+	public static final String HOME_ORDER_DETAIL = HOME_PATH + "/order/detail";
 	
 	private static final String ADMIN_PATH = "/admin";
 	public static final String ADMIN_LOGIN_PAGE = ADMIN_PATH + "/login/login";

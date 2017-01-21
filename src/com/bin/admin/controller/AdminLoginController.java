@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.ViewName;
 import com.bin.context.BackupUserContext;
@@ -21,6 +22,7 @@ public class AdminLoginController extends BaseController{
 	private BackupUserService backupUserService;
 	
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
+	@MyException
 	public ModelAndView login(@RequestParam String username,@RequestParam String pwd){
 		if(backupUserService.getCount("select count(*) from BackupUser where username = ? and pwd = ?", 
 				username,pwd) == 1l){
@@ -39,6 +41,7 @@ public class AdminLoginController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/logout")
+	@MyException
 	public ModelAndView logout(){
 		ModelAndView modelAndView = new ModelAndView(ViewName.ADMIN_LOGIN_PAGE);
 		session.removeAttribute("backup_user");

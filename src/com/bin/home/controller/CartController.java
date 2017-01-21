@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.TipMsg;
 import com.bin.contant.ViewName;
@@ -33,6 +34,7 @@ public class CartController extends BaseController{
 	@RequestMapping(value = "/save" , method = RequestMethod.POST , 
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String save(Cart cart){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.SAVE_SUCCESS);
@@ -45,6 +47,7 @@ public class CartController extends BaseController{
 	@RequestMapping(value = "/update", method = RequestMethod.POST,
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String update(Cart cart){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.UPDATE_SUCCESS);
@@ -55,6 +58,7 @@ public class CartController extends BaseController{
 	@RequestMapping(value = "/delete", method = {RequestMethod.POST,RequestMethod.GET},
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String delete(String ids){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.DELETE_SUCCESS);
@@ -63,6 +67,7 @@ public class CartController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/list" , method = RequestMethod.GET)
+	@MyException
 	public ModelAndView list(){
 		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_CART_LIST);
 		modelAndView.addObject("carts", cartService.getListByUid(UserContext.getContext().getUser().getId()));
@@ -72,6 +77,7 @@ public class CartController extends BaseController{
 	@RequestMapping(value = "/changeNum" , method = RequestMethod.POST,
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String changeNum(Integer id , Integer num){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.UPDATE_SUCCESS);

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.ViewName;
 import com.bin.context.UserContext;
@@ -52,6 +53,7 @@ public class OrderController extends BaseController{
 	
 	@RequestMapping(value = "/order", method = {RequestMethod.POST , RequestMethod.GET},
 			produces = "text/html;charset=utf-8")
+	@MyException
 	public ModelAndView order(@RequestParam String ids){
 		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_ORDER_ORDER);
 		List<Cart> carts = cartService.getListByIds(ids);
@@ -70,7 +72,8 @@ public class OrderController extends BaseController{
 	@RequestMapping(value = "/save" , method = RequestMethod.POST,
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String save(@RequestParam Order order , @RequestParam String cids) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	@MyException
+	public String save(Order order ,@RequestParam String cids) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg("提交订单成功");
 		
@@ -108,7 +111,7 @@ public class OrderController extends BaseController{
 				orderGood.setGid(cart.getGid());
 				orderGood.setCreateTime(date);
 				orderGood.setNum(cart.getNum());
-				orderGood.setPrice(cart.getPrice());
+				orderGood.setPrice(goodProperty.getPrice());
 				orderGood.setOid(oid);
 				orderGoods.add(orderGood);
 				
@@ -128,10 +131,34 @@ public class OrderController extends BaseController{
 	
 	@RequestMapping(value = "/payPage/{oid}" , method = RequestMethod.GET ,
 			produces = "text/html;charset=utf-8")
+	@MyException
 	public ModelAndView payPage(@PathVariable Integer oid){
 		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_ORDER_PAY);
 		Order order = orderService.get(Order.class, oid);
 		modelAndView.addObject("order",order);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/pay/{id}",method = {RequestMethod.GET , RequestMethod.POST})
+	@MyException
+	public ModelAndView pay(@PathVariable Integer id){
+		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_ORDER_PAY_SUCCESS);
+		Order order = orderService.get(Order.class, id);
+		order.setPayTime(new Date());
+		orderService.update(order);
+		modelAndView.addObject("oid", id);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/detail/{id}", method = {RequestMethod.POST , RequestMethod.GET})
+	@MyException
+	public ModelAndView detail(@PathVariable Integer id){
+		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_ORDER_DETAIL);
+		Order order = orderService.get(Order.class, id);
+		List<OrderGood> orderGoods = 
+				orderGoodService.queryList("from OrderGood where oid = ?", id);
+		modelAndView.addObject("order", order);
+		modelAndView.addObject("orderGoods", orderGoods);
 		return modelAndView;
 	}
 }

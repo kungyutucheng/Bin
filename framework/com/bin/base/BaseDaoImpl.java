@@ -379,7 +379,6 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		StringBuilder builder = new StringBuilder();
 		String tableName = clazz.getAnnotation(Table.class).name();
-		builder.append("update ").append("`").append(tableName).append("`").append(" set ");
 		Field[] fields = clazz.getDeclaredFields();
 		Method[] methods = clazz.getDeclaredMethods();
 		List<Object> params = new ArrayList<Object>();
@@ -395,6 +394,7 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 		
 		if(columnNames == null){
 			for(int j = 0 ;j < entityList.size() ; j++){
+				builder.append("update ").append("`").append(tableName).append("`").append(" set ");
 				for(int i = 0 ;i < fields.length ; i++){
 					Field field = fields[i];
 					if(field.getAnnotation(Column.class) != null){
@@ -422,7 +422,6 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 			for(int j = 0 ;j < entityList.size() ; j++){
 				for(String columnName : columnNames){
 					for(Field field2 : fields){
-						System.out.println(field2.getName());
 						if(field2.getName().equalsIgnoreCase(columnName)){
 							builder.append(" ").append(field2.getAnnotation(Column.class).name()).append(" = ?,");
 							getterName = "get" + field2.getName();

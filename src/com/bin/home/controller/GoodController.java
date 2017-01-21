@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.ViewName;
 import com.bin.model.Brand;
@@ -41,6 +42,7 @@ public class GoodController extends BaseController{
 	private GoodPropertyService goodPropertiesService;
 	
 	@RequestMapping(value = "/search",method = {RequestMethod.GET,RequestMethod.POST})
+	@MyException
 	public ModelAndView search(@RequestParam String keyword){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName(ViewName.HOME_SEARCH_RESULT_PAGE);
@@ -53,6 +55,7 @@ public class GoodController extends BaseController{
 	
 	@RequestMapping(value = "/getGoodList", method = {RequestMethod.GET,RequestMethod.POST},produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String getGoodList(){
 		Page page = getPage();
 		Page page2 = goodService.search(page);
@@ -60,6 +63,7 @@ public class GoodController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/detail/{id}",method = {RequestMethod.POST,RequestMethod.GET})
+	@MyException
 	public ModelAndView detail(@PathVariable Integer id){
 		if (id == null || id == 0) {
 			return new ModelAndView(ViewName.ERROR_404);

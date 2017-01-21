@@ -9,6 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 @Entity
 @Table(name = "order_good")
 public class OrderGood {
@@ -36,6 +40,7 @@ public class OrderGood {
 	 * 商品价格
 	 */
 	@Column(name = "price")
+	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal price;
 	
 	/**
@@ -48,6 +53,7 @@ public class OrderGood {
 	 * 创建时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
 	

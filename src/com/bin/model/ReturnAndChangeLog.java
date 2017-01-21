@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "return_and_change_log")
 public class ReturnAndChangeLog {
@@ -41,6 +43,7 @@ public class ReturnAndChangeLog {
 	 * 操作时间
 	 */
 	@Column(name = "oeprateTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date operateTime;
 	
 	public ReturnAndChangeLog() {

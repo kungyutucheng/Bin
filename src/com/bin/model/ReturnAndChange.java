@@ -9,10 +9,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 @Entity
 @Table(name = "return_and_change")
 public class ReturnAndChange {
 
+	
+	public static final Integer STATUS_DEALING = 1;
+	public static final Integer STATUS_FINISH = 2;
+	
+	public static final Integer TYPE_RETURN = 1;
+	public static final Integer TYPE_CHANGE = 2;
+	
+	public static final Integer FINAL_TYPE_RETURN = 1;
+	public static final Integer FINAL_TYPE_CHANGE = 2;
+	
+	
 	/**
 	 * 主键
 	 */
@@ -36,6 +51,7 @@ public class ReturnAndChange {
 	 * 申请时间
 	 */
 	@Column(name = "applyTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date applyTime;
 	
 	/**
@@ -97,6 +113,7 @@ public class ReturnAndChange {
 	 * 运费
 	 */
 	@Column(name = "deliveryFare")
+	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal deliveryFare;
 	
 	/**
@@ -115,6 +132,7 @@ public class ReturnAndChange {
 	 * 创建时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	/**
@@ -127,24 +145,28 @@ public class ReturnAndChange {
 	 * 重新寄送时间
 	 */
 	@Column(name = "resendTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date resendTime;
 	
 	/**
 	 * 审核通过时间
 	 */
 	@Column(name = "passTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date passTime;
 	
 	/**
 	 * 卖家收到货物时间
 	 */
 	@Column(name = "receiveTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date receiveTime;
 	
 	/**
 	 * 完成时间
 	 */
 	@Column(name = "finishTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date finishTime;
 	
 	

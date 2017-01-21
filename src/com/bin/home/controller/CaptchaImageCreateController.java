@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bin.annotation.MyException;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 
@@ -27,6 +28,7 @@ public class CaptchaImageCreateController {
 	}
 	
 	@RequestMapping(value = "/kaptcha.jpg")
+	@MyException
 	public ModelAndView handleRequest(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		response.setDateHeader("Expires", 0);
 		response.setHeader("Cache-control", "no-store,no-cache,must-revalidate");

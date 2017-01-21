@@ -135,6 +135,7 @@ public class AdminGoodController extends BaseController{
 	 */
 	@RequestMapping(value = "/remove",method = RequestMethod.POST,produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String remove(String ids){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.UPDATE_SUCCESS);
@@ -149,6 +150,7 @@ public class AdminGoodController extends BaseController{
 	 */
 	@RequestMapping(value = "/push",method = RequestMethod.POST,produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String push(String ids){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.UPDATE_SUCCESS);
@@ -158,6 +160,7 @@ public class AdminGoodController extends BaseController{
 	
 	@RequestMapping(value = "/uploadPicSm",method = RequestMethod.POST)
 	@ResponseBody
+	@MyException
 	public void uploadPicSm(Integer gid , MultipartHttpServletRequest request,HttpServletResponse response){
 		Iterator<String> iterable = request.getFileNames();
 		MultipartFile multipartFile;
@@ -181,6 +184,7 @@ public class AdminGoodController extends BaseController{
 	
 	@RequestMapping(value = "/uploadPicMid",method = RequestMethod.POST)
 	@ResponseBody
+	@MyException
 	public void uploadPicMid(Integer gid , MultipartHttpServletRequest request,HttpServletResponse response){
 		Iterator<String> iterable = request.getFileNames();
 		MultipartFile multipartFile;
@@ -203,6 +207,7 @@ public class AdminGoodController extends BaseController{
 	
 	@RequestMapping(value = "/uploadPicSeriesSm",method = RequestMethod.POST)
 	@ResponseBody
+	@MyException
 	public void uploadPicSeriesSm(Integer gid , MultipartHttpServletRequest request,HttpServletResponse response){
 		Iterator<String> iterable = request.getFileNames();
 		MultipartFile multipartFile;
@@ -233,6 +238,7 @@ public class AdminGoodController extends BaseController{
 	
 	@RequestMapping(value = "/uploadPicSeriesLg",method = RequestMethod.POST)
 	@ResponseBody
+	@MyException
 	public void uploadPicSeriesLg(Integer gid , MultipartHttpServletRequest request,HttpServletResponse response){
 		Iterator<String> iterable = request.getFileNames();
 		MultipartFile multipartFile;

@@ -8,9 +8,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "_owner")
 public class Owner {
+	
+	public static final Integer TYPE_SELF = 1;
+	public static final Integer TYPE_OTHER = 2;
+	
+	public static final Integer STATUS_UNDER_REVIEW = 1;
+	public static final Integer STATUS_PASSED = 2;
+	public static final Integer STATUS_LEAVE = 3;
+	
 
 	/**
 	 * 主键
@@ -60,12 +70,14 @@ public class Owner {
 	 * 创建时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	/**
 	 * 审核通过时间
 	 */
 	@Column(name = "passTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date passTime;
 	
 	public Owner() {

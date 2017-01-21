@@ -8,9 +8,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "growth_value")
 public class GrowthValue {
+	
+	public static final Integer SOURCE_LOGIN = 1;
+	public static final Integer SOURCE_SHOPPING = 2;
+	public static final Integer SOURCE_COMMENT = 3;
+	public static final Integer SOURCE_RETURN = 4;
 
 	/**
 	 * 主键
@@ -45,6 +52,7 @@ public class GrowthValue {
 	 * 发放或扣减时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	/**

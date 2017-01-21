@@ -9,10 +9,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
+import com.fasterxml.jackson.core.JsonParser.NumberType;
+
 @Entity
 @Table(name = "_user")
 public class User {
 
+	public static final Integer GENDER_MAN = 1;
+	public static final Integer GENDER_WOMAN = 2;
+	public static final Integer GENDER_SECRET = 3;
 	
 	/**
 	 * 主键
@@ -59,18 +68,21 @@ public class User {
 	 * 生日
 	 */
 	@Column(name = "birthday")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
 	
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	/**
 	 * 账户余额
 	 */
 	@Column(name = "balance")
+	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal balance;
 	
 	public User() {

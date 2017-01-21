@@ -9,9 +9,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 @Entity
 @Table(name = "_order")
 public class Order {
+	
+	public static final Integer STATUS_PAYING = 1;
+	public static final Integer STATUS_CANCELED = 2;
+	public static final Integer STATUS_RECEIVING = 3;
+	public static final Integer STATUS_COMMENTING = 4;
+	public static final Integer STATUS_FINISH = 5;
+	
+	public static final Integer PAY_WAY_ONLINE = 1;
+	public static final Integer PAY_WAY_OFFLINE = 2;
+	
 	
 	/**
 	 * 主键
@@ -61,12 +75,14 @@ public class Order {
 	 * 付款时间
 	 */
 	@Column(name = "payTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date payTime;
 	
 	/**
 	 * 商品总额
 	 */
 	@Column(name = "totalValue")
+	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal totalValue;
 	
 	/**
@@ -85,18 +101,21 @@ public class Order {
 	 * 发货时间
 	 */
 	@Column(name = "outTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date outTime;
 	
 	/**
 	 * 完成时间
 	 */
 	@Column(name = "confirmTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date confirmTime;
 	
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "createTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	/**

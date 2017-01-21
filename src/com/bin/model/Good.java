@@ -1,5 +1,6 @@
 package com.bin.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,10 +11,17 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 @Table(name = "good")
 public class Good {
+	
+	public static final Integer STATUS_PREPARING = 1;
+	public static final Integer STATUS_ONLINE = 2;
+	public static final Integer STATUS_OFFLINE = 3;
+	
 
 	/**
 	 * 主键
@@ -151,7 +159,8 @@ public class Good {
 	 * 价格
 	 */
 	@Column(name = "price")
-	private Double price;
+	@NumberFormat(style = Style.NUMBER)
+	private BigDecimal price;
 	
 	public Good() {
 	}
@@ -159,7 +168,7 @@ public class Good {
 	public Good(Integer id, String name, String no, Integer oid, String owner, Integer status, String msg,
 			Integer soldNum, String brand, String attr, Integer scope, String type, String picMid, String seriesSm,
 			String seriesLg, String picSm, Date createTime, Date removeTime, Double grossWeight, Double netWeight,
-			Integer commentNum, Double price) {
+			Integer commentNum, BigDecimal price) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -348,11 +357,11 @@ public class Good {
 		this.commentNum = commentNum;
 	}
 
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

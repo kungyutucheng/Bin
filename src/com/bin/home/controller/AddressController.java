@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.TipMsg;
 import com.bin.context.UserContext;
@@ -28,6 +29,7 @@ public class AddressController extends BaseController{
 	@RequestMapping(value = "/save" , method = RequestMethod.POST , 
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String save(@RequestParam String name ,@RequestParam String pcc,
 			@RequestParam String tel,@RequestParam String detailAddr,
 			Boolean isDefault){
@@ -56,6 +58,7 @@ public class AddressController extends BaseController{
 	@RequestMapping(value = "/update" , method = RequestMethod.POST,
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String update(@RequestParam String name ,@RequestParam String pcc,
 			@RequestParam String tel,@RequestParam String detailAddr,
 			@RequestParam Integer id , Boolean isDefault){
@@ -80,6 +83,7 @@ public class AddressController extends BaseController{
 	@RequestMapping(value = "/delete/{id}" , method = RequestMethod.POST,
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String delete(@PathVariable Integer id){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.UPDATE_SUCCESS);
@@ -90,6 +94,7 @@ public class AddressController extends BaseController{
 	@RequestMapping(value = "/setDefault/{id}" , method = RequestMethod.POST,
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String setDefault(@PathVariable Integer id){
 		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.UPDATE_SUCCESS);
@@ -100,6 +105,7 @@ public class AddressController extends BaseController{
 	@RequestMapping(value = "/list" , method = RequestMethod.POST,
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String list(){
 		return toJson(addressService.queryList("from Address where uid = ? and disable = 1", 
 				UserContext.getContext().getUser().getId()));
@@ -114,6 +120,7 @@ public class AddressController extends BaseController{
 	@RequestMapping(value = "/getById/{id}" , method = {RequestMethod.GET , RequestMethod.POST},
 			produces = "text/html;charset=utf-8")
 	@ResponseBody
+	@MyException
 	public String getById(@PathVariable Integer id){
 		return toJson(addressService.get(Address.class, id));
 	}
