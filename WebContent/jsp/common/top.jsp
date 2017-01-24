@@ -23,14 +23,19 @@
 				<div style="display: inline;float:left;">
 					<a class="top-a">
 						<c:choose>
-							<c:when test="${sessionScope.user != null}">${sessionScope.user.account }</c:when>
-							<c:otherwise>请登录</c:otherwise>
+							<c:when test="${sessionScope.user != null}">
+							<c:choose>
+								<c:when test="${sessionScope.user.name != null }"><a href="${basePath }/home/me/personInfo">${sessionScope.user.name }</a></c:when>
+								<c:otherwise><a href="${basePath }/home/me/personInfo">${sessionScope.user.account }</a></c:otherwise>
+							</c:choose>
+							</c:when>
+							<c:otherwise><a href="${basePath }/jsp/home/login/login.jsp">请登录</a></c:otherwise>
 						</c:choose>
 					</a>
 					<a class="top-a">退出</a>
 				</div>
 				<div style="display: inline;float: right;">
-					<a class="top-a">订单</a>
+					<a class="top-a" href="${basePath }/home/me/myOrder">订单</a>
 					<a class="top-a" href="${basePath }/home/cart/list">购物车</a>
 				</div>
 			</div>

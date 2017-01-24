@@ -124,4 +124,5 @@ public class AddressController extends BaseController{
 	public String getById(@PathVariable Integer id){
 		return toJson(addressService.get(Address.class, id));
 	}
+	
 }

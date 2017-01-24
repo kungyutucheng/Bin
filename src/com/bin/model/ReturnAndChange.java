@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -19,7 +20,11 @@ public class ReturnAndChange {
 
 	
 	public static final Integer STATUS_DEALING = 1;
-	public static final Integer STATUS_FINISH = 2;
+	public static final Integer STATUS_PASS = 2;
+	public static final Integer STATUS_RECEIVE = 3;
+	public static final Integer STATUS_REOUT = 4;
+	public static final Integer STATUS_PAY = 5;
+	public static final Integer STATUS_FINISH = 6;
 	
 	public static final Integer TYPE_RETURN = 1;
 	public static final Integer TYPE_CHANGE = 2;
@@ -56,8 +61,12 @@ public class ReturnAndChange {
 	
 	/**
 	 * 状态
-	 * 1-处理中
-	 * 2-已完成
+	 * 1-已提交
+	 * 2-已审核
+	 * 3-已收货
+	 * 4-已发货
+	 * 5-已退款
+	 * 6-已完成
 	 */
 	@Column(name = "_status")
 	private Integer status;
@@ -94,8 +103,17 @@ public class ReturnAndChange {
 	/**
 	 * 寄送地址
 	 */
-	@Column(name = "resendAddr")
-	private String resendAddr;
+	@Column(name = "province")
+	private String province;
+	
+	@Column(name = "city")
+	private String city;
+	
+	@Column(name = "county")
+	private String county;
+	
+	@Column(name = "address")
+	private String address;
 	
 	/**
 	 * 收货人
@@ -169,6 +187,25 @@ public class ReturnAndChange {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date finishTime;
 	
+	/**
+	 * 数量
+	 */
+	@Column(name = "num")
+	private Integer num;
+	
+	/**
+	 * 退款金额
+	 */
+	@Column(name = "returnMoney")
+	private BigDecimal returnMoney;
+	
+	/**
+	 * 售后服务单号
+	 */
+	private String no;
+	
+	@Transient
+	private Good good;
 	
 	public ReturnAndChange() {
 	}
@@ -263,14 +300,43 @@ public class ReturnAndChange {
 		this.returnMoneyWay = returnMoneyWay;
 	}
 
-
-	public String getResendAddr() {
-		return resendAddr;
+	public String getProvince() {
+		return province;
 	}
 
 
-	public void setResendAddr(String resendAddr) {
-		this.resendAddr = resendAddr;
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+
+	public String getCity() {
+		return city;
+	}
+
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+
+	public String getCounty() {
+		return county;
+	}
+
+
+	public void setCounty(String county) {
+		this.county = county;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 
@@ -382,17 +448,55 @@ public class ReturnAndChange {
 	public void setFinishTime(Date finishTime) {
 		this.finishTime = finishTime;
 	}
+	
+	public Integer getNum() {
+		return num;
+	}
+
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+	
+	public String getNo() {
+		return no;
+	}
+
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+
+	public Good getGood() {
+		return good;
+	}
+
+
+	public void setGood(Good good) {
+		this.good = good;
+	}
+
+	public BigDecimal getReturnMoney() {
+		return returnMoney;
+	}
+
+
+	public void setReturnMoney(BigDecimal returnMoney) {
+		this.returnMoney = returnMoney;
+	}
 
 
 	@Override
 	public String toString() {
 		return "ReturnAndChange [id=" + id + ", oid=" + oid + ", gNo=" + gNo + ", applyTime=" + applyTime + ", status="
 				+ status + ", type=" + type + ", description=" + description + ", dealWay=" + dealWay
-				+ ", returnMoneyWay=" + returnMoneyWay + ", resendAddr=" + resendAddr + ", receiver=" + receiver
-				+ ", tel=" + tel + ", deliveryFare=" + deliveryFare + ", express=" + express + ", expressNo="
-				+ expressNo + ", createTime=" + createTime + ", rechangeMsg=" + rechangeMsg + ", resendTime="
-				+ resendTime + ", passTime=" + passTime + ", receiveTime=" + receiveTime + ", finishTime=" + finishTime
-				+ "]";
+				+ ", returnMoneyWay=" + returnMoneyWay + ", province=" + province + ", city=" + city + ", county="
+				+ county + ", address=" + address + ", receiver=" + receiver + ", tel=" + tel + ", deliveryFare="
+				+ deliveryFare + ", express=" + express + ", expressNo=" + expressNo + ", createTime=" + createTime
+				+ ", rechangeMsg=" + rechangeMsg + ", resendTime=" + resendTime + ", passTime=" + passTime
+				+ ", receiveTime=" + receiveTime + ", finishTime=" + finishTime + ", num=" + num + ", returnMoney="
+				+ returnMoney + ", no=" + no + ", good=" + good + "]";
 	}
 	
 }

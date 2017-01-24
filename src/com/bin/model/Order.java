@@ -2,12 +2,14 @@ package com.bin.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -19,9 +21,10 @@ public class Order {
 	
 	public static final Integer STATUS_PAYING = 1;
 	public static final Integer STATUS_CANCELED = 2;
-	public static final Integer STATUS_RECEIVING = 3;
-	public static final Integer STATUS_COMMENTING = 4;
-	public static final Integer STATUS_FINISH = 5;
+	public static final Integer STATUS_PAYIED = 3;
+	public static final Integer STATUS_RECEIVING = 4;
+	public static final Integer STATUS_COMMENTING = 5;
+	public static final Integer STATUS_FINISH = 6;
 	
 	public static final Integer PAY_WAY_ONLINE = 1;
 	public static final Integer PAY_WAY_OFFLINE = 2;
@@ -56,9 +59,10 @@ public class Order {
 	 * 状态
 	 * 1-待付款
 	 * 2-已取消
-	 * 3-待收货
-	 * 4-待评价
-	 * 5-已完成
+	 * 3-待发货
+	 * 4-待收货
+	 * 5-待评价
+	 * 6-已完成
 	 */
 	@Column(name = "_status")
 	private Integer status;
@@ -123,6 +127,15 @@ public class Order {
 	 */
 	@Column(name = "score")
 	private Integer score;
+	
+	@Column(name = "_disable")
+	private Integer disable;
+	
+	@Transient
+	private List<OrderGood> orderGoods;
+	
+	@Transient
+	private Address address;
 	
 	public Order() {
 	}
@@ -238,13 +251,38 @@ public class Order {
 	public void setScore(Integer score) {
 		this.score = score;
 	}
+	
+	public List<OrderGood> getOrderGoods() {
+		return orderGoods;
+	}
+
+	public void setOrderGoods(List<OrderGood> orderGoods) {
+		this.orderGoods = orderGoods;
+	}
+	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	
+	public Integer getDisable() {
+		return disable;
+	}
+
+	public void setDisable(Integer disable) {
+		this.disable = disable;
+	}
 
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", uid=" + uid + ", aid=" + aid + ", no=" + no + ", status=" + status + ", payWay="
 				+ payWay + ", payTime=" + payTime + ", totalValue=" + totalValue + ", receiptName=" + receiptName
 				+ ", receiptContent=" + receiptContent + ", outTime=" + outTime + ", confirmTime=" + confirmTime
-				+ ", createTime=" + createTime + ", score=" + score + "]";
+				+ ", createTime=" + createTime + ", score=" + score + ", disable=" + disable + ", orderGoods="
+				+ orderGoods + ", address=" + address + "]";
 	}
 	
 	

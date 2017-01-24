@@ -21,17 +21,17 @@
 	<body>
 		<div class="container">
 			<div class="content" style="padding-top: 30px;">
-				支付成功
+				提交成功，请等待售后处理 ！
 			</div>
 			<div class="content">
-				<a class="myBtn" onclick="forwardOrderDetailPage();">立即支付</a>
+				<a class="myBtn" onclick="forwardReturnAndChangeDetailPage();">查看本次退换货申请详情</a>
 			</div>
-			<form style="display:none;" method="get" action="${basePath }/home/order/pay/${oid}">
-				<button type="submit" id="forwardOrderDetailBtn"></button>
+			<form style="display:none;" method="get" action="${basePath }/home/returnAndChange/detail/${id}">
+				<button type="submit" id="forwardReturnAndChangeDetailBtn"></button>
 			</form>
 			<script type="text/javascript">
-				function forwardOrderDetailPage(){
-					$("#forwardOrderDetailBtn").click();
+				function forwardReturnAndChangeDetailPage(){
+					$("#forwardReturnAndChangeDetailBtn").click();
 				}
 			</script>
 		</div>

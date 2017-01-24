@@ -39,7 +39,7 @@ public class GoodController extends BaseController{
 	private OwnerService ownerService;
 	
 	@Autowired
-	private GoodPropertyService goodPropertiesService;
+	private GoodPropertyService goodPropertyService;
 	
 	@RequestMapping(value = "/search",method = {RequestMethod.GET,RequestMethod.POST})
 	@MyException
@@ -70,8 +70,8 @@ public class GoodController extends BaseController{
 		}else{
 			Good good = goodService.get(Good.class, id);
 			Owner owner = ownerService.get(Owner.class, good.getOid());
-			List<GoodProperty> goodProperties = goodPropertiesService.queryList(
-					"from GoodProperties where gid = ?", good.getId());
+			List<GoodProperty> goodProperties = goodPropertyService.queryList(
+					"from GoodProperty where gid = ?", good.getId());
 			ModelAndView modelAndView = new ModelAndView(ViewName.HOME_GOOD_DETAIL);
 			modelAndView.addObject("good", good);
 			modelAndView.addObject("owner", owner);

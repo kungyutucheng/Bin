@@ -99,6 +99,11 @@ public class GoodProperty {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "GoodProperty [id=" + id + ", gid=" + gid + ", name=" + name + ", price=" + price + ", num=" + num
+				+ ", isDefault=" + isDefault + ", createTime=" + createTime + "]";
+	}
 	
 }

@@ -15,8 +15,19 @@ public class ViewName {
 	
 	public static final String HOME_ORDER_ORDER = HOME_PATH + "/order/order";
 	public static final String HOME_ORDER_PAY = HOME_PATH + "/order/pay";
-	public static final String HOME_ORDER_PAY_SUCCESS = HOME_PATH + "/order/paySuccess";
+	public static final String HOME_ORDER_PAY_SUCCESS = HOME_PATH + "/order/success";
 	public static final String HOME_ORDER_DETAIL = HOME_PATH + "/order/detail";
+	public static final String HOME_ORDER_LIST = HOME_PATH + "/order/list";
+	
+	public static final String HOME_RETURN_AND_CHANGE_INDEX = HOME_PATH + "/returnAndChange/index";
+	public static final String HOME_RETURN_AND_CHANGE_SUCCESS = HOME_PATH + "/returnAndChange/success";
+	public static final String HOME_RETURN_AND_CHANGE_DETAIL = HOME_PATH + "/returnAndChange/detail";
+	
+	public static final String HOME_ME = HOME_PATH + "/me/me";
+	
+	public static final String HOME_USER_PERSON_INFO = HOME_PATH + "/user/personInfo";
+	
+	
 	
 	private static final String ADMIN_PATH = "/admin";
 	public static final String ADMIN_LOGIN_PAGE = ADMIN_PATH + "/login/login";

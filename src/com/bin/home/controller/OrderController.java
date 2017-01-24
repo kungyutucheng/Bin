@@ -17,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
+import com.bin.contant.TipMsg;
 import com.bin.contant.ViewName;
 import com.bin.context.UserContext;
+import com.bin.model.Address;
 import com.bin.model.Cart;
 import com.bin.model.Good;
 import com.bin.model.GoodProperty;
@@ -27,10 +29,12 @@ import com.bin.model.OrderGood;
 import com.bin.service.AddressService;
 import com.bin.service.CartService;
 import com.bin.service.GoodPropertyService;
+import com.bin.service.GoodService;
 import com.bin.service.OrderGoodService;
 import com.bin.service.OrderService;
 import com.bin.util.AjaxModel;
 import com.bin.util.Creator;
+import com.bin.util.Page;
 
 @Controller
 @RequestMapping(value = "/home/order")
@@ -50,6 +54,9 @@ public class OrderController extends BaseController{
 	
 	@Autowired
 	private OrderGoodService orderGoodService;
+	
+	@Autowired
+	private GoodService goodService;
 	
 	@RequestMapping(value = "/order", method = {RequestMethod.POST , RequestMethod.GET},
 			produces = "text/html;charset=utf-8")
@@ -103,7 +110,7 @@ public class OrderController extends BaseController{
 			if(goodProperty.getNum() < cart.getNum()){
 				model.setSuccess(false);
 				model.setMsg(goodProperty.getName() + "数量超过库存，库存为" + goodProperty.getNum());
-				orderService.rollback();
+				orderService.delete(order);
 				return toJson(model);
 			}else{
 				//添加订单货物
@@ -113,6 +120,7 @@ public class OrderController extends BaseController{
 				orderGood.setNum(cart.getNum());
 				orderGood.setPrice(goodProperty.getPrice());
 				orderGood.setOid(oid);
+				orderGood.setGpid(goodProperty.getId());
 				orderGoods.add(orderGood);
 				
 				//更新库存
@@ -120,7 +128,7 @@ public class OrderController extends BaseController{
 				goodProperties.add(goodProperty);
 				
 				//删除购物车内对应的条目
-				cartService.delete(Cart.class, cart.getId());
+				cartService.delete(cart);
 			}
 		}
 		orderGoodService.saveAll(orderGoods, OrderGood.class);
@@ -157,8 +165,75 @@ public class OrderController extends BaseController{
 		Order order = orderService.get(Order.class, id);
 		List<OrderGood> orderGoods = 
 				orderGoodService.queryList("from OrderGood where oid = ?", id);
+		BigDecimal totalValue = new BigDecimal(0);
+		for(int i = 0 ;i < orderGoods.size() ; i++){
+			totalValue = totalValue.add(orderGoods.get(i).getPrice().multiply(new BigDecimal(orderGoods.get(i).getNum())));
+			orderGoods.get(i).setGood(goodService.get(Good.class, orderGoods.get(i).getGid()));
+		}
+		Address address = addressService.get(Address.class, order.getAid());
 		modelAndView.addObject("order", order);
 		modelAndView.addObject("orderGoods", orderGoods);
+		modelAndView.addObject("totalValue" , totalValue);
+		modelAndView.addObject("address", address);
 		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/list/{pageNo}" , method = RequestMethod.GET)
+	@MyException
+	public ModelAndView list(@PathVariable Integer pageNo , Integer status , Integer timeLimited , String no){
+		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_ORDER_LIST);
+		Page page = orderService.queryPageHome(pageNo, status, timeLimited, no);
+		List<Order> orders = page.getRows();
+		Order order = null;
+		List<OrderGood> orderGoods;
+		OrderGood orderGood;
+		for(int i = 0 ;i < orders.size() ; i++){
+			order = orders.get(i);
+			orderGoods = orderGoodService.queryList("from OrderGood where oid = ?", 
+					order.getId());
+			for(int j = 0 ; j < orderGoods.size() ; j++){
+				orderGood = orderGoods.get(j);
+				orderGood.setGood(goodService.get(Good.class, orderGood.getGid()));
+				orderGood.setGoodProperty(goodPropertyService.get(GoodProperty.class , orderGood.getGpid()));
+			}
+			order.setOrderGoods(orderGoods);
+			order.setAddress(addressService.get(Address.class, order.getAid()));
+		}
+		modelAndView.addObject("orders", orders);
+		if(no == null || no.trim().equals("")){
+			if(status == null){
+				modelAndView.addObject("status", 0);
+			}else{
+				modelAndView.addObject("status", status);
+			}
+			if(timeLimited == null){
+				modelAndView.addObject("timeLimited", 0);
+			}else{
+				modelAndView.addObject("timeLimited", timeLimited);
+			}
+		}else{
+			modelAndView.addObject("status", 0);
+			modelAndView.addObject("timeLimited" , 0);
+			modelAndView.addObject("no", no);
+		}
+		
+		//通过数据总记录数得出页数
+		Long pageCount = page.getTotal() / 2;
+		modelAndView.addObject("pageCount", pageCount);
+		modelAndView.addObject("pageNo", pageNo);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/delete/{id}" , method = RequestMethod.GET , 
+			produces = "text/html;charset=utf-8")
+	@ResponseBody
+	@MyException
+	public String delete(@PathVariable Integer id){
+		AjaxModel model = new AjaxModel();
+		model.setMsg(TipMsg.DELETE_SUCCESS);
+		Order order = orderService.get(Order.class, id);
+		order.setDisable(2);
+		orderService.update(order);
+		return toJson(model);
 	}
 }

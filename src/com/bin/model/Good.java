@@ -49,9 +49,6 @@ public class Good {
 	@Column(name = "oid")
 	private Integer oid;
 	
-	@Transient
-	private String owner;
-	
 	/**
 	 * 状态
 	 * 1-上架中
@@ -162,10 +159,13 @@ public class Good {
 	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal price;
 	
+	@Transient
+	private Owner owner;
+	
 	public Good() {
 	}
 	
-	public Good(Integer id, String name, String no, Integer oid, String owner, Integer status, String msg,
+	/*public Good(Integer id, String name, String no, Integer oid, String owner, Integer status, String msg,
 			Integer soldNum, String brand, String attr, Integer scope, String type, String picMid, String seriesSm,
 			String seriesLg, String picSm, Date createTime, Date removeTime, Double grossWeight, Double netWeight,
 			Integer commentNum, BigDecimal price) {
@@ -192,7 +192,7 @@ public class Good {
 		this.netWeight = netWeight;
 		this.commentNum = commentNum;
 		this.price = price;
-	}
+	}*/
 
 
 
@@ -363,6 +363,14 @@ public class Good {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+	
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	@Override

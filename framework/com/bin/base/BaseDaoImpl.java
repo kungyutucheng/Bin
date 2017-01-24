@@ -53,6 +53,8 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 	@Override
 	public void delete(T entity) {
 		getSession().delete(entity);
+		getSession().flush();
+		getSession().clear();
 	}
 
 	/**
@@ -273,16 +275,15 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 	 */
 	@Override
 	public T queryUnique(String hql, Object... params) {
+		Query query = getSession().createQuery(hql);
 		if(params != null && params.length > 0){
-			Query query = getSession().createQuery(hql);
 			for(int i = 0 ;i < params.length ; i++){
 				query.setParameter(i, params[i]);
 			}
-			return (T) query.uniqueResult();
 		}
-		return null;
+		return (T) query.uniqueResult();
 	}
-
+	
 	/**
 	 * 根据hql等获取分页结果
 	 * @param hql

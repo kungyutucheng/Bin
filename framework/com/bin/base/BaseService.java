@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class BaseService<T , PK extends Serializable> {
@@ -83,7 +84,4 @@ public abstract class BaseService<T , PK extends Serializable> {
 		return baseDao.fingUniqueByExample(clazz, entity);
 	}
 	
-	public void rollback(){
-		baseDao.getSession().getTransaction().rollback();
-	}
 }

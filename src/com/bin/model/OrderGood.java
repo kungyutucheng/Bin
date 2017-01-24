@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -37,6 +38,12 @@ public class OrderGood {
 	private Integer gid;
 	
 	/**
+	 * 商品特性id
+	 */
+	@Column(name = "gpid")
+	private Integer gpid;
+	
+	/**
 	 * 商品价格
 	 */
 	@Column(name = "price")
@@ -56,6 +63,11 @@ public class OrderGood {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
+	@Transient
+	private Good good;
+	
+	@Transient
+	private GoodProperty goodProperty;
 	
 	public OrderGood() {
 	}
@@ -83,6 +95,14 @@ public class OrderGood {
 	public void setGid(Integer gid) {
 		this.gid = gid;
 	}
+	
+	public Integer getGpid() {
+		return gpid;
+	}
+
+	public void setGpid(Integer gpid) {
+		this.gpid = gpid;
+	}
 
 	public BigDecimal getPrice() {
 		return price;
@@ -107,12 +127,29 @@ public class OrderGood {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	
+	public Good getGood() {
+		return good;
+	}
+
+	public void setGood(Good good) {
+		this.good = good;
+	}
+	
+	public GoodProperty getGoodProperty() {
+		return goodProperty;
+	}
+
+	public void setGoodProperty(GoodProperty goodProperty) {
+		this.goodProperty = goodProperty;
+	}
 
 	@Override
 	public String toString() {
-		return "OrderGoods [id=" + id + ", oid=" + oid + ", gid=" + gid + ", price=" + price + ", num=" + num
-				+ ", createTime=" + createTime + "]";
+		return "OrderGood [id=" + id + ", oid=" + oid + ", gid=" + gid + ", gpid=" + gpid + ", price=" + price
+				+ ", num=" + num + ", createTime=" + createTime + ", good=" + good + ", goodProperty=" + goodProperty
+				+ "]";
 	}
-	
+
 }
 
