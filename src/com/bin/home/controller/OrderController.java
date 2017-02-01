@@ -218,7 +218,7 @@ public class OrderController extends BaseController{
 		}
 		
 		//通过数据总记录数得出页数
-		Long pageCount = page.getTotal() / 2;
+		Long pageCount = page.getTotal() % 2 == 0l ? page.getTotal() / 2 : (page.getTotal() / 2 + 1);
 		modelAndView.addObject("pageCount", pageCount);
 		modelAndView.addObject("pageNo", pageNo);
 		return modelAndView;
@@ -229,7 +229,7 @@ public class OrderController extends BaseController{
 	@ResponseBody
 	@MyException
 	public String delete(@PathVariable Integer id){
-		AjaxModel model = new AjaxModel();
+		AjaxModel model = new AjaxModel(true);
 		model.setMsg(TipMsg.DELETE_SUCCESS);
 		Order order = orderService.get(Order.class, id);
 		order.setDisable(2);

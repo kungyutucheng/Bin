@@ -1,6 +1,7 @@
 package com.bin.home.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.TipMsg;
+import com.bin.contant.ViewName;
 import com.bin.context.UserContext;
 import com.bin.model.Address;
 import com.bin.service.AddressService;
@@ -86,7 +89,7 @@ public class AddressController extends BaseController{
 	@MyException
 	public String delete(@PathVariable Integer id){
 		AjaxModel model = new AjaxModel(true);
-		model.setMsg(TipMsg.UPDATE_SUCCESS);
+		model.setMsg(TipMsg.DELETE_SUCCESS);
 		addressService.batchDelete(id);
 		return toJson(model);
 	}
@@ -123,6 +126,16 @@ public class AddressController extends BaseController{
 	@MyException
 	public String getById(@PathVariable Integer id){
 		return toJson(addressService.get(Address.class, id));
+	}
+	
+	@RequestMapping(value = "/listPage" , method = RequestMethod.GET)
+	@MyException
+	public ModelAndView listPage(){
+		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_ADDRESS_LIST);
+		List<Address> addresses = addressService.queryList("from Address where uid = ? and disable = 1", 
+				UserContext.getContext().getUser().getId());
+		modelAndView.addObject("addresses", addresses);
+		return modelAndView;
 	}
 	
 }

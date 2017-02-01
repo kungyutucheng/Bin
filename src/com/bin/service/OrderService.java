@@ -9,9 +9,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bin.admin.controller.AdminOrderController;
 import com.bin.base.BaseService;
+import com.bin.context.BackupUserContext;
 import com.bin.context.UserContext;
 import com.bin.dao.OrderDao;
+import com.bin.model.BackupUser;
 import com.bin.model.Order;
 import com.bin.util.Page;
 
@@ -74,6 +77,30 @@ public class OrderService extends BaseService<Order, Integer>{
 		page.setTotal(orderDao.getCount(hql.toString(), params.toArray()));
 		return page;
 		
+	}
+
+	public Page queryPage(Page page) {
+		StringBuilder hql = new StringBuilder("from Order where 1=1");
+		List<Object> params = new ArrayList<Object>();
+		if(BackupUserContext.getContext().getUser().getRole() == BackupUser.ROLE_USER){
+			params.add(BackupUserContext.getContext().getUser().getId());
+			hql.append(" and uid = ?");
+		}
+		if(page.getParams().get("no") != null){
+			params.add(page.getParams().get("no"));
+			hql.append(" and no = ?");
+		}
+		if(page.getParams().get("status") != null &&
+				Integer.valueOf(page.getParams().get("status").toString()) != 0){
+			params.add(Integer.valueOf(page.getParams().get("status").toString()));
+			hql.append(" and status = ?");
+		}
+		hql.append(" order by createTime desc");
+		Page page2 = new Page();
+		page2.setRows(orderDao.getPageResult(hql.toString(), page.getPage(), AdminOrderController.PAGE_SIZE, params.toArray()));
+		page2.setPage(page.getPage());
+		page2.setTotal(orderDao.getCount(hql.toString(), params.toArray()));
+		return page2;
 	}
 	
 }

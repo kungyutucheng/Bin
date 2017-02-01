@@ -12,7 +12,6 @@
 		<title>返修/退换货详情</title>
 		<style>
 			body {
-				background: #F5F5F5;
 				text-align: center;
 			}
 			
@@ -162,7 +161,7 @@
 				</div>
 				<div class="inner-block">
 					<div class="servant-msg">
-						本次售后服务由<span class="servant">${rac.good.owner['name'] }</span>为您提供
+						本次售后服务由<span class="servant">${rac.orderGood.good.owner['name'] }</span>为您提供
 					</div>
 					<div class="good">
 						<div class="img">
@@ -173,7 +172,7 @@
 								售后服务单号：${rac.no }
 							</div>
 							<div>
-								商品名：${rac.good['name'] }
+								商品名：${rac.orderGood.good['name'] }&nbsp;&nbsp;${rac.orderGood.goodProperty['name'] }
 							</div>
 						</div>
 					</div>

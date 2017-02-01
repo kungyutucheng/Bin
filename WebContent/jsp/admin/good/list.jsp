@@ -429,8 +429,7 @@
 		<!-- 图片上传js end -->
 		<script type="text/javascript">
 		$(function() {
-			layui.use(['jquery','form'], function() {
-				var $ = layui.jquery;
+			layui.use('form', function() {
 				var form = layui.form();
 				
 				//加载初始数据
@@ -731,7 +730,9 @@
 			
 			
 			function loadGoodDataWithPageInfo(){
+					console.log(1);
 				$.post("${basePath}/admin/good/searchgrid",$("#searchForm").serializeObject(),function(result){
+					console.log(result);
 					result = $.parseJSON(result);
 					var rows = result.rows;
 					var data = "";

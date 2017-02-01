@@ -43,8 +43,8 @@ public class ReturnAndChange {
 	/**
 	 * 订单id
 	 */
-	@Column(name = "oid")
-	private Integer oid;
+	@Column(name = "ogid")
+	private Integer ogid;
 	
 	/**
 	 * 商品编号
@@ -202,10 +202,16 @@ public class ReturnAndChange {
 	/**
 	 * 售后服务单号
 	 */
+	@Column(name = "no")
 	private String no;
 	
+	/**
+	 * 所属用户id
+	 */
+	private Integer uid;
+	
 	@Transient
-	private Good good;
+	private OrderGood orderGood;
 	
 	public ReturnAndChange() {
 	}
@@ -215,21 +221,20 @@ public class ReturnAndChange {
 		return id;
 	}
 
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
 
-	public Integer getOid() {
-		return oid;
+
+	public Integer getOgid() {
+		return ogid;
 	}
 
 
-	public void setOid(Integer oid) {
-		this.oid = oid;
+	public void setOgid(Integer ogid) {
+		this.ogid = ogid;
 	}
-
 
 	public String getgNo() {
 		return gNo;
@@ -467,15 +472,15 @@ public class ReturnAndChange {
 		this.no = no;
 	}
 
-
-	public Good getGood() {
-		return good;
+	public OrderGood getOrderGood() {
+		return orderGood;
 	}
 
 
-	public void setGood(Good good) {
-		this.good = good;
+	public void setOrderGood(OrderGood orderGood) {
+		this.orderGood = orderGood;
 	}
+
 
 	public BigDecimal getReturnMoney() {
 		return returnMoney;
@@ -487,16 +492,28 @@ public class ReturnAndChange {
 	}
 
 
+	public Integer getUid() {
+		return uid;
+	}
+
+
+	public void setUid(Integer uid) {
+		this.uid = uid;
+	}
+
+
 	@Override
 	public String toString() {
-		return "ReturnAndChange [id=" + id + ", oid=" + oid + ", gNo=" + gNo + ", applyTime=" + applyTime + ", status="
-				+ status + ", type=" + type + ", description=" + description + ", dealWay=" + dealWay
+		return "ReturnAndChange [id=" + id + ", ogid=" + ogid + ", gNo=" + gNo + ", applyTime=" + applyTime
+				+ ", status=" + status + ", type=" + type + ", description=" + description + ", dealWay=" + dealWay
 				+ ", returnMoneyWay=" + returnMoneyWay + ", province=" + province + ", city=" + city + ", county="
 				+ county + ", address=" + address + ", receiver=" + receiver + ", tel=" + tel + ", deliveryFare="
 				+ deliveryFare + ", express=" + express + ", expressNo=" + expressNo + ", createTime=" + createTime
 				+ ", rechangeMsg=" + rechangeMsg + ", resendTime=" + resendTime + ", passTime=" + passTime
 				+ ", receiveTime=" + receiveTime + ", finishTime=" + finishTime + ", num=" + num + ", returnMoney="
-				+ returnMoney + ", no=" + no + ", good=" + good + "]";
+				+ returnMoney + ", no=" + no + ", uid=" + uid + ", orderGood=" + orderGood + "]";
 	}
+
+
 	
 }

@@ -22,18 +22,20 @@ public class ViewName {
 	public static final String HOME_RETURN_AND_CHANGE_INDEX = HOME_PATH + "/returnAndChange/index";
 	public static final String HOME_RETURN_AND_CHANGE_SUCCESS = HOME_PATH + "/returnAndChange/success";
 	public static final String HOME_RETURN_AND_CHANGE_DETAIL = HOME_PATH + "/returnAndChange/detail";
+	public static final String HOME_RETURN_AND_CHANGE_LIST = HOME_PATH + "/returnAndChange/list";
 	
 	public static final String HOME_ME = HOME_PATH + "/me/me";
 	
 	public static final String HOME_USER_PERSON_INFO = HOME_PATH + "/user/personInfo";
 	
-	
+	public static final String HOME_ADDRESS_LIST = HOME_PATH + "/address/list";
 	
 	private static final String ADMIN_PATH = "/admin";
 	public static final String ADMIN_LOGIN_PAGE = ADMIN_PATH + "/login/login";
 	
 	public static final String ADMIN_INDEX = ADMIN_PATH + "/index/index";
 	
+	public static final String ADMIN_ORDER_LIST = ADMIN_PATH + "/order/list";
 	
 	
 	private static final String ERROR_PATH = "/error";

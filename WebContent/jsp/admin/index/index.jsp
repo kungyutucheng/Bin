@@ -37,13 +37,13 @@
 					<a>日常</a>
 					<dl class="layui-nav-child">
 						<dd>
-							<a name='a' title="good/list.jsp">商品管理</a>
+							<a name='a' title="${basePath}/jsp/admin/good/list.jsp">商品管理</a>
 						</dd>
 						<dd>
 							<a name='a' title="../../address.html">用户管理</a>
 						</dd>
 						<dd>
-							<a name='a' title="../../address.html">订单管理</a>
+							<a name='a' title="${basePath}/admin/order/list?page=1">订单管理</a>
 						</dd>
 						<dd>
 							<a name='a' title="../../address.html">商家入驻申请</a>
@@ -57,7 +57,7 @@
 					<a>基础</a>
 					<dl class="layui-nav-child">
 						<dd>
-							<a name='a' title="good/brand.jsp">基础信息管理</a>
+							<a name='a' title="${basePath}/jsp/admin/good/brand.jsp">基础信息管理</a>
 						</dd>
 						<dd>
 							<a name='a' title="../../address.html">仓库管理</a>
@@ -125,7 +125,7 @@
 						//新增一个Tab项
 						element.tabAdd('demo', {
 							title: $(this).text() + "<i class='layui-icon layui-unselect layui-tab-close'>&#x1006;</i>",
-							content: '<iframe name="iframe" src="${basePath}/jsp/admin/' + this.title + '" frameborder="0" style="width: 100%;"></iframe>'
+							content: '<iframe name="iframe" src="' + this.title + '" frameborder="0" style="width: 100%;"></iframe>'
 						});
 						//增加点击关闭事件
 						var r = $("#tabTitle").find("li");

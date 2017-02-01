@@ -69,6 +69,10 @@ public class OrderGood {
 	@Transient
 	private GoodProperty goodProperty;
 	
+	
+	@Transient
+	private Order order;
+	
 	public OrderGood() {
 	}
 	
@@ -143,13 +147,24 @@ public class OrderGood {
 	public void setGoodProperty(GoodProperty goodProperty) {
 		this.goodProperty = goodProperty;
 	}
+	
+	
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 
 	@Override
 	public String toString() {
 		return "OrderGood [id=" + id + ", oid=" + oid + ", gid=" + gid + ", gpid=" + gpid + ", price=" + price
 				+ ", num=" + num + ", createTime=" + createTime + ", good=" + good + ", goodProperty=" + goodProperty
-				+ "]";
+				+ ", order=" + order + "]";
 	}
+
 
 }
 

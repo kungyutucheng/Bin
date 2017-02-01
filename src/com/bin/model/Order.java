@@ -131,11 +131,18 @@ public class Order {
 	@Column(name = "_disable")
 	private Integer disable;
 	
+	@Column(name = "finishTime")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date finishTime;
+	
 	@Transient
 	private List<OrderGood> orderGoods;
 	
 	@Transient
 	private Address address;
+	
+	@Transient
+	private User user;
 	
 	public Order() {
 	}
@@ -275,15 +282,30 @@ public class Order {
 	public void setDisable(Integer disable) {
 		this.disable = disable;
 	}
+	
+	public Date getFinishTime() {
+		return finishTime;
+	}
+
+	public void setFinishTime(Date finishTime) {
+		this.finishTime = finishTime;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", uid=" + uid + ", aid=" + aid + ", no=" + no + ", status=" + status + ", payWay="
 				+ payWay + ", payTime=" + payTime + ", totalValue=" + totalValue + ", receiptName=" + receiptName
 				+ ", receiptContent=" + receiptContent + ", outTime=" + outTime + ", confirmTime=" + confirmTime
-				+ ", createTime=" + createTime + ", score=" + score + ", disable=" + disable + ", orderGoods="
-				+ orderGoods + ", address=" + address + "]";
+				+ ", createTime=" + createTime + ", score=" + score + ", disable=" + disable + ", finishTime="
+				+ finishTime + ", orderGoods=" + orderGoods + ", address=" + address + ", user=" + user + "]";
 	}
-	
-	
+
 }

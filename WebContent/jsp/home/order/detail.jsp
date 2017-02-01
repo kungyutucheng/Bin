@@ -10,10 +10,6 @@
 		<meta charset="UTF-8">
 		<title>订单详情</title>
 		<style>
-			body{
-				background: #F5F5F5;
-			}
-			
 			.order{
 				background: #fff;
 				height: 300px;

@@ -63,7 +63,7 @@
 						<iframe id="iframe" src="${basePath }/home/user/personInfo" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
 					</c:when>
 					<c:when test="${target == 2 }">
-						<iframe id="iframe" src="${basePath }/home/user/list" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+						<iframe id="iframe" src="${basePath }/home/address/listPage" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
 					</c:when>
 					<c:when test="${target == 3 }">
 						<iframe id="iframe" src="${basePath }/home/order/list/1" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
@@ -75,7 +75,7 @@
 						<iframe id="iframe" src="${basePath }/home/comment/list" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
 					</c:when>
 					<c:when test="${target == 6 }">
-						<iframe id="iframe" src="${basePath }/home/returnAndChange/list" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+						<iframe id="iframe" src="${basePath }/home/returnAndChange/list/1" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
 					</c:when>
 				</c:choose>
 			</div>
@@ -86,7 +86,7 @@
 				if(index == 1) {
 					url += "user/personInfo";
 				} else if(index == 2) {
-					url += "address.jsp";
+					url += "address/listPage";
 				} else if(index == 3) {
 					url += "order/list/1";
 				} else if(index == 4) {
@@ -94,7 +94,7 @@
 				}else if(index == 5){
 					url += "myRank.html";
 				}else if(index == 6){
-					url += "returnOrExchangeList.html";
+					url += "returnAndChange/list/1";
 				}
 				$("#iframe").attr("src", url);
 				//var iframe = document.getElementById("iframe");
@@ -115,6 +115,28 @@
 				} catch(ex) {}
 			}
 			window.setInterval("reinitIframe()", 200); 
+			
+			
+			function showMsgInPW(msg){
+				layer.msg(msg);
+			}
+			
+			function deleteConfirmDialog(msg,url,obj){
+				layer.confirm(msg,
+						{btn:["确定","取消"]},
+						function(){
+							$.post(url ,null,function(result){
+								result = $.parseJSON(result);
+								layer.msg(result.msg);
+								if(result.success){
+									$(obj).parent().parent().parent().remove();
+								}
+							});
+						},function(index){
+							layer.close(index);
+						}
+					);
+			}
 		</script>
 	</body>
 

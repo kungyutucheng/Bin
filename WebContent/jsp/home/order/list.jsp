@@ -300,6 +300,28 @@
 		</div>
 		<script>
 		$(function(){
+			
+			//Demo
+			layui.use(['form' , 'laypage'], function() {
+				var form = layui.form();
+				var laypage = layui.laypage;
+				laypage({
+					cont: 'page', //id
+					pages: "${pageCount}", //总页数
+					curr: "${pageNo}", //当前页
+					groups: 5, //连续显示分页数
+					jump: function(obj, first) {
+						if(obj.curr != Number("${pageNo}")){
+							$("#filterForm").attr("action" , "${basePath}/home/order/list/" + obj.curr);
+							$("#filterForm").submit();
+						}
+					}
+				});
+				
+				form.on('select(timeLimited)' , function(data){
+					$("#filterForm").submit();
+				});
+			});
 			var html = "<option value='0'>全部订单</option>"; 
 			html += "<option value='1'>三个月内订单</option>";
 			var date = new Date();
@@ -325,37 +347,19 @@
 			
 			$("a[name='deleteIcon']").each(function(){
 				$(this).on("click",function(){
+					/* var obj = $(this);
 					$.get($(this).attr("title"),null,function(result){
 						result = $.parseJSON(result);
-						layer.msg(result.msg);
+						parent.showMsgInPW(result.msg);
 						if(result.success){
-							$(this).parent().parent().parent().remove();
+							window.location.reload();
 						}
-					});
+					}); */
+					parent.deleteConfirmDialog("确定删除?",$(this).attr("title"),$(this));
 				});
 			});
 		});
-			//Demo
-			layui.use(['form' , 'laypage'], function() {
-				var form = layui.form();
-				var laypage = layui.laypage;
-				laypage({
-					cont: 'page', //id
-					pages: "${pageCount}", //总页数
-					curr: "${pageNo}", //当前页
-					groups: 5, //连续显示分页数
-					jump: function(obj, first) {
-						if(obj.curr != Number("${pageNo}")){
-							$("#filterForm").attr("action" , "${basePath}/home/order/list/" + obj.curr);
-							$("#filterForm").submit();
-						}
-					}
-				});
-				
-				form.on('select(timeLimited)' , function(data){
-					$("#filterForm").submit();
-				});
-			});
+			
 			
 		</script>
 	</body>

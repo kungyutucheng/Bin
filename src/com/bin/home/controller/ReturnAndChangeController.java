@@ -16,6 +16,7 @@ import com.bin.annotation.MyException;
 import com.bin.base.BaseController;
 import com.bin.contant.TipMsg;
 import com.bin.contant.ViewName;
+import com.bin.context.UserContext;
 import com.bin.model.Address;
 import com.bin.model.Good;
 import com.bin.model.GoodProperty;
@@ -38,6 +39,8 @@ import com.bin.util.Creator;
 @Controller
 @RequestMapping(value = "/home/returnAndChange")
 public class ReturnAndChangeController extends BaseController{
+	
+	private static final Integer PAGE_SIZE = 2;
 
 	@Autowired
 	private ReturnAndChangeService returnAndChangeService;
@@ -93,7 +96,8 @@ public class ReturnAndChangeController extends BaseController{
 		returnAndChange.setCity(pccs[1]);
 		returnAndChange.setCounty(pccs[2]);
 		returnAndChange.setApplyTime(new Date());
-		returnAndChange.setNo(Creator.createRACNo(returnAndChange.getOid()));
+		returnAndChange.setNo(Creator.createRACNo(returnAndChange.getOgid()));
+		returnAndChange.setUid(UserContext.getContext().getUser().getId());
 		Integer rid = returnAndChangeService.save(returnAndChange);
 		modelAndView.addObject("id", rid);
 		
@@ -112,10 +116,15 @@ public class ReturnAndChangeController extends BaseController{
 	public ModelAndView detail(@PathVariable Integer id){
 		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_RETURN_AND_CHANGE_DETAIL);
 		ReturnAndChange returnAndChange = returnAndChangeService.get(ReturnAndChange.class, id);
+		OrderGood orderGood = orderGoodService.get(OrderGood.class, returnAndChange.getOgid());
 		Good good = goodService.queryUnique("from Good where no = ?", returnAndChange.getgNo());
+		Order order = orderService.get(Order.class, orderGood.getOid());
+		GoodProperty goodProperty = goodPropertyService.get(GoodProperty.class, orderGood.getGpid());
+		orderGood.setGood(good);
+		orderGood.setGoodProperty(goodProperty);
 		Owner owner = ownerService.get(Owner.class, good.getOid());
 		good.setOwner(owner);
-		returnAndChange.setGood(good);
+		returnAndChange.setOrderGood(orderGood);
 		modelAndView.addObject("rac", returnAndChange);
 		
 		//获取售后日志
@@ -125,4 +134,27 @@ public class ReturnAndChangeController extends BaseController{
 		return modelAndView;
 	}
 	
+	@RequestMapping(value = "/list/{pageNo}" , method = RequestMethod.GET)
+	@MyException
+	public ModelAndView list(@PathVariable Integer pageNo){
+		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_RETURN_AND_CHANGE_LIST);
+		List<ReturnAndChange> returnAndChanges = returnAndChangeService.getPageResult(
+				"from ReturnAndChange where uid = ?", pageNo, PAGE_SIZE, 
+				UserContext.getContext().getUser().getId());
+		OrderGood orderGood;
+		for(ReturnAndChange returnAndChange : returnAndChanges){
+			orderGood = orderGoodService.get(OrderGood.class, returnAndChange.getOgid());
+			orderGood.setGood(goodService.get(Good.class, orderGood.getGid()));
+			orderGood.setGoodProperty(goodPropertyService.get(GoodProperty.class, orderGood.getGpid()));
+			orderGood.setOrder(orderService.get(Order.class, orderGood.getOid()));
+			returnAndChange.setOrderGood(orderGood);
+		}
+		modelAndView.addObject("racs", returnAndChanges);
+		modelAndView.addObject("pageNo", pageNo);
+		Long total = returnAndChangeService.getCount("from ReturnAndChange where uid = ?", 
+				UserContext.getContext().getUser().getId());
+		Long pageCount = total % PAGE_SIZE == 0l ? total / PAGE_SIZE : (total / PAGE_SIZE + 1l);
+		modelAndView.addObject("pageCount", pageCount);
+		return modelAndView;
+	}
 }
