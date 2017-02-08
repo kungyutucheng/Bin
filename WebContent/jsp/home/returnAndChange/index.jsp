@@ -162,6 +162,7 @@
 				</div>
 				<input type="hidden" name="aid" value="${address.id }">
 				<input type="hidden" name="ogid" value="${orderGood.id }">
+				<input type="hidden" name="oid" value="${orderGood.oid }">
 				<input type="hidden" name="gNo" value="${good.no }">
 				<input type="hidden" name="type" value="1">
 			</form>

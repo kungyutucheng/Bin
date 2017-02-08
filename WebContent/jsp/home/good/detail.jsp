@@ -324,7 +324,7 @@
 				</div>
 				<div class="row" style="position: relative;">
 					<div class="input-group" style="width: 140px;float: left;position: absolute;">
-						<span class="input-group-addon" style="cursor: pointer;" onclick="subNum('num');">-</span>
+						<span class="input-group-addon" style="cursor: pointer;" onclick="subNum();">-</span>
 						<input id="num" type="text" class="form-control" value="1" style="height: 40px;" onblur="getNumFromInput(this);">
 						<span class="input-group-addon" style="cursor: pointer;" onclick="addNum();">+</span>
 					</div>
@@ -376,7 +376,7 @@
 			<div>
 				<div>
 					<div style="display: inline-block;margin:0px 100px;">
-						<span style="font-size: 70px;color: red;">98</span>
+						<span style="font-size: 70px;color: red;">${goodPercent }</span>
 						<span style="font-size: 35px;color: red;">%</span>
 					</div>
 					<div id="commnetPercentChart" style="width:300px;height:150px;display: inline-block;vertical-align: middle;"></div>
@@ -384,17 +384,23 @@
 				<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 					<ul class="layui-tab-title">
 						<li class="layui-this">全部评价（${good.commentNum }）</li>
-						<li>好评（2189）</li>
-						<li>中评（219）</li>
-						<li>差评（320）</li>
+						<li>好评（${goodCount }）</li>
+						<li>中评（${midCount }）</li>
+						<li>差评（${badCount }）</li>
 					</ul>
 					<div class="layui-tab-content">
 						<div class="layui-tab-item layui-show" style="margin-bottom: 30px;">
-							<iframe id="allComment" src="comment.html" style="width: 100%;" frameborder="0" scrolling="no"></iframe>
+							<iframe name="commentIframe" src="${basePath }/home/comment/list/${good.id}/1/0" style="width: 100%;" frameborder="0" scrolling="no"></iframe>
 						</div>
-						<div class="layui-tab-item">内容2</div>
-						<div class="layui-tab-item">内容3</div>
-						<div class="layui-tab-item">内容5</div>
+						<div class="layui-tab-item">
+							<iframe name="commentIframe" src="${basePath }/home/comment/list/${good.id}/1/1" style="width: 100%;" frameborder="0" scrolling="no"></iframe>
+						</div>
+						<div class="layui-tab-item">
+							<iframe name="commentIframe" src="${basePath }/home/comment/list/${good.id}/1/2" style="width: 100%;" frameborder="0" scrolling="no"></iframe>
+						</div>
+						<div class="layui-tab-item">
+							<iframe name="commentIframe" src="${basePath }/home/comment/list/${good.id}/1/3" style="width: 100%;" frameborder="0" scrolling="no"></iframe>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -406,9 +412,12 @@
 		<script type="text/javascript">
 			//调整iframe高度，使其高度自适应内容
 			function reinitIframe() {
-				var iframe = document.getElementById("allComment");
+				//var iframe = document.getElementById("allComment");
+				var iframes = document.getElementsByName("commentIframe");
 				try {
-					iframe.height = iframe.contentWindow.document.documentElement.scrollHeight;
+					for(var i = 0 ;i < iframes.length ; i++){
+						iframes[i].height = iframes[i].contentWindow.document.documentElement.scrollHeight;
+					}
 				} catch(ex) {
 				}
 			}
@@ -472,13 +481,13 @@
 							}
 						},
 						data: [{
-							value: 335,
+							value: "${goodCount}",
 							name: '好评'
 						}, {
-							value: 310,
+							value: "${midCount}",
 							name: '中评'
 						}, {
-							value: 234,
+							value: "${badCount}",
 							name: '差评'
 						}, ]
 					}]
@@ -525,6 +534,15 @@
 					return;
 				}
 				$("#num").val(Number($("#num").val()) + 1);
+			}
+			
+			function subNum(){
+				var num = $("#num");
+				var numValue = Number(num.val());
+				if(numValue - 1 == 0){
+					return;
+				}
+				num.val(numValue - 1);
 			}
 			
 			function addIntoCart(){

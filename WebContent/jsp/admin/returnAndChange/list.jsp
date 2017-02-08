@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>订单列表</title>
+<title>退换货列表</title>
 <style type="text/css">
 .width100{
 	width:100px;
@@ -24,7 +24,7 @@
 			<form class="layui-form" id="filterForm">
 				<div class="layui-form-item">
 					<div class="layui-inline">
-						<div class="layui-form-label width100">订单编号</div>
+						<div class="layui-form-label width100">编号</div>
 						<div class="layui-input-block">
 							<input type="text" name="no" class="layui-input" value="${params.no }"/>
 						</div>
@@ -34,11 +34,11 @@
 						<div class="layui-input-block">
 							<select name="status">
 								<option value="0">全部</option>
-								<option value="1">待付款</option>
-								<option value="2">已取消</option>
-								<option value="3">待发货</option>
-								<option value="4">待收货</option>
-								<option value="5">待评价</option>
+								<option value="1">已提交</option>
+								<option value="2">已审核</option>
+								<option value="3">已收货</option>
+								<option value="4">已发货</option>
+								<option value="5">已退款</option>
 								<option value="6">已完成</option>
 							</select>
 						</div>
@@ -58,44 +58,64 @@
 				<th>编号</th>
 				<th>用户</th>
 				<th>状态</th>
-				<th>支付方式</th>
-				<th>商品总额</th>
-				<th>完成时间</th>
+				<th>类别</th>
+				<th>处理方式</th>
+				<th>申请时间</th>
 				<th>操作</th>
 			</thead>
 			<tbody id="dg">
-				<c:forEach items="${orders }" var="order">
+				<c:forEach items="${racs }" var="rac">
 				<tr>
 					<td>
 						<input type="checkbox" name="selectItem" onchange="hasSelectAll()" />
 					</td>
-					<td>${order.no }</td>
-					<td>${order.user.name }</td>
+					<td>${rac.no }</td>
+					<td>${rac.user.name }</td>
 					<td>
 						<c:choose>
-							<c:when test="${order.status == 1 }">待付款</c:when>
-							<c:when test="${order.status == 2 }">已取消</c:when>
-							<c:when test="${order.status == 3 }">待发货</c:when>
-							<c:when test="${order.status == 4 }">待收货</c:when>
-							<c:when test="${order.status == 5 }">待评价</c:when>
-							<c:when test="${order.status == 6 }">已完成</c:when>
+							<c:when test="${rac.status == 1 }">已提交</c:when>
+							<c:when test="${rac.status == 2 }">已审核</c:when>
+							<c:when test="${rac.status == 3 }">已收货</c:when>
+							<c:when test="${rac.status == 4 }">已发货</c:when>
+							<c:when test="${rac.status == 5 }">已退款</c:when>
+							<c:when test="${rac.status == 6 }">已完成</c:when>
 						</c:choose>
 					</td>
 					<td>
 						<c:choose>
-							<c:when test="${order.payWay == 1 }">在线支付</c:when>
-							<c:when test="${order.payWay == 2 }">货到付款</c:when>
+							<c:when test="${rac.type == 1 }">退货</c:when>
+							<c:when test="${rac.type == 2 }">换货</c:when>
 						</c:choose>
 					</td>
-					<td>${order.totalValue }</td>
-					<td><fmt:formatDate value="${order.finishTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+					<td>
+						<c:choose>
+							<c:when test="${rac.dealWay == 1 }">退货</c:when>
+							<c:when test="${rac.dealWay == 2 }">换货</c:when>
+						</c:choose>
+					</td>
+					<td><fmt:formatDate value="${rac.applyTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
 					<td>
 						<span>
-							<a class="extra" onclick="showGoodDetail(${order.id})">详情</a>
+							<a class="extra" onclick="showRacDetail(${rac.id})">详情</a>
 						</span>
-						<c:if test="${order.status == 3 }">
+						<c:if test="${rac.status == 1 }">
 						<span>
-							<a class="extra" onclick="deliverGood(${order.id})">发货</a>
+							<a class="extra" onclick="pass(${rac.id})">通过</a>
+						</span>
+						</c:if>
+						<c:if test="${rac.status == 2 }">
+						<span>
+							<a class="extra" onclick="receive(${rac.id})">收货</a>
+						</span>
+						</c:if>
+						<c:if test="${rac.status == 3 && rac.type == 2}">
+						<span>
+							<a class="extra" onclick="deliverGood(${rac.id})">发货</a>
+						</span>
+						</c:if>
+						<c:if test="${rac.status == 3 && rac.type == 1 }">
+						<span>
+							<a class="extra" onclick="returnMoney(${rac.id})">退款</a>
 						</span>
 						</c:if>
 					</td>
@@ -123,12 +143,12 @@
 								<div class="layui-inline">
 									<div class="layui-form-label width100">快递单号</div>
 									<div class="layui-input-block">
-										<input type="text" class="layui-input" name="expressNo" required="required">
+										<input type="text" class="layui-input" name="expressNo" required >
 									</div>
 								</div>
 							</div>
 							<div class="layui-form-item">
-								<input type="hidden" name="id">
+								<input type="hidden" name="rid">
 								<button class="layui-btn" lay-submit lay-filter="deliverGood">发货</button>
 							</div>
 						</form>
@@ -141,7 +161,6 @@
 	$(function(){
 		
 		//Demo
-		layui.use(['form' , 'laypage'], function() {
 			var form = layui.form();
 			var laypage = layui.laypage;
 			laypage({
@@ -152,14 +171,13 @@
 				jump: function(obj, first) {
 					if(obj.curr != Number("${pageNo}")){
 						$("input[name='page']").val(obj.curr);
-						$("#filterForm").attr("action" , "${basePath}/admin/order/list");
+						$("#filterForm").attr("action" , "${basePath}/admin/rac/list/" + obj.curr);
 						$("#filterForm").submit();
 					}
 				}
 			});
 			
 			$.post("${basePath}/express/getAll",null,function(result){
-				console.log(result);
 				result = $.parseJSON(result);
 				var selectors = $("select[name='eid']");
 				var html = "";
@@ -177,7 +195,7 @@
 			
 			
 			form.on("submit(deliverGood)" , function(data){
-				$.post("${basePath}/admin/order/deliverGood" , data.field,function(result){
+				$.post("${basePath}/admin/rac/deliverGood" , data.field,function(result){
 					result = $.parseJSON(result);
 					layer.msg(result.msg);
 					if(result.success){
@@ -191,11 +209,52 @@
 		});
 		$("select[name='status']").val(Number("${params.status}"));
 		
-	});
 	
 	function deliverGood(id){
-		$("input[name='id']").val(id);
+		$("input[name='rid']").val(id);
 		$("#deliverGoodModal").modal("show");
+	}
+	
+	function pass(id){
+		confirm("确认审核通过？",null,function(isConfirm){
+			if(isConfirm){
+				$.get("${basePath}/admin/rac/pass/" + id, null , function(result){
+					result = $.parseJSON(result);
+					layer.msg(result.msg);
+					if(result.success){
+						$("#filterForm").submit();
+					}
+				});
+			}
+		});
+	}
+	
+	function receive(id){
+		confirm("确认收货？",null,function(isConfirm){
+			if(isConfirm){
+				$.get("${basePath}/admin/rac/receive/" + id, null , function(result){
+					result = $.parseJSON(result);
+					layer.msg(result.msg);
+					if(result.success){
+						$("#filterForm").submit();
+					}
+				});
+			}
+		});
+	}
+	
+	function returnMoney(id){
+		confirm("确认退款？",null,function(isConfirm){
+			if(isConfirm){
+				$.get("${basePath}/admin/rac/returnMoney/" + id, null , function(result){
+					result = $.parseJSON(result);
+					layer.msg(result.msg);
+					if(result.success){
+						$("#filterForm").submit();
+					}
+				});
+			}
+		});
 	}
 	</script>
 </body>

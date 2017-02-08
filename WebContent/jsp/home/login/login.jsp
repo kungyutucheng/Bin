@@ -82,7 +82,7 @@
 										<div class="input-group">
 											<div class="input-group-addon"><span class="ico ico-user"></span></div>
 											<div class="email_autocomplete1">
-												<input type="email" class="form-control" id="lAccount" name="account" placeholder="邮箱">
+												<input autofocus="autofocus" type="email" class="form-control" id="lAccount" name="account" placeholder="邮箱">
 											</div>
 										</div>
 									</div>

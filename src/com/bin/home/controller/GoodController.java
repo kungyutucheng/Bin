@@ -20,10 +20,12 @@ import com.bin.model.Good;
 import com.bin.model.GoodProperty;
 import com.bin.model.Owner;
 import com.bin.service.BrandSerivce;
+import com.bin.service.CommentService;
 import com.bin.service.GoodPropertyService;
 import com.bin.service.GoodService;
 import com.bin.service.OwnerService;
 import com.bin.util.Page;
+import com.sun.org.apache.bcel.internal.generic.LNEG;
 
 @Controller
 @RequestMapping(value = "/home/good")
@@ -40,6 +42,9 @@ public class GoodController extends BaseController{
 	
 	@Autowired
 	private GoodPropertyService goodPropertyService;
+	
+	@Autowired
+	private CommentService commentService;
 	
 	@RequestMapping(value = "/search",method = {RequestMethod.GET,RequestMethod.POST})
 	@MyException
@@ -73,9 +78,17 @@ public class GoodController extends BaseController{
 			List<GoodProperty> goodProperties = goodPropertyService.queryList(
 					"from GoodProperty where gid = ?", good.getId());
 			ModelAndView modelAndView = new ModelAndView(ViewName.HOME_GOOD_DETAIL);
+			Long goodCount = commentService.getCount("from Comment where gid = ? and score > 3", id);
+			Long midCount = commentService.getCount("from Comment where gid = ? and score = 3", id);
+			Long badCount = commentService.getCount("from Comment where gid = ? and score < 3", id);
+			double goodPercent = Math.floor(goodCount * 100 / (goodCount + midCount + badCount));
 			modelAndView.addObject("good", good);
 			modelAndView.addObject("owner", owner);
 			modelAndView.addObject("goodProperties", goodProperties);
+			modelAndView.addObject("goodCount", goodCount);
+			modelAndView.addObject("midCount" , midCount);
+			modelAndView.addObject("badCount", badCount);
+			modelAndView.addObject("goodPercent", goodPercent);
 			return modelAndView;
 		}
 	}

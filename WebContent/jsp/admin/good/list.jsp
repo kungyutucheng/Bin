@@ -730,7 +730,6 @@
 			
 			
 			function loadGoodDataWithPageInfo(){
-					console.log(1);
 				$.post("${basePath}/admin/good/searchgrid",$("#searchForm").serializeObject(),function(result){
 					console.log(result);
 					result = $.parseJSON(result);

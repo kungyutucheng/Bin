@@ -40,10 +40,10 @@
 								<td>
 									<c:choose>
 										<c:when test="${rac.status == 1 }">已提交</c:when>
-										<c:when test="${rac.status == 1 }">已审核</c:when>
-										<c:when test="${rac.status == 1 }">已收货</c:when>
-										<c:when test="${rac.status == 1 }">已发货</c:when>
-										<c:when test="${rac.status == 1 }">已退款</c:when>
+										<c:when test="${rac.status == 2 }">已审核</c:when>
+										<c:when test="${rac.status == 3 }">已收货</c:when>
+										<c:when test="${rac.status == 4 }">已发货</c:when>
+										<c:when test="${rac.status == 5 }">已退款</c:when>
 										<c:otherwise>已完成</c:otherwise>
 									</c:choose>
 								</td>

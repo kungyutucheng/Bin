@@ -252,7 +252,7 @@
 								操作人：
 							</div>
 							<div class="log-content log-inline">
-								${log.operator } (<fmt:formatDate value="${log.operateTime }" pattern="yyyy-MM-dd HH:mm:ss"/> ) 
+								系统 (<fmt:formatDate value="${log.operateTime }" pattern="yyyy-MM-dd HH:mm:ss"/> ) 
 							</div>
 						</div>
 					</c:forEach>

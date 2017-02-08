@@ -58,6 +58,7 @@ public class OrderController extends BaseController{
 	@Autowired
 	private GoodService goodService;
 	
+	
 	@RequestMapping(value = "/order", method = {RequestMethod.POST , RequestMethod.GET},
 			produces = "text/html;charset=utf-8")
 	@MyException
@@ -235,5 +236,47 @@ public class OrderController extends BaseController{
 		order.setDisable(2);
 		orderService.update(order);
 		return toJson(model);
+	}
+	
+	@RequestMapping(value = "/confirm/{id}" , method = RequestMethod.POST,
+			produces = "text/html;charset=utf-8")
+	@ResponseBody
+	@MyException
+	public String confirm(@PathVariable Integer id) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		AjaxModel model = new AjaxModel();
+		model.setMsg(TipMsg.CONFIRM_SUCCESS);
+		Order order = orderService.get(Order.class, id);
+		order.setConfirmTime(new Date());
+		order.setStatus(Order.STATUS_COMMENTING);
+		order.setScore(order.getTotalValue().intValue());
+		orderService.update(order);
+		
+		//更新商品销售数量
+		List<OrderGood> orderGoods = orderGoodService.queryList("from OrderGood where oid = ?", 
+				order.getId());
+		Good good;
+		List<Good> goods = new ArrayList<Good>();
+		for(OrderGood orderGood : orderGoods){
+			good = goodService.get(Good.class, orderGood.getGid());
+			good.setSoldNum(good.getSoldNum() + orderGood.getNum());
+			goods.add(good);
+		}
+		goodService.updateAll(goods, Good.class);
+		return toJson(model);
+	}
+	
+	@RequestMapping(value = "/commentPage/{id}" , method = RequestMethod.GET )
+	@MyException
+	public ModelAndView commentPage(@PathVariable Integer id){
+		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_COMMENT);
+		Order order = orderService.get(Order.class, id);
+		List<OrderGood> orderGoods = orderGoodService.queryList("from OrderGood where oid = ?", order.getId());
+		for(OrderGood orderGood : orderGoods){
+			orderGood.setGood(goodService.get(Good.class, orderGood.getGid()));
+			orderGood.setGoodProperty(goodPropertyService.get(GoodProperty.class, orderGood.getGpid()));
+		}
+		order.setOrderGoods(orderGoods);
+		modelAndView.addObject("order", order);
+		return modelAndView;
 	}
 }

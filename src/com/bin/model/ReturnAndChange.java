@@ -23,7 +23,7 @@ public class ReturnAndChange {
 	public static final Integer STATUS_PASS = 2;
 	public static final Integer STATUS_RECEIVE = 3;
 	public static final Integer STATUS_REOUT = 4;
-	public static final Integer STATUS_PAY = 5;
+	public static final Integer STATUS_RETURN_MONEY = 5;
 	public static final Integer STATUS_FINISH = 6;
 	
 	public static final Integer TYPE_RETURN = 1;
@@ -135,10 +135,10 @@ public class ReturnAndChange {
 	private BigDecimal deliveryFare;
 	
 	/**
-	 * 快递公司
+	 * 快递公司名称
 	 */
-	@Column(name = "express")
-	private String express;
+	@Column(name = "expressName")
+	private String expressName;
 	
 	/**
 	 * 快递单号
@@ -208,10 +208,31 @@ public class ReturnAndChange {
 	/**
 	 * 所属用户id
 	 */
+	@Column(name = "uid")
 	private Integer uid;
+	
+	/**
+	 * 订单id
+	 */
+	@Column(name = "oid")
+	private Integer oid;
+	
+	/**
+	 * 快递公司id
+	 */
+	private Integer eid;
 	
 	@Transient
 	private OrderGood orderGood;
+	
+	@Transient
+	private Order order;
+	
+	@Transient
+	private User user;
+	
+	@Transient
+	private Express express;
 	
 	public ReturnAndChange() {
 	}
@@ -375,12 +396,27 @@ public class ReturnAndChange {
 	}
 
 
-	public String getExpress() {
-		return express;
+	public String getExpressName() {
+		return expressName;
 	}
 
 
-	public void setExpress(String express) {
+	public void setExpressName(String expressName) {
+		this.expressName = expressName;
+	}
+
+
+	public Integer getEid() {
+		return eid;
+	}
+
+
+	public void setEid(Integer eid) {
+		this.eid = eid;
+	}
+
+
+	public void setExpress(Express express) {
 		this.express = express;
 	}
 
@@ -501,6 +537,36 @@ public class ReturnAndChange {
 		this.uid = uid;
 	}
 
+	
+	public Integer getOid() {
+		return oid;
+	}
+
+
+	public void setOid(Integer oid) {
+		this.oid = oid;
+	}
+	
+
+	public Order getOrder() {
+		return order;
+	}
+
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 
 	@Override
 	public String toString() {
@@ -508,10 +574,11 @@ public class ReturnAndChange {
 				+ ", status=" + status + ", type=" + type + ", description=" + description + ", dealWay=" + dealWay
 				+ ", returnMoneyWay=" + returnMoneyWay + ", province=" + province + ", city=" + city + ", county="
 				+ county + ", address=" + address + ", receiver=" + receiver + ", tel=" + tel + ", deliveryFare="
-				+ deliveryFare + ", express=" + express + ", expressNo=" + expressNo + ", createTime=" + createTime
-				+ ", rechangeMsg=" + rechangeMsg + ", resendTime=" + resendTime + ", passTime=" + passTime
+				+ deliveryFare + ", expressName=" + expressName + ", expressNo=" + expressNo + ", createTime="
+				+ createTime + ", rechangeMsg=" + rechangeMsg + ", resendTime=" + resendTime + ", passTime=" + passTime
 				+ ", receiveTime=" + receiveTime + ", finishTime=" + finishTime + ", num=" + num + ", returnMoney="
-				+ returnMoney + ", no=" + no + ", uid=" + uid + ", orderGood=" + orderGood + "]";
+				+ returnMoney + ", no=" + no + ", uid=" + uid + ", oid=" + oid + ", eid=" + eid + ", orderGood="
+				+ orderGood + ", order=" + order + ", user=" + user + ", express=" + express + "]";
 	}
 
 

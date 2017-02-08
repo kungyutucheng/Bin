@@ -10,7 +10,7 @@ public class ViewName {
 	public static final String HOME_SEARCH_RESULT_PAGE = HOME_PATH + "/good/searchResultPage";
 	public static final String HOME_GOOD_LIST = HOME_PATH + "/good/list";
 	public static final String HOME_GOOD_DETAIL = HOME_PATH + "/good/detail";
-	
+
 	public static final String HOME_CART_LIST = HOME_PATH + "/cart/list";
 	
 	public static final String HOME_ORDER_ORDER = HOME_PATH + "/order/order";
@@ -30,12 +30,18 @@ public class ViewName {
 	
 	public static final String HOME_ADDRESS_LIST = HOME_PATH + "/address/list";
 	
+	public static final String HOME_COMMENT = HOME_PATH + "/comment/comment";
+	public static final String HOME_COMMENT_SUCCESS = HOME_PATH + "/comment/success";
+	public static final String HOME_COMMENT_LIST = HOME_PATH + "/comment/list";
+	
 	private static final String ADMIN_PATH = "/admin";
 	public static final String ADMIN_LOGIN_PAGE = ADMIN_PATH + "/login/login";
 	
 	public static final String ADMIN_INDEX = ADMIN_PATH + "/index/index";
 	
 	public static final String ADMIN_ORDER_LIST = ADMIN_PATH + "/order/list";
+	
+	public static final String ADMIN_RAC_LIST = ADMIN_PATH + "/returnAndChange/list";
 	
 	
 	private static final String ERROR_PATH = "/error";

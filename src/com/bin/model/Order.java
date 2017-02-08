@@ -128,12 +128,36 @@ public class Order {
 	@Column(name = "score")
 	private Integer score;
 	
+	/**
+	 * 逻辑删除位
+	 */
 	@Column(name = "_disable")
 	private Integer disable;
 	
+	/**
+	 * 完成时间
+	 */
 	@Column(name = "finishTime")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date finishTime;
+	
+	/**
+	 * 快递公司id
+	 */
+	@Column(name = "eid")
+	private Integer eid;
+	
+	/**
+	 * 快递公司名称
+	 */
+	@Column(name = "expressName")
+	private String expressName;
+	
+	/**
+	 * 快递单号
+	 */
+	@Column(name = "expressNo")
+	private String expressNo;
 	
 	@Transient
 	private List<OrderGood> orderGoods;
@@ -298,6 +322,32 @@ public class Order {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+
+	public Integer getEid() {
+		return eid;
+	}
+
+	public void setEid(Integer eid) {
+		this.eid = eid;
+	}
+
+	public String getExpressName() {
+		return expressName;
+	}
+
+	public void setExpressName(String expressName) {
+		this.expressName = expressName;
+	}
+
+	
+	public String getExpressNo() {
+		return expressNo;
+	}
+
+	public void setExpressNo(String expressNo) {
+		this.expressNo = expressNo;
+	}
 
 	@Override
 	public String toString() {
@@ -305,7 +355,8 @@ public class Order {
 				+ payWay + ", payTime=" + payTime + ", totalValue=" + totalValue + ", receiptName=" + receiptName
 				+ ", receiptContent=" + receiptContent + ", outTime=" + outTime + ", confirmTime=" + confirmTime
 				+ ", createTime=" + createTime + ", score=" + score + ", disable=" + disable + ", finishTime="
-				+ finishTime + ", orderGoods=" + orderGoods + ", address=" + address + ", user=" + user + "]";
+				+ finishTime + ", eid=" + eid + ", expressName=" + expressName + ", expressNo=" + expressNo
+				+ ", orderGoods=" + orderGoods + ", address=" + address + ", user=" + user + "]";
 	}
 
 }

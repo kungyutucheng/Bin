@@ -46,7 +46,7 @@
 							<a name='a' title="${basePath}/admin/order/list?page=1">订单管理</a>
 						</dd>
 						<dd>
-							<a name='a' title="../../address.html">商家入驻申请</a>
+							<a name='a' title="${basePath }/admin/rac/list/1">售货服务</a>
 						</dd>
 						<dd>
 							<a name='a' title="../../address.html">评价管理</a>

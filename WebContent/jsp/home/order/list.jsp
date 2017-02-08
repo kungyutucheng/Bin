@@ -289,7 +289,21 @@
 								</c:choose>
 							</div>
 							<div class="oper">
-								<a class="extra" href="${basePath }/home/order/detail/${order.id}" target="_blank">订单详情</a>
+								<div>
+									<a class="extra" href="${basePath }/home/order/detail/${order.id}" target="_blank">订单详情</a>
+								</div>
+								<c:if test="${order.status == 1 }">
+									<a class="layui-btn layui-btn-normal layui-btn-mini" target="_blank" href="${basePath }/home/order/payPage/${order.id}">付款</a>
+								</c:if>
+								<c:if test="${order.status == 4 }">
+									<button class="layui-btn layui-btn-normal layui-btn-mini" onclick="orderConfirm(${order.id })">确认收货</button>
+								</c:if>
+								<c:if test="${order.status == 5 }">
+									<a class="layui-btn layui-btn-normal layui-btn-mini" target="_blank" href="${basePath }/home/order/commentPage/${order.id}">评价</a>
+								</c:if>
+								<div>
+									
+								</div>
 							</div>
 						</div>
 					</div>
@@ -360,6 +374,19 @@
 			});
 		});
 			
+		function orderConfirm(id){
+			confirm("确认收货？",null,function(isConfirm){
+				if(isConfirm){
+					$.post("${basePath}/home/order/confirm/" + id, null , function(result){
+						result = $.parseJSON(result);
+						layer.msg(result.msg);
+						if(result.success){
+							$("#filterForm").submit();
+						}
+					});
+				}
+			});
+		}
 			
 		</script>
 	</body>

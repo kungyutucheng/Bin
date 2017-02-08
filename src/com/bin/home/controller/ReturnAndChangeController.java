@@ -40,7 +40,7 @@ import com.bin.util.Creator;
 @RequestMapping(value = "/home/returnAndChange")
 public class ReturnAndChangeController extends BaseController{
 	
-	private static final Integer PAGE_SIZE = 2;
+	private static final Integer PAGE_SIZE = 10;
 
 	@Autowired
 	private ReturnAndChangeService returnAndChangeService;
@@ -129,7 +129,7 @@ public class ReturnAndChangeController extends BaseController{
 		
 		//获取售后日志
 		List<ReturnAndChangeLog> logs = returnAndChangeLogService.queryList(
-				"from ReturnAndChangeLog where rid = ?", id);
+				"from ReturnAndChangeLog where rid = ? order by operateTime desc", id);
 		modelAndView.addObject("logs", logs);
 		return modelAndView;
 	}
@@ -139,7 +139,7 @@ public class ReturnAndChangeController extends BaseController{
 	public ModelAndView list(@PathVariable Integer pageNo){
 		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_RETURN_AND_CHANGE_LIST);
 		List<ReturnAndChange> returnAndChanges = returnAndChangeService.getPageResult(
-				"from ReturnAndChange where uid = ?", pageNo, PAGE_SIZE, 
+				"from ReturnAndChange where uid = ? order by applyTime desc", pageNo, PAGE_SIZE, 
 				UserContext.getContext().getUser().getId());
 		OrderGood orderGood;
 		for(ReturnAndChange returnAndChange : returnAndChanges){
