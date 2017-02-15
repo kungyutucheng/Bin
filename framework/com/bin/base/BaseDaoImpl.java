@@ -421,6 +421,7 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 			}
 		}else{
 			for(int j = 0 ;j < entityList.size() ; j++){
+				builder.append("update ").append("`").append(tableName).append("`").append(" set ");
 				for(String columnName : columnNames){
 					for(Field field2 : fields){
 						if(field2.getName().equalsIgnoreCase(columnName)){
@@ -454,5 +455,17 @@ public class BaseDaoImpl<T , PK extends Serializable> implements BaseDao<T, PK>{
 			query.setParameter(i, params.get(i));
 		}
 		query.executeUpdate();
+	}
+
+	@Override
+	public List<Object> dataCount(String hql, Object... args) {
+		Query query = getSession().createQuery(hql);
+		if(args != null){
+			int index = 0;
+			for(Object arg : args){
+				query.setParameter(index++, arg);
+			}
+		}
+		return query.list();
 	}
 }

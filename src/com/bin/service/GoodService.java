@@ -2,15 +2,20 @@ package com.bin.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bin.admin.controller.AdminGoodController;
 import com.bin.base.BaseService;
 import com.bin.dao.GoodDao;
 import com.bin.model.Good;
 import com.bin.util.Page;
+
+import sun.org.mozilla.javascript.internal.ObjArray;
 
 @Repository
 public class GoodService extends BaseService<Good, Integer>{
@@ -21,29 +26,7 @@ public class GoodService extends BaseService<Good, Integer>{
 	public Page queryPage(Page page) {
 		Page page2 = new Page();
 		List<Object> params = new ArrayList<Object>();
-		String hql = "select new Good("
-				+ "id,"
-				+ "(select o.name from Owner o where o.id = id) ,"
-				+ "no,"
-				+ "oid,"
-				+ "owner,"
-				+ "status,"
-				+ "msg,"
-				+"soldNum,"
-				+ "brand,"
-				+ "attr,"
-				+ "scope,"
-				+ "type,"
-				+ "picMid,"
-				+ "seriesSm,"
-				+"seriesLg,"
-				+ "picSm,"
-				+ "createTime,"
-				+ "removeTime,"
-				+ "grossWeight,"
-				+ "netWeight,"
-				+"commentNum,"
-				+ "price) from Good where 1= 1";
+		String hql = "from Good where 1= 1";
 		if(page.getParams().get("id") != null){
 			hql += " and id = ?";
 			params.add(Integer.valueOf(page.getParams().get("id").toString()));
@@ -117,10 +100,10 @@ public class GoodService extends BaseService<Good, Integer>{
 			params.add(Double.valueOf(page.getParams().get("endNetWeight").toString()));
 		}
 		hql += " order by createTime desc";
-		page2.setRows(goodDao.getPageResult(hql, page.getPage(), page.getPageSize(), params.toArray()));
+		page2.setRows(goodDao.getPageResult(hql, page.getPage(), AdminGoodController.PAGE_SIZE, params.toArray()));
 		page2.setTotal(goodDao.getCount(hql, params.toArray()));
 		page2.setPage(page.getPage());
-		page2.setPageSize(page.getPageSize());
+		page2.setPageSize(AdminGoodController.PAGE_SIZE);
 		return page2;
 	}
 	
@@ -200,4 +183,47 @@ public class GoodService extends BaseService<Good, Integer>{
 		return page2;
 	}
 
+	
+	public Map<String, Object> countByMonth(Integer id ,Integer year){
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT SUM(num), DATE_FORMAT(createTime,'%Y-%m')  FROM OrderGood where gid = ? and YEAR(createTime) = ? GROUP BY DATE_FORMAT(createTime,'%Y-%m')");
+		List<Object> params = new ArrayList<Object>();
+		params.add(id);
+		params.add(year);
+		List<Object> objects = dataCount(hql.toString(), params.toArray());
+		Object [] temp;
+		List<Long> sumArray = new ArrayList<Long>();
+		List<String> timeArray = new ArrayList<String>();
+		for(Object object : objects){
+			temp = (Object[]) object;
+			sumArray.add((Long)temp[0]);
+			timeArray.add((String) temp[1]);
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sumArray", sumArray);
+		map.put("timeArray", timeArray);
+		return map;
+	}
+	
+	public Map<String, Object> countByDay(Integer id ,Integer year, Integer month){
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT SUM(num), DATE_FORMAT(createTime,'%d')  FROM OrderGood where gid = ? and YEAR(createTime) = ? and MONTH(createTime) = ? GROUP BY DATE_FORMAT(createTime,'%d')");
+		List<Object> params = new ArrayList<Object>();
+		params.add(id);
+		params.add(year);
+		params.add(month);
+		List<Object> objects = dataCount(hql.toString(), params.toArray());
+		Object [] temp;
+		List<Long> sumArray = new ArrayList<Long>();
+		List<String> timeArray = new ArrayList<String>();
+		for(Object object : objects){
+			temp = (Object[]) object;
+			sumArray.add((Long)temp[0]);
+			timeArray.add((String) temp[1]);
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sumArray", sumArray);
+		map.put("timeArray", timeArray);
+		return map;
+	}
 }

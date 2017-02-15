@@ -29,7 +29,7 @@ public class Test{
 	@org.junit.Test
 	public void test(){
 		try {
-			mockmvc.perform(post("/home/returnAndChange/test").param("no", "201701211534562")).andExpect(status().isOk()).andDo(print());
+			mockmvc.perform(post("/admin/good/countByYear").param("id", "6").param("year", "2017")).andExpect(status().isOk()).andDo(print());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

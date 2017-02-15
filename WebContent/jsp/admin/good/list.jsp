@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ include file="/common/tagslib.jsp" %>
+<%@ include file="/common/admin/tagslib.jsp" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -21,18 +21,18 @@
 				</span>
 			</div>
 			<div class="filter">
-				<form class="layui-form" id="searchForm">
+				<form class="layui-form" id="searchForm" action="${basePath }/admin/good/list">
 					<div class="layui-form-item">
 						<div class="layui-inline">
 							<div class="layui-form-label width100">名称</div>
 							<div class="layui-input-block">
-								<input type="text" name="name" class="layui-input" />
+								<input type="text" name="name" class="layui-input" value="${params.name }"/>
 							</div>
 						</div>
 						<div class="layui-inline">
 							<div class="layui-form-label width100">编号</div>
 							<div class="layui-input-block">
-								<input type="text" name="no" class="layui-input" />
+								<input type="text" name="no" class="layui-input" value="${params.no }"/>
 							</div>
 						</div>
 						<div class="layui-inline">
@@ -40,7 +40,7 @@
 							<div class="layui-input-block" style="width:180px;">
 								<select name="status">
 									<option value="0">全部</option>
-									<option value="1">上架中</option>
+									<option value="1">待上架</option>
 									<option value="2">已上架</option>
 									<option value="3">已下架</option>
 								</select>
@@ -54,7 +54,7 @@
 									品牌
 								</div>
 								<div class="layui-input-block">
-									<input type="text" name="brand" class="layui-input" />
+									<input type="text" name="brand" class="layui-input" value="${params.brand }"/>
 								</div>
 							</div>
 							<div class="layui-inline">
@@ -62,7 +62,7 @@
 									上架时间
 								</div>
 								<div class="layui-input-block">
-									<input class="layui-input" name="startCreateTime" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+									<input class="layui-input" name="startCreateTime" value="${params.startCreateTime }" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 								</div>
 							</div>
 							<div class="layui-inline">
@@ -70,16 +70,15 @@
 									-
 								</div>
 								<div class="layui-input-block">
-									<input class="layui-input" name="endCreateTime" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+									<input class="layui-input" name="endCreateTime" value="${params.endCreateTime }" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<div class="layui-input-block">
-							<input type="hidden" name="pageSize" value="10">
-							<input type="hidden" name="page" value="1">
-							<button class="layui-btn" type="button" onclick="loadGoodDataWithPageInfo()">查询</button>
+							<input type="hidden" name="page" value="${page }">
+							<button class="layui-btn" lay-submit>查询</button>
 							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 							<button type="reset" class="layui-btn layui-btn-primary" onclick="showMoreFilter(this);">更多条件</button>
 						</div>
@@ -105,7 +104,34 @@
 					<th>上架时间</th>
 					<th>操作</th>
 				</thead>
-				<tbody id="dg">
+				<tbody>
+					<c:forEach items="${goods }" var="good">
+					<tr>
+						<td>
+							<input type="checkbox" name="selectItem" onchange="hasSelectAll()" />
+						</td>
+						<td>${good.id }</td>
+						<td>${good.name }</td>
+						<td>${good.no }</td>
+						<td>${good.soldNum }</td>
+						<td>
+							<c:choose>
+								<c:when test="${good.status == 1 }">待上架</c:when>
+								<c:when test="${good.status == 2 }">已上架</c:when>
+								<c:when test="${good.status == 3 }">已下架</c:when>
+							</c:choose>
+						</td>
+						<td><fmt:formatDate value="${good.createTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+						<td>
+							<span>
+								<a class="extra" onclick="updateGood(${good.id});">修改</a>
+							</span>
+							<span>
+								<a class="extra" href="${basePath}/admin/good/detail/${good.id}" target="_self">数据统计</a>
+							</span>
+						</td>
+					</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 			<div id="page" style="width:100%;text-align: center;"></div>
@@ -429,11 +455,21 @@
 		<!-- 图片上传js end -->
 		<script type="text/javascript">
 		$(function() {
-			layui.use('form', function() {
 				var form = layui.form();
 				
-				//加载初始数据
-				loadGoodDataWithPageInfo();
+				var laypage = layui.laypage;
+				laypage({
+					cont: 'page', //id
+					pages: "${pageCount}", //总页数
+					curr: "${page}", //当前页
+					groups: 5, //连续显示分页数
+					jump: function(obj, first) {
+						if(obj.curr != Number("${page}")){
+							$("input[name='page']").val(obj.curr);
+							$("#searchForm").submit();
+						}
+					}
+				});
 				
 				//初始化大类别数据源
 				$.post("${basePath}/goodScope/getAll",null,function(result){
@@ -448,6 +484,8 @@
 					}); 
 					form.render();
 				});
+				
+				$("select[name='status']").val("${params.status}");
 				
 				//记录当前属性项的个数
 				var propertyItems = 0;
@@ -482,7 +520,7 @@
 			        	'removeCompleted' : false,
 			        	'buttonText' : '选择小图',
 			            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
-			            'uploader' : '${basePath }/good/uploadPicSm',
+			            'uploader' : '${basePath }/admin/good/uploadPicSm',
 			            'onUploadStart' : function(file) {
 			                $("#file_upload").uploadify("settings", "gid", id);
 			            }
@@ -495,7 +533,7 @@
 			        	'removeCompleted' : false,
 			        	'buttonText' : '选择中图',
 			            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
-			            'uploader' : '${basePath }/good/uploadPicMid',
+			            'uploader' : '${basePath }/admin/good/uploadPicMid',
 			            'onUploadStart' : function(file) {
 			                $("#file_upload").uploadify("settings", "gid", id);
 			            }
@@ -507,7 +545,7 @@
 			        	'removeCompleted' : false,
 			        	'buttonText' : '选择系列小图',
 			            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
-			            'uploader' : '${basePath }/good/uploadPicSeriesSm',
+			            'uploader' : '${basePath }/admin/good/uploadPicSeriesSm',
 			            'onUploadStart' : function(file) {
 			                $("#file_upload").uploadify("settings", "gid", id);
 			            }
@@ -519,7 +557,7 @@
 			        	'removeCompleted' : false,
 			        	'buttonText' : '选择系列中图',
 			            'swf'      : '${basePath }/asserts/uploadify/uploadify.swf',
-			            'uploader' : '${basePath }/good/uploadPicSeriesLg',
+			            'uploader' : '${basePath }/admin/good/uploadPicSeriesLg',
 			            'onUploadStart' : function(file) {
 			                $("#file_upload").uploadify("settings", "gid", id);
 			            }
@@ -616,7 +654,7 @@
 							result = $.parseJSON(result);
 							layer.msg(result.msg);
 							if(result.success){
-								loadGoodData();
+								$("#searchForm").submit();
 							}
 						});
 					});
@@ -641,7 +679,7 @@
 							result = $.parseJSON(result);
 							layer.msg(result.msg);
 							if(result.success){
-								loadGoodData();
+								$("#searchForm").submit();
 							}
 						});
 					});
@@ -654,7 +692,7 @@
 						layer.msg(result.msg);
 						if(result.success){
 							$("#addGoodModal").modal("hide");
-							loadGoodDataWithPageInfo();
+							window.location.reload();
 						}
 					});
 					return false;
@@ -667,17 +705,14 @@
 						layer.msg(result.msg);
 						if(result.success){
 							$("#goodDetailModal").modal("hide");
-							loadGoodData();
+							$("#searchForm").submit();
 						}
 					});
 					return false;
 				});
-			});
-
-			layui.use('laydate', function() {
 				var laydate = layui.laydate;
 			});
-		});
+
 			var flag = true;
 			$(".icon").on("click", function() {
 				if(flag) {
@@ -728,96 +763,13 @@
 				$(obj).parent().parent().remove();
 			}
 			
-			
-			function loadGoodDataWithPageInfo(){
-				$.post("${basePath}/admin/good/searchgrid",$("#searchForm").serializeObject(),function(result){
-					console.log(result);
-					result = $.parseJSON(result);
-					var rows = result.rows;
-					var data = "";
-					if(rows && rows.length > 0){
-						for(var i = 0 ;i < rows.length ; i++){
-							var row = rows[i];
-							data += 
-								'<tr>'+
-									'<td>'+
-										'<input type="checkbox" name="selectItem" onchange="hasSelectAll()" />'+
-									'</td>'+
-									'<td>' + row.id + '</td>'+
-									'<td>' + row.name + '</td>'+
-									'<td>' + row.no + '</td>'+
-									'<td>' + row.soldNum + '</td>'+
-									'<td>' + bin.getGoodStatus(row.status) + '</td>'+
-									'<td>' + new Date(row.createTime).format("yyyy-MM-dd hh:mm:ss") + '</td>'+
-									'<td>'+
-										'<span>'+
-											'<a class="extra" onclick="showGoodDetail(' + row.id +')">详情</a>'+
-										'</span>'+
-									'</td>'+
-								'</tr>';
-						}
-					}
-					$("#dg").html(data);
-					var pageSize = Number($("input[name='pageSize']").val());
-					var pageCount = result.total % pageSize == 0 ? result.total/pageSize : Math.floor(result.total/pageSize) + 1;
-					layui.use(['laypage'], function() {
-						var laypage = layui.laypage;
-						laypage({
-							cont: 'page', //id
-							pages: pageCount, //总页数
-							curr: 1, //当前页
-							groups: 5, //连续显示分页数
-							jump: function(obj, first) {
-								$("input[name='page']").val(obj.curr);
-								loadGoodData();
-							}
-						});
-					});
-				});
-			}
-			
-			//加载商品数据
-			function loadGoodData(){
-				$.post("${basePath}/admin/good/searchgrid",$("#searchForm").serializeObject(),function(result){
-					result = $.parseJSON(result);
-					var rows = result.rows;
-					if(rows && rows.length > 0){
-						var data = "";
-						for(var i = 0 ;i < rows.length ; i++){
-							var row = rows[i];
-							data += 
-								'<tr>'+
-									'<td>'+
-										'<input type="checkbox" name="selectItem" onchange="hasSelectAll()" />'+
-									'</td>'+
-									'<td>' + row.id + '</td>'+
-									'<td>' + row.name + '</td>'+
-									'<td>' + row.no + '</td>'+
-									'<td>' + row.soldNum + '</td>'+
-									'<td>' + bin.getGoodStatus(row.status) + '</td>'+
-									'<td>' + new Date(row.createTime).format("yyyy-MM-dd hh:mm:ss") + '</td>'+
-									'<td>'+
-										'<span>'+
-											'<a class="extra" onclick="showGoodDetail(' + row.id +')">详情</a>'+
-										'</span>'+
-									'</td>'+
-								'</tr>';
-						}
-						$("#dg").html(data);
-						$("#selectAll").prop("checked",false);
-					}
-				});
-			}
-			
 			var updatePropertyItems = 0;
-			function showGoodDetail(id){
+			function updateGood(id){
 				$("#goodDetailModal").modal("show");
 				var index = layer.load();
-				$.post("${basePath}/admin/good/searchgrid",{
-					id:id
-				},function(result){
+				$.post("${basePath}/admin/good/getById/" + id,null,function(result){
 					result = $.parseJSON(result);
-					var goodRow = result.rows[0];
+					var goodRow = result;
 					goodRow.createTime = new Date(goodRow.createTime).format("yyyy-MM-dd hh:mm:ss");
 					goodRow.removeTime = goodRow.removeTime == null ? null:new Date(goodRow.removeTime).format("yyyy-MM-dd hh:mm:ss");
 					$("#updateGoodForm").setForm(goodRow);
@@ -834,7 +786,7 @@
 						}
 					})
 					$("#updateGoodStatus").prop("disabled",false);
-					$.post("${basePath}/goodProperties/searchgrid",{
+					$.post("${basePath}/goodProperty/searchgrid",{
 						gid:id,
 						isShowAll:true
 					},function(result){
@@ -874,9 +826,9 @@
 									'</button>'+
 								'</div>'+
 							'</div>';
+							updatePropertyItems++;
 						}
 						$("#updatePropertiesDiv").append(propertiesDiv);
-						updatePropertyItems++;
 						layer.close(index);
 					});
 				});

@@ -45,4 +45,6 @@ public interface BaseDao<T , PK extends Serializable> {
 	public void execute(String hql,Object...params);
 	
 	public T fingUniqueByExample(Class<T> clazz , T entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+	
+	public List<Object> dataCount(String hql, Object... args);
 }

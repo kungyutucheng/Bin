@@ -30,7 +30,7 @@ public class ImageController extends BaseController{
 	
 	@RequestMapping(value = "/getImage/{name:.+}",method = RequestMethod.GET)
 	@MyException
-	public void getImage(@PathVariable("name") String name){
+	public synchronized void getImage(@PathVariable("name") String name){
 		File image = new File(fileUploadDirectory + File.separator + name);
 		
 		if(!image.exists()){

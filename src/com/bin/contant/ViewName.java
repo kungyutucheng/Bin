@@ -39,6 +39,9 @@ public class ViewName {
 	
 	public static final String ADMIN_INDEX = ADMIN_PATH + "/index/index";
 	
+	public static final String ADMIN_GOOD_LIST = ADMIN_PATH + "/good/list";
+	public static final String ADMIN_GOOD_DATA_COUNT = ADMIN_PATH + "/good/dataCount";
+	
 	public static final String ADMIN_ORDER_LIST = ADMIN_PATH + "/order/list";
 	
 	public static final String ADMIN_RAC_LIST = ADMIN_PATH + "/returnAndChange/list";

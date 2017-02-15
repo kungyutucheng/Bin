@@ -84,4 +84,7 @@ public abstract class BaseService<T , PK extends Serializable> {
 		return baseDao.fingUniqueByExample(clazz, entity);
 	}
 	
-}
+	public List<Object> dataCount(String hql , Object...params){
+		return baseDao.dataCount(hql, params);
+	}
+} 

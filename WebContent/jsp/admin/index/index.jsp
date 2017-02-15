@@ -37,7 +37,7 @@
 					<a>日常</a>
 					<dl class="layui-nav-child">
 						<dd>
-							<a name='a' title="${basePath}/jsp/admin/good/list.jsp">商品管理</a>
+							<a name='a' title="${basePath}/admin/good/list?page=1">商品管理</a>
 						</dd>
 						<dd>
 							<a name='a' title="../../address.html">用户管理</a>
