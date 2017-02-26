@@ -174,6 +174,8 @@ public class GoodService extends BaseService<Good, Integer>{
 				hql.append(" commentNum desc");
 			}else if(orderby == 4){
 				hql.append(" createTime desc");
+			}else{
+				hql.append(" createTime desc");
 			}
 		}
 		page2.setRows(goodDao.getPageResult(hql.toString(), page.getPage(), 30, params.toArray()));

@@ -66,9 +66,12 @@ public class OrderController extends BaseController{
 		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_ORDER_ORDER);
 		List<Cart> carts = cartService.getListByIds(ids);
 		BigDecimal totalValue = new BigDecimal(0);
+		Cart cart = null;
 		for(int i = 0 ; i < carts.size() ; i++){
-			BigDecimal price = carts.get(i).getPrice();
-			price = price.multiply(new BigDecimal(carts.get(i).getNum()));
+			cart = carts.get(i);
+			cart.setPicSmall(goodService.get(Good.class, cart.getGid()).getPicSm());
+			BigDecimal price = cart.getPrice();
+			price = price.multiply(new BigDecimal(cart.getNum()));
 			totalValue = totalValue.add(price);
 		}
 		modelAndView.addObject("carts", carts);

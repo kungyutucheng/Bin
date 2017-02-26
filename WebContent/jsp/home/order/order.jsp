@@ -231,7 +231,7 @@
 							<c:forEach items="${carts }" var="cart">
 							<div class="good-item">
 								<div class="column order-good" style="vertical-align: middle;">
-									<a class="order-good-pic"><img src="img/56b16594Nb8807f03.jpg" /></a>
+									<a class="order-good-pic"><img src="${basePath }/image/getImage/${cart.picSmall }" /></a>
 									<a class="order-good-name">${cart.goodName }</a>
 								</div>
 								<div class="column order-price">

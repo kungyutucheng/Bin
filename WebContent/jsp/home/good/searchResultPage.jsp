@@ -304,9 +304,9 @@
 								'<a>' + row.name +　'</a>'+
 							'</div>'+
 							'<div class="commnetNum">'+
-								'已有<font class="num">' + row.commentNum + '</font>评价'+
+								'已有<font class="num">' + (row.commentNum == null ? 0 : row.commentNum) + '</font>评价'+
 							'</div>'+
-							'<div class="owner">' + row.owner + '</div>'+
+							'<div class="owner">' + row.owner.name + '</div>'+
 							'<div class="addIntoCartBtn ">'+
 								'<a>加入购物车</a>'+
 							'</div>'+

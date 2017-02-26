@@ -25,6 +25,12 @@
 				font-weight: bold;
 			}
 			
+			#detailMsg #msg {
+				color: #666666;
+				font-size: 14px;
+				font-weight: bold;
+			}
+			
 			#detailMsg #msgBlock {
 				background: #f2f2f2;
 				padding: 10px;
@@ -247,38 +253,26 @@
 		<div class="container" style="background: #fff;padding-top: 20px;">
 			<div class="box" style="width: 330px;text-align: center;display: inline-block;float: left;">
 				<div class="tb-booth tb-pic tb-s310">
-					<a href="${basePath }/img/01.jpg"><img src="${basePath }/img/01_mid.jpg" alt="美女" rel="${basePath }/img/01.jpg" class="jqzoom" /></a>
+					<a href="${basePath }/image/getImage/${good.firstImg.small}"><img src="${basePath }/image/getImage/${good.firstImg.big}" rel="${basePath }/image/getImage/${good.firstImg.big}" class="jqzoom" /></a>
 				</div>
 				<ul class="tb-thumb" id="thumblist">
 					<li class="tb-selected">
 						<div class="tb-pic tb-s40">
-							<a href="#"><img src="${basePath }/img/01_small.jpg" mid="${basePath }/img/01_mid.jpg" big="${basePath }/img/01.jpg"></a>
+							<a href="#"><img src="${basePath }/image/getImage/${good.firstImg.small}" mid="${basePath }/image/getImage/${good.firstImg.big}" big="${basePath }/image/getImage/${good.firstImg.big}"></a>
 						</div>
 					</li>
-					<li>
-						<div class="tb-pic tb-s40">
-							<a href="#"><img src="${basePath }/img/02_small.jpg" mid="${basePath }/img/02_mid.jpg" big="${basePath }/img/02.jpg"></a>
-						</div>
-					</li>
-					<li>
-						<div class="tb-pic tb-s40">
-							<a href="#"><img src="${basePath }/img/03_small.jpg" mid="${basePath }/img/03_mid.jpg" big="${basePath }/img/03.jpg"></a>
-						</div>
-					</li>
-					<li>
-						<div class="tb-pic tb-s40">
-							<a href="#"><img src="${basePath }/img/04_small.jpg" mid="${basePath }/img/04_mid.jpg" big="${basePath }/img/04.jpg"></a>
-						</div>
-					</li>
-					<li>
-						<div class="tb-pic tb-s40">
-							<a href="#"><img src="${basePath }/img/05_small.jpg" mid="${basePath }/img/05_mid.jpg" big="${basePath }/img/05.jpg"></a>
-						</div>
-					</li>
+					<c:forEach var="img" items="${good.imgs }" varStatus="count">
+						<li>
+							<div class="tb-pic tb-s40">
+								<a href="#"><img src="${basePath }/image/getImage/${img.small}" mid="${basePath }/image/getImage/${img.big }" big="${basePath }/image/getImage/${img.big}"></a>
+							</div>
+						</li>
+					</c:forEach>
 				</ul>
 			</div>
 			<div id="detailMsg" style="width: 580px;text-align: left;display: inline-block;float: left;">
 				<div id="title">${good.name }</div><br />
+				<div id="msg">${good.msg }</div><br />
 				<div id="msgBlock">
 					<div style="display: inline-block;float: left;width:100%;">
 						<table style="text-align:center;width:100%;">
@@ -298,10 +292,16 @@
 								￥${good.price }
 								</td>
 								<td class="msg-value" id="msg-soldNum">
-								${good.soldNum }
+								<c:choose>
+									<c:when test="${good.soldNum == null}">0</c:when>
+									<c:otherwise>${good.soldNum }</c:otherwise>
+									</c:choose>
 								</td>
 								<td class="msg-value" id="msg-commentNum">
-								${good.commentNum }
+									<c:choose>
+									<c:when test="${good.commentNum == null}">0</c:when>
+									<c:otherwise>${good.commentNum }</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</table>
@@ -346,7 +346,10 @@
 				<div class="layui-tab layui-tab-card" lay-filter="demo">
 					<ul class="layui-tab-title">
 						<li class="layui-this">商品详情</li>
-						<li>用户评价<span style="color: #005EA7;">(${good.commentNum })</li>
+						<li>用户评价<span style="color: #005EA7;">(<c:choose>
+									<c:when test="${good.commentNum == null}">0</c:when>
+									<c:otherwise>${good.commentNum }</c:otherwise>
+									</c:choose>)</li>
 					</ul>
 					<div class="layui-tab-content">
 					    <div class="layui-tab-item layui-show">
@@ -383,10 +386,22 @@
 				</div>
 				<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 					<ul class="layui-tab-title">
-						<li class="layui-this">全部评价（${good.commentNum }）</li>
-						<li>好评（${goodCount }）</li>
-						<li>中评（${midCount }）</li>
-						<li>差评（${badCount }）</li>
+						<li class="layui-this">全部评价（<c:choose>
+									<c:when test="${good.commentNum == null}">0</c:when>
+									<c:otherwise>${good.commentNum }</c:otherwise>
+									</c:choose>）</li>
+						<li>好评（<c:choose>
+									<c:when test="${goodCount == null}">0</c:when>
+									<c:otherwise>${goodCount }</c:otherwise>
+									</c:choose>）</li>
+						<li>中评（<c:choose>
+									<c:when test="${midCount == null}">0</c:when>
+									<c:otherwise>${midCount }</c:otherwise>
+									</c:choose>）</li>
+						<li>差评（<c:choose>
+									<c:when test="${badCount == null}">0</c:when>
+									<c:otherwise>${badCount }</c:otherwise>
+									</c:choose>）</li>
 					</ul>
 					<div class="layui-tab-content">
 						<div class="layui-tab-item layui-show" style="margin-bottom: 30px;">

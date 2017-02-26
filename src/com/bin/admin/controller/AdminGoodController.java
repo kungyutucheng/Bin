@@ -274,19 +274,26 @@ public class AdminGoodController extends BaseController{
 		Iterator<String> iterable = request.getFileNames();
 		MultipartFile multipartFile;
 		Good good = goodService.get(Good.class, gid);
-		
+		String seriesLg = good.getSeriesLg();
+		Integer index = 0;
+		if(seriesLg == null){
+			index = 0;
+		}else{
+			index = Integer.valueOf(seriesLg.substring(seriesLg.lastIndexOf("-") + 1, seriesLg.lastIndexOf(".")));
+			index++;
+		}
 		while(iterable.hasNext()){
 			multipartFile = request.getFile(iterable.next());
 			//设置文件名
-			String fileName = good.getNo() + "-mid" + multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
+			String fileName = good.getNo() + "-lg-" + (index) + multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
 			File file = new File(fileUploadDirectory + "/" + fileName);
 			try{
 				multipartFile.transferTo(file);
-				good.setPicMid(fileName);
-				goodService.update(good);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
+			good.setSeriesLg(seriesLg == null ? fileName : seriesLg + ";" + fileName);
+			goodService.update(good);
 		}
 	}
 	

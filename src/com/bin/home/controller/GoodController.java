@@ -64,6 +64,11 @@ public class GoodController extends BaseController{
 	public String getGoodList(){
 		Page page = getPage();
 		Page page2 = goodService.search(page);
+		List<Good> goods = page2.getRows();
+		for(Good good : goods){
+			good.setOwner(ownerService.get(Owner.class, good.getOid()));
+		}
+		page2.setRows(goods);
 		return toJson(page2);
 	}
 	
@@ -78,10 +83,22 @@ public class GoodController extends BaseController{
 			List<GoodProperty> goodProperties = goodPropertyService.queryList(
 					"from GoodProperty where gid = ?", good.getId());
 			ModelAndView modelAndView = new ModelAndView(ViewName.HOME_GOOD_DETAIL);
-			Long goodCount = commentService.getCount("from Comment where gid = ? and score > 3", id);
-			Long midCount = commentService.getCount("from Comment where gid = ? and score = 3", id);
-			Long badCount = commentService.getCount("from Comment where gid = ? and score < 3", id);
-			double goodPercent = Math.floor(goodCount * 100 / (goodCount + midCount + badCount));
+			Long goodCount;
+			Long midCount;
+			Long badCount;
+			double goodPercent;
+			if(good.getCommentNum() == null){
+				goodCount = 0l;
+				midCount = 0l;
+				badCount = 0l;
+				goodPercent = 100d;
+			}else{
+				goodCount = commentService.getCount("from Comment where gid = ? and score > 3", id);
+				midCount = commentService.getCount("from Comment where gid = ? and score = 3", id);
+				badCount = commentService.getCount("from Comment where gid = ? and score < 3", id);
+				goodPercent = Math.floor(goodCount * 100 / (goodCount + midCount + badCount));
+			}
+			good.generateImg();
 			modelAndView.addObject("good", good);
 			modelAndView.addObject("owner", owner);
 			modelAndView.addObject("goodProperties", goodProperties);

@@ -183,7 +183,7 @@
 						<span class="hide">${cart.id }</span>
 					</div>
 					<div class="column cart-good" style="vertical-align: middle;">
-						<a class="cart-good-pic"><img src="${basePath }/img/56b16594Nb8807f03.jpg" /></a>
+						<a class="cart-good-pic"><img src="${basePath }/image/getImage/${cart.picSmall}" /></a>
 						<a class="cart-good-name">${cart.goodName }</a>
 					</div>
 					<div class="column cart-prop">

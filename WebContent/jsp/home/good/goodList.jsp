@@ -21,9 +21,14 @@
 					<a>${good.name }</a>
 				</div>
 				<div class="commnetNum">
-					已有<font class="num">${good.commentNum }</font>评价
+					已有<font class="num">
+					<c:choose>
+						<c:when test="${good.commentNum == null }">0</c:when>
+						<c:otherwise>${good.commentNum }</c:otherwise>
+					</c:choose>
+					</font>评价
 				</div>
-				<div class="owner">${good.oid }</div>
+				<div class="owner">${good.owner["name"] }</div>
 				<div class="addIntoCartBtn ">
 					<a>加入购物车</a>
 				</div>

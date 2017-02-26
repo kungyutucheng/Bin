@@ -1,7 +1,9 @@
 package com.bin.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -162,7 +164,14 @@ public class Good {
 	@Transient
 	private Owner owner;
 	
+	@Transient
+	private List<Img> imgs;
+	
+	@Transient
+	private Img firstImg;
+	
 	public Good() {
+		generateImg();
 	}
 	
 
@@ -341,6 +350,26 @@ public class Good {
 	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
+	
+	public List<Img> getImgs() {
+		return imgs;
+	}
+
+
+	public void setImgs(List<Img> imgs) {
+		this.imgs = imgs;
+	}
+
+
+	public Img getFirstImg() {
+		return firstImg;
+	}
+
+
+	public void setFirstImg(Img firstImg) {
+		this.firstImg = firstImg;
+	}
+
 
 	@Override
 	public String toString() {
@@ -348,7 +377,30 @@ public class Good {
 				+ msg + ", soldNum=" + soldNum + ", brand=" + brand + ", attr=" + attr + ", scope=" + scope + ", type="
 				+ type + ", picMid=" + picMid + ", seriesSm=" + seriesSm + ", seriesLg=" + seriesLg + ", picSm=" + picSm
 				+ ", createTime=" + createTime + ", removeTime=" + removeTime + ", grossWeight=" + grossWeight
-				+ ", netWeight=" + netWeight + ", commentNum=" + commentNum + ", price=" + price + "]";
+				+ ", netWeight=" + netWeight + ", commentNum=" + commentNum + ", price=" + price + ", owner=" + owner
+				+ ", imgs=" + imgs + ", firstImg=" + firstImg + "]";
+	}
+	
+	public void generateImg(){
+		if(seriesSm != null && seriesLg != null){
+			imgs = new ArrayList<Img>();
+			String [] smalls = seriesSm.split(";");
+			String [] bigs = seriesLg.split(";");
+			if(smalls.length == bigs.length){
+				firstImg = new Img();
+				firstImg.setSmall(smalls[0]);
+				firstImg.setBig(bigs[0]);
+				Img img = null;
+				for(int i = 1 ;i < smalls.length ; i++){
+					img = new Img();
+					img.setSmall(smalls[i]);
+					img.setBig(bigs[i]);
+					imgs.add(img);
+				}
+			}
+			this.setImgs(imgs);
+			this.setFirstImg(firstImg);
+		}
 	}
 
 }

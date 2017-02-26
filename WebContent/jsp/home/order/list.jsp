@@ -136,11 +136,12 @@
 			}
 			.body > .order-item > .content > .good > .good-item > .img{
 				width: 13%;
-				padding-left: 10px;
 				display: inline-block;
+				padding:5px 0;
+				padding-left: 10px;
 			}
 			.body > .order-item > .content > .good > .good-item > .good-name{
-				width: 60%;
+				width: 55%;
 				padding: 0px 10px;
 				display: inline-block;
 			}
@@ -255,7 +256,7 @@
 								<c:forEach items="${order.orderGoods }" var="orderGood">
 								<div class="good-item">
 									<div class="img">
-										<img src="${basePath }/img/56b16594Nb8807f03.jpg"/>
+										<img src="${basePath }/image/getImage/${orderGood.good['picSm']}"/>
 									</div>
 									<div class="good-name">${orderGood.good['name'] }</div>
 									<div class="good-num">X${orderGood.num }</div>

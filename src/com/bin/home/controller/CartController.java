@@ -71,6 +71,7 @@ public class CartController extends BaseController{
 	public ModelAndView list(){
 		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_CART_LIST);
 		modelAndView.addObject("carts", cartService.getListByUid(UserContext.getContext().getUser().getId()));
+		
 		return modelAndView;
 	}
 

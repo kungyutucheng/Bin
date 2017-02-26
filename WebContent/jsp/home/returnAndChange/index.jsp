@@ -59,7 +59,7 @@
 					<tbody>
 						<tr>
 							<td>
-								<img src="img/558d0106N88b0adbd.jpg" />
+								<img src="${basePath }/image/getImage/${good.picSm }" />
 								<span>${good.name }</span>
 							</td>
 							<td>${goodProperty.name }</td>

@@ -165,7 +165,7 @@
 					</div>
 					<div class="good">
 						<div class="img">
-							<img src="img/53c912d7Nd2dccc60.jpg" />
+							<img src="${basePath }/image/getImage/${rac.orderGood.good['picSm']}" />
 						</div>
 						<div class="text">
 							<div>

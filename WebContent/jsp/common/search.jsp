@@ -8,7 +8,7 @@
 	<body>
 		<div class="container" style="height: 100px;text-align: center;padding: 10px;margin-top:50px;">
 			<div class="line" style="padding-right:150px;">
-				<img src="${basePath}/img/logo.png"/>
+				<a href="${basePath }/index/index" alt="首页" title="首页"><img src="${basePath}/img/logo.png"/></a>
 			</div>
 			<div class="line">
 				<form method="post" action="${basePath }/home/good/search">
@@ -21,8 +21,13 @@
 				</form>
 			</div>
 			<div class="line" style="padding-left: 150px;">
-				<button class="btn btn-danger">我的购物车</button>
+				<button class="btn btn-danger" id="cartBtn">我的购物车</button>
 			</div>
 		</div>
+		<script>
+			$("#cartBtn").on("click" , function(){
+				window.location.href = "${basePath}/home/cart/list";
+			})
+		</script>
 	</body>
 </html>

@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Controller;
@@ -30,7 +32,7 @@ public class ImageController extends BaseController{
 	
 	@RequestMapping(value = "/getImage/{name:.+}",method = RequestMethod.GET)
 	@MyException
-	public synchronized void getImage(@PathVariable("name") String name){
+	public synchronized void getImage(@PathVariable("name") String name , HttpServletResponse response){
 		File image = new File(fileUploadDirectory + File.separator + name);
 		
 		if(!image.exists()){

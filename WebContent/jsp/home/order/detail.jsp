@@ -316,7 +316,7 @@
 							<c:forEach items="${orderGoods }" var="orderGood">
 								<tr>
 									<td>
-										<img src="${basePath }/img/56b16594Nb8807f03.jpg" />
+										<img src="${basePath }/image/getImage/${orderGood.good['picSm'] }" />
 										<span>
 											<a class="content-link">${orderGood.good['name'] }</a>
 										</span>

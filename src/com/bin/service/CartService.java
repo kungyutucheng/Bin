@@ -21,7 +21,8 @@ public class CartService extends BaseService<Cart, Integer>{
 				+ "createTime,"
 				+ "(select name from Good g where g.id = gid),"
 				+ "(select name from GoodProperty gp where gp.id = gpId),"
-				+ "(select price from GoodProperty gp where gp.id = gpId)"
+				+ "(select price from GoodProperty gp where gp.id = gpId),"
+				+ "(select picSm from Good g where g.id = gid)"
 				+ ") from Cart where uid = ? order by createTime desc";
 		return queryList(hql, uid);
 	}
@@ -36,7 +37,8 @@ public class CartService extends BaseService<Cart, Integer>{
 				+ "createTime,"
 				+ "(select name from Good g where g.id = gid),"
 				+ "(select name from GoodProperty gp where gp.id = gpId),"
-				+ "(select price from GoodProperty gp where gp.id = gpId)"
+				+ "(select price from GoodProperty gp where gp.id = gpId),"
+				+ "(select picSm from Good g where g.id = gid)"
 				+ ") from Cart where id in (");
 		String [] idStrings = ids.split(",");
 		List<Integer> params = new ArrayList<Integer>();

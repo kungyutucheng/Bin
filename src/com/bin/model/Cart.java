@@ -63,11 +63,14 @@ public class Cart {
 	@Transient
 	private BigDecimal price;
 	
+	@Transient
+	private String picSmall;
+	
 	public Cart() {
 	}
 	
-	public Cart(Integer id, Integer uid, Integer gid, Integer num, Integer gpId, Date createTime, String goodName,
-			String goodPropertyName, BigDecimal price) {
+	public Cart(Integer id, Integer gid, Integer uid, Integer num, Integer gpId, Date createTime, String goodName,
+			String goodPropertyName, BigDecimal price,String picSmall) {
 		super();
 		this.id = id;
 		this.uid = uid;
@@ -78,6 +81,7 @@ public class Cart {
 		this.goodName = goodName;
 		this.goodPropertyName = goodPropertyName;
 		this.price = price;
+		this.picSmall = picSmall;
 	}
 
 	public Integer getId() {
@@ -152,11 +156,19 @@ public class Cart {
 		this.price = price;
 	}
 
+	public String getPicSmall() {
+		return picSmall;
+	}
+
+	public void setPicSmall(String picSmall) {
+		this.picSmall = picSmall;
+	}
+
 	@Override
 	public String toString() {
 		return "Cart [id=" + id + ", uid=" + uid + ", gid=" + gid + ", num=" + num + ", gpId=" + gpId + ", createTime="
 				+ createTime + ", goodName=" + goodName + ", goodPropertyName=" + goodPropertyName + ", price=" + price
-				+ "]";
+				+ ", picSmall=" + picSmall + "]";
 	}
 
 }
