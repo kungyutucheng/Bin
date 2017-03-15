@@ -268,12 +268,12 @@
 							<td>商品处理方式</td>
 							<td>客户期望处理方式为“<span style="color:#E4393C">
 							<c:choose>
-								<c:when test="${rac.type == 1 }">换货</c:when>
-								<c:otherwise>退货</c:otherwise>
+								<c:when test="${rac.type == 1 }">退货</c:when>
+								<c:otherwise>换货</c:otherwise>
 							</c:choose></span>” ，最终处理方式为“<span style="color:#E4393C">
 							<c:choose>
-								<c:when test="${rac.dealWay == 1 }">换货</c:when>
-								<c:when test="${rac.dealWay == 2 }">退货</c:when>
+								<c:when test="${rac.dealWay == 1 }">退货</c:when>
+								<c:when test="${rac.dealWay == 2 }">换货</c:when>
 								<c:otherwise>处理中</c:otherwise>
 							</c:choose></span>
 							”</td>
@@ -282,23 +282,23 @@
 							<td>问题描述</td>
 							<td>${rac.description } </td>
 						</tr>
-						<c:if test="${rac.type == 1 }">
+						<c:if test="${rac.type == 2 }">
 						<tr>
 							<td>收货地址</td>
-							<td>${rac.province }${rac.city }${rac.county }${rac.address } </td>
+							<td>${rac.province }，${rac.city }，${rac.county }，${rac.address } </td>
 						</tr>
 						<tr>
 							<td>联系信息</td>
-							<td>联系人：${rac.receiver }   电话：${rac.tel }</td>
+							<td>联系人：${rac.receiver }，电话：${rac.tel }</td>
 						</tr>
 						<c:if test="${rac.status == 4 }">
 						<tr>
 							<td>发货单信息</td>
-							<td>运费信息：${rac.deliveryFare } (元) 快递公司：${rac.express } 运单号:${rac.expressNo } </td>
+							<td>运费信息：<c:choose><c:when test="${rac.deliveryFare == null }">0</c:when><c:otherwise>${rac.deliveryFare }</c:otherwise></c:choose> (元), 快递公司：【${rac.expressName }】， 运单号:【${rac.expressNo }】 </td>
 						</tr>
 						</c:if>
 						</c:if>
-						<c:if test="${rac.type == 2 && rac.status == 5}">
+						<c:if test="${rac.type == 1 && rac.status == 5}">
 							<tr>
 								<td>退款方式</td>
 								<td>

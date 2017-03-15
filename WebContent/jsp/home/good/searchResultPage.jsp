@@ -234,7 +234,7 @@
 				<div id="currentFilterDiv">
 					<div style="display:inline;float:left;">
 						<span>当前筛选条件</span>
-						<span id="filterEles">
+						<span id="filterEles" style="margin-right:10px;">
 						</span>
 					</div>
 					<div style="float:right;display:inline;"><a class="extra" onclick="clearFilterRules();">清除筛选条件</a></div>

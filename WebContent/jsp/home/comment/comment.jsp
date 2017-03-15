@@ -46,7 +46,7 @@
 				<c:forEach items="${order.orderGoods }" var="og" varStatus="status">
 				<div class="block">
 					<div class="good-item">
-						<img src="${basePath }/img/56b16594Nb8807f03.jpg" />${og.good['name'] }&nbsp;&nbsp;${og.goodProperty['name'] }
+						<img src="${basePath }/image/getImage/${og.good.picSm}" />${og.good['name'] }&nbsp;&nbsp;${og.goodProperty['name'] }
 					</div>
 					<div class="layui-form-label width100">
 						评价内容：

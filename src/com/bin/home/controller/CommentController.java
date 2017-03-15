@@ -66,7 +66,7 @@ public class CommentController extends BaseController{
 			comment.setScore(score[i-1]);
 			comments.add(comment);
 			good = goodService.get(Good.class, comment.getGid());
-			good.setCommentNum(good.getCommentNum() + 1);
+			good.setCommentNum((good.getCommentNum() == null ) ? 1 : good.getCommentNum() + 1);
 			goods.add(good);
 		}
 		commentService.saveAll(comments, Comment.class);
@@ -91,6 +91,7 @@ public class CommentController extends BaseController{
 		}else if(type == 3){
 			hql += " and score < 3";
 		}
+		hql += " order by createTime desc";
 		List<Comment> comments = commentService.getPageResult(hql, 
 				pageNo, CommentController.PAGE_SIZE, id);
 		Good good;

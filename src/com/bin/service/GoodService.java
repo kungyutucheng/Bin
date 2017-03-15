@@ -1,5 +1,6 @@
 package com.bin.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -143,12 +144,12 @@ public class GoodService extends BaseService<Good, Integer>{
 		if(page.getParams().get("startPrice") != null 
 				&& Integer.valueOf(page.getParams().get("startPrice").toString()) != 0){
 			hql.append(" and price >= ?");
-			params.add(Double.valueOf(page.getParams().get("startPrice").toString()));
+			params.add(new BigDecimal(page.getParams().get("startPrice").toString()));
 		}
 		if(page.getParams().get("endPrice") != null
 				&& Integer.valueOf(page.getParams().get("endPrice").toString()) != 0){
 			hql.append(" and price <= ?");
-			params.add(Double.valueOf(page.getParams().get("endPrice").toString()));
+			params.add(new BigDecimal(page.getParams().get("endPrice").toString()));
 		}
 		if(page.getParams().get("brands") != null
 				&& !page.getParams().get("brands").toString().trim().equals("")){

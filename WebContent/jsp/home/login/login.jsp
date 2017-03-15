@@ -9,8 +9,8 @@
 		<title>登录</title>
 		<style>
 			.login-wrapper {
-				background: url("${basePath }/img/login_bg.jpg") 50% 0 no-repeat;
-				height: 488px;
+				background: url("${basePath }/img/58b7d7c0Nddfac818.jpg") 50% 0 no-repeat;
+				height: 478px;
 			}
 			
 			.login-wrapper .container {
@@ -67,6 +67,7 @@
 		<div>
 			<img src="${basePath }/img/logo.png" style="margin: 20px 0px 20px 60px;">
 		</div>
+		<div style="height:478px;width:100%;background:#ffb90f;">
 		<div class="login-wrapper">
 			<div class="container">
 				<div class="login-box">
@@ -142,6 +143,7 @@
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 		<script src="${basePath }/js/md5.js"></script>
 		<script>

@@ -164,7 +164,7 @@
 				<input type="hidden" name="ogid" value="${orderGood.id }">
 				<input type="hidden" name="oid" value="${orderGood.oid }">
 				<input type="hidden" name="gNo" value="${good.no }">
-				<input type="hidden" name="type" value="1">
+				<input type="hidden" name="type" value="2">
 			</form>
 		</div>
 		<script type="text/javascript">
@@ -177,12 +177,12 @@
 					if($(this).text() == "换货"){
 						$("#exchangeMsgDiv").slideDown();
 						$("#exchangeMsg").attr("disabled",false);
-						$("input[name='type']").val(1);
+						$("input[name='type']").val(2);
 						$("#changeBlock").slideDown();
 					}else{
 						$("#exchangeMsgDiv").slideUp();
 						$("#exchangeMsg").attr("disabled",true);
-						$("input[name='type']").val(2);
+						$("input[name='type']").val(1);
 						$("#changeBlock").slideUp();
 					}
 				});

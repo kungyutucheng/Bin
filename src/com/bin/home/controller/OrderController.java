@@ -96,6 +96,7 @@ public class OrderController extends BaseController{
 		order.setNo(orderNo);
 		order.setScore((int) Math.floor(order.getTotalValue().doubleValue()));
 		order.setStatus(1);
+		order.setDisable(1);
 		order.setUid(UserContext.getContext().getUser().getId());
 		Integer oid = orderService.save(order);
 		
@@ -157,6 +158,7 @@ public class OrderController extends BaseController{
 		ModelAndView modelAndView = new ModelAndView(ViewName.HOME_ORDER_PAY_SUCCESS);
 		Order order = orderService.get(Order.class, id);
 		order.setPayTime(new Date());
+		order.setStatus(Order.STATUS_PAYIED);
 		orderService.update(order);
 		modelAndView.addObject("oid", id);
 		return modelAndView;

@@ -181,7 +181,7 @@
 								<fmt:formatDate value="${order.createTime }" pattern="yyyy-MM-dd'<br/>'HH:mm:ss"/>
 							</div>
 						</div>
-						<c:if test="${order.status == 3 }">
+						<c:if test="${order.status >= 3 }">
 						<div class="process">
 							<i class="icon-process"></i>
 						</div>
@@ -197,7 +197,7 @@
 							</div>
 						</div>
 						</c:if>
-						<c:if test="${order.status == 4 }">
+						<c:if test="${order.status >= 4 }">
 						<div class="process">
 							<i class="icon-process"></i>
 						</div>
@@ -282,7 +282,7 @@
 							<span class="dlabel">付款时间 ：</span>
 							<div class="info">
 								<c:if test="${order.payTime != null}">
-									<fmt:formatDate value="${order.payTime }" type="date"/>
+									<fmt:formatDate value="${order.payTime }" pattern="yyyy-MM-dd HH:mm:ss"/>
 								</c:if>
 							</div>
 						</div>
@@ -297,7 +297,12 @@
 						</div>
 						<div class="item">
 							<span class="dlabel">发票内容：</span>
-							<div class="info">${order.receiptContent }</div>
+							<div class="info">
+								<c:choose>
+									<c:when test="${order.receiptContent == 1 }">电脑配件</c:when>
+									<c:otherwise>食品</c:otherwise>
+								</c:choose>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -325,7 +330,9 @@
 									<td>${orderGood.price }</td>
 									<td>${orderGood.num }</td>
 									<td>
+										<c:if test="${order.status == 6 }">
 										<a class="extra" href="${basePath }/home/returnAndChange/index/${orderGood.id}">返修/退换货</a>
+										</c:if>
 									</td>
 								</tr>
 							</c:forEach>
